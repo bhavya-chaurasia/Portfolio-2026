@@ -1,4 +1,5 @@
 import React from "react";
+import { runchatbot, lineofcode } from '../../constants/project1Images';
 
 interface CarouselCard4Props {
   children?: React.ReactNode;
@@ -10,14 +11,14 @@ const CarouselCard4 = ({ children }: CarouselCard4Props) => {
       <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden" }}>
         {/* Base image */}
         <img 
-          src="/src/assets/Project1/runchatbot.png" 
+          src={runchatbot} 
           alt="UI Screen 4" 
           style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0" }} 
         />
         
         {/* Line of code overlay - centered */}
         <img 
-          src="/src/assets/Project1/lineofcode.png" 
+          src={lineofcode} 
           alt="Line of Code" 
           className="anim-code-fade"
           style={{ 

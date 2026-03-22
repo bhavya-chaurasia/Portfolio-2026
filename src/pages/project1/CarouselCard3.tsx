@@ -1,9 +1,5 @@
 import React from "react";
-
-import cscreen3 from "../../assets/Project1/cscreen3.png";
-import profilePop1 from "../../assets/Project1/profile-pop1.png";
-import profilePop2 from "../../assets/Project1/profile-pop2.png";
-import profilePop3 from "../../assets/Project1/profile-pop3.png";
+import { cscreen3, profilePop1, profilePop2, profilePop3 } from '../../constants/project1Images';
 
 interface CarouselCard3Props {
   children?: React.ReactNode;

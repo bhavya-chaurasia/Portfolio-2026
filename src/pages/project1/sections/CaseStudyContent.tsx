@@ -1,4 +1,5 @@
 import { project1Styles as styles } from "../styles";
+import { image1, image2, image3, image4, image5, image6, image7 } from '../../../constants/project1Images';
 
 const CaseStudyContent = () => {
   return (
@@ -57,7 +58,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>User Journey</h2>
         <img
-          src="/src/assets/Project1/image1.png"
+          src={image1}
           alt="User Journey Diagram"
           style={{
             width: "100%",
@@ -75,7 +76,7 @@ const CaseStudyContent = () => {
           overflow: "hidden",
         }}>
           <img
-            src="/src/assets/Project1/image2.png"
+            src={image2}
             alt="User Journey Diagram 2"
             style={{
               width: "100%",
@@ -148,7 +149,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Information Architecture</h2>
         <img
-          src="/src/assets/Project1/image3.png"
+          src={image3}
           alt="Information Architecture"
           style={{
             width: "100%",
@@ -193,7 +194,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Ideation Sketch</h2>
         <img
-          src="/src/assets/Project1/image4.png"
+          src={image4}
           alt="Ideation Sketch"
           style={{
             width: "100%",
@@ -209,7 +210,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Frameworks Design & Testing</h2>
         <img 
-          src="/src/assets/Project1/image5.png" 
+          src={image5} 
           alt="Frameworks Design & Testing" 
           style={{ 
             width: "100%", 
@@ -225,7 +226,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Wireframing</h2>
         <img 
-          src="/src/assets/Project1/image6.png" 
+          src={image6} 
           alt="Wireframing" 
           style={{ 
             width: "100%", 
@@ -241,7 +242,7 @@ const CaseStudyContent = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Final Designs</h2>
         <img
-          src="/src/assets/Project1/image7.png" 
+          src={image7} 
           alt="Final Designs" 
           style={{ 
             width: "100%", 
