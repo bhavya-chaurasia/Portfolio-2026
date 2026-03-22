@@ -1,4 +1,5 @@
 import React from "react";
+import { cscreen5, drag5, mouse5 } from '../../constants/project1Images';
 
 interface CarouselCard5Props {
   children?: React.ReactNode;
@@ -10,14 +11,14 @@ const CarouselCard5 = ({ children }: CarouselCard5Props) => {
       <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden" }}>
         {/* Base image */}
         <img 
-          src="/src/assets/Project1/cscreen5.png" 
+          src={cscreen5} 
           alt="UI Screen 5" 
           style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0" }} 
         />
         
         {/* Drag/wand overlay with paint reveal animation */}
         <img 
-          src="/src/assets/Project1/drag5.png" 
+          src={drag5} 
           alt="Drag Wand" 
           className="anim-wand-5"
           style={{ 
@@ -32,7 +33,7 @@ const CarouselCard5 = ({ children }: CarouselCard5Props) => {
         
         {/* Mouse cursor with movement animation */}
         <img 
-          src="/src/assets/Project1/mouse5.png" 
+          src={mouse5} 
           alt="Mouse Cursor" 
           className="anim-mouse-5"
           style={{ 
