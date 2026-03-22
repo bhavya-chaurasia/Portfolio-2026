@@ -5,7 +5,7 @@ const ImpactSection = () => {
     <>
       {/* Team Successes */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Team Successes</h2>
+        <h2 style={styles.sectionTitle}>Team Success</h2>
         <ul style={styles.bulletList}>
           <li style={styles.bulletItem}>
             <span style={styles.bulletDot}></span>
