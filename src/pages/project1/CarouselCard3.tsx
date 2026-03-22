@@ -1,5 +1,10 @@
 import React from "react";
 
+import cscreen3 from "../../assets/Project1/cscreen3.png";
+import profilePop1 from "../../assets/Project1/profile-pop1.png";
+import profilePop2 from "../../assets/Project1/profile-pop2.png";
+import profilePop3 from "../../assets/Project1/profile-pop3.png";
+
 interface CarouselCard3Props {
   children?: React.ReactNode;
 }
@@ -10,14 +15,14 @@ const CarouselCard3 = ({ children }: CarouselCard3Props) => {
       <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden" }}>
         {/* Base image */}
         <img 
-          src="/src/assets/Project1/cscreen3.png" 
+          src={cscreen3} 
           alt="UI Screen 3" 
           style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0" }} 
         />
         
         {/* Profile popup 1 - Green mouse */}
         <img 
-          src="/src/assets/Project1/profile-pop1.png" 
+          src={profilePop1} 
           alt="Profile Popup 1" 
           className="anim-popup-1"
           style={{ 
@@ -31,7 +36,7 @@ const CarouselCard3 = ({ children }: CarouselCard3Props) => {
         
         {/* Profile popup 2 - Blue mouse */}
         <img 
-          src="/src/assets/Project1/profile-pop2.png" 
+          src={profilePop2} 
           alt="Profile Popup 2" 
           className="anim-popup-2"
           style={{ 
@@ -45,7 +50,7 @@ const CarouselCard3 = ({ children }: CarouselCard3Props) => {
         
         {/* Profile popup 3 - Pink mouse */}
         <img 
-          src="/src/assets/Project1/profile-pop3.png" 
+          src={profilePop3} 
           alt="Profile Popup 3" 
           className="anim-popup-3"
           style={{ 
