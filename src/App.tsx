@@ -133,7 +133,7 @@ const App: FC = () => {
                 marginBottom: 72,
               }}
             >
-              Selected Work
+              Latest Shenanigans
             </h2>
 
             {/* Project cards */}
