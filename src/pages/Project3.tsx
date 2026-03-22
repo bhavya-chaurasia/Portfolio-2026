@@ -37,7 +37,7 @@ const stats = [
   {
     achievement: "Role",
     outcomeTitle: "Led the project and managed the team",
-    outcome: "End-to-end solution development",
+    outcome: "End-to-end solutions development",
     accent: "#ec4899",
     icon: "spark" as IconName,
   },
