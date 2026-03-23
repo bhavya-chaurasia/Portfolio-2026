@@ -10,6 +10,10 @@ import ProjectDetails from "./project1/sections/ProjectDetails";
 import QuoteSection from "./project1/sections/QuoteSection";
 import CaseStudyContent from "./project1/sections/CaseStudyContent";
 import ImpactSection from "./project1/sections/ImpactSection";
+import p12 from "../assets/p1-2.png";
+import p122 from "../assets/p1-2-2.png";
+import dragShade from "../assets/drag-shade.png";
+import arrow from "../assets/arrow.png";
 
 const Project1 = () => {
   useEffect(() => {
@@ -39,10 +43,10 @@ const Project1 = () => {
           /* Slot 2 - animated composition */
           <CarouselCard2>
             <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden", backgroundColor: "#ffffff" }}>
-              <img src="/src/assets/p1-2.png" alt="UI Screen 2" style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", borderRadius: "0" }} />
-              <img src="/src/assets/p1-2-2.png" alt="Popup" className="anim-popup" style={{ position: "absolute", bottom: "4%", right: "2%", width: "52%", pointerEvents: "none" }} />
-              <img src="/src/assets/drag-shade.png" alt="" className="anim-wand" style={{ position: "absolute", top: "12%", right: "6%", width: "38%", pointerEvents: "none", transformOrigin: "bottom center" }} />
-              <img src="/src/assets/arrow.png" alt="" className="anim-mouse" style={{ position: "absolute", top: "8%", right: "4%", width: "40px", pointerEvents: "none" }} />
+              <img src={p12} alt="UI Screen 2" style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", borderRadius: "0" }} />
+              <img src={p122} alt="Popup" className="anim-popup" style={{ position: "absolute", bottom: "4%", right: "2%", width: "52%", pointerEvents: "none" }} />
+              <img src={dragShade} alt="" className="anim-wand" style={{ position: "absolute", top: "12%", right: "6%", width: "38%", pointerEvents: "none", transformOrigin: "bottom center" }} />
+              <img src={arrow} alt="" className="anim-mouse" style={{ position: "absolute", top: "8%", right: "4%", width: "40px", pointerEvents: "none" }} />
             </div>
           </CarouselCard2>,
           /* Slot 3 - animated profile popups */

@@ -12,6 +12,7 @@ import Project1 from "./pages/project1";
 import Project2 from "./pages/Project2";
 import Project3 from "./pages/Project3";
 import { Link } from "react-router-dom";
+import project1Video from "./assets/project1.mp4";
 
 /* â”€â”€ Gallery data */
 
@@ -144,7 +145,7 @@ const App: FC = () => {
                 title: "Workflow Studio",
                 desc: "Designing AI experiences that enable anyone to automate workflows.",
                 link: "/project-1",
-                img: "/src/assets/project1.mp4",
+                img: project1Video,
               },
               {
                 num: "02",
