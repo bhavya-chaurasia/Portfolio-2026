@@ -20,12 +20,8 @@ import imgArrow11 from "../assets/Project2/arrows/imgArrow11.png";
 // UI Design Section Assetsb";
 
 const imgSeeWhyIcon = "https://www.figma.com/api/mcp/asset/245be301-c9fb-459e-b52f-67f3272c71ab";
-const imgCautionIcon = "https://www.figma.com/api/mcp/asset/dac11969-60a0-486b-b48c-a74db50aa326";
-const imgTickCircle = "https://www.figma.com/api/mcp/asset/ead3a631-c469-4b08-af0a-17b0b3e790b1";
-const aboutEllipse1 = "https://www.figma.com/api/mcp/asset/73c3973a-030a-4280-9b2f-a42cd05a6425";
-const aboutEllipse2 = "https://www.figma.com/api/mcp/asset/4da45021-52db-4ab6-94f9-4945b624c25e";
-const aboutEllipse9 = "https://www.figma.com/api/mcp/asset/47d73b95-d155-4041-a819-1e62cb50f96c";
-const aboutEllipse5 = "https://www.figma.com/api/mcp/asset/05c85b87-e641-4494-8387-917ea67d5ce1";
+const imgCautionIcon = "/Project2/Part5 - P/Group.svg";
+const imgTickCircle = "/Project2/Part5 - P/teenyicons_tick-circle-solid.svg";
 import aboutIconTimeSaving from "../assets/Project2/icons/time.svg";
 import aboutIconScalable from "../assets/Project2/icons/scalable.svg";
 import aboutIconSelfGuided from "../assets/Project2/icons/guide.svg";
@@ -165,6 +161,16 @@ const Project2 = () => {
     userSurveyMinHeight: Math.round((948 / 1200) * 1220),
   } as const;
 
+  const seeWhySection = {
+    blueCardLeft: 618,
+    blueCardTop: 3857,
+    contextCardLeft: 72,
+    contextCardTop: 3975,
+    arrowLeft: 558,
+    arrowTop: 4005,
+    connectorOffsetFromArrow: { left: 396, top: 138 },
+  } as const;
+
   const sectionHeadingTextStyle: React.CSSProperties = {
     fontSize: "24px",
     fontWeight: 600,
@@ -246,6 +252,74 @@ const Project2 = () => {
         .ui-blue-card-image.ui-blue-card-image-visible {
           opacity: 1;
           transform: translateY(0);
+        }
+
+        .mobile-proportional-scale-shell {
+          position: relative;
+          overflow: hidden;
+          height: var(--mobile-shell-desktop-height);
+          --mobile-scale-factor: var(--mobile-shell-base-scale, 1);
+          --mobile-shell-viewport-ratio: 1;
+        }
+
+        .mobile-proportional-scale-content {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          width: var(--mobile-shell-desktop-width);
+          height: var(--mobile-shell-canvas-height);
+          margin-left: calc(var(--mobile-shell-desktop-width) / -2);
+          transform: scale(var(--mobile-scale-factor));
+          transform-origin: top center;
+        }
+
+        @media (max-width: 767px) {
+          .mobile-proportional-scale-shell {
+            --mobile-shell-viewport-ratio: calc(
+              100vw / var(--mobile-shell-desktop-design-width, 1440px)
+            );
+            height: calc(
+              var(--mobile-shell-desktop-height) *
+              var(--mobile-shell-viewport-ratio) *
+              var(--mobile-shell-mobile-boost, 1) +
+              var(--mobile-shell-mobile-top-offset, 0px)
+            );
+            --mobile-scale-factor: calc(
+              var(--mobile-shell-base-scale, 1) *
+              var(--mobile-shell-viewport-ratio) *
+              var(--mobile-shell-mobile-boost, 1)
+            );
+          }
+
+          .mobile-proportional-scale-shell .mobile-proportional-scale-content {
+            top: var(--mobile-shell-mobile-top-offset, 0px);
+          }
+
+          .mobile-proportional-keep-text {
+            transform: scale(calc(1 / var(--mobile-shell-viewport-ratio, 1)));
+            transform-origin: top left;
+          }
+
+          .challenges-scale-shell .challenges-mobile-heading {
+            font-size: 24px !important;
+            line-height: 28.141px !important;
+          }
+
+          .challenges-section-mobile-spacing .challenges-intro-heading {
+            transform: translateY(-120px);
+          }
+
+          .challenges-section-mobile-spacing .challenges-intro-text {
+            transform: translateY(-108px);
+          }
+
+          .challenges-section-mobile-spacing .challenges-problems-heading {
+            transform: translateY(-48px);
+          }
+
+          .challenges-section-mobile-spacing .challenges-solutions-heading {
+            transform: translateY(-60px);
+          }
         }
       `}</style>
       <div style={styles.container}>
@@ -408,50 +482,50 @@ const Project2 = () => {
           overflow: "hidden",
         }}>
           {/* Ellipse glow 1 */}
-          <img src={aboutEllipse1} alt="" style={{
+          {/* <img src={aboutEllipse1} alt="" style={{
             position: "absolute",
             left: "50%",
             top: "-10%",
             transform: "translateX(-50%)",
             width: "100%",
             pointerEvents: "none",
-          }} />
+          }} /> */}
           {/* Ellipse glow 2 */}
-          <img src={aboutEllipse2} alt="" style={{
+          {/* <img src={aboutEllipse2} alt="" style={{
             position: "absolute",
             left: "50%",
             bottom: "-30%",
             transform: "translateX(-50%)",
             width: "100%",
             pointerEvents: "none",
-          }} />
+          }} /> */}
 
           {/* Scalable â€” top center-left */}
           <div style={{ position: "absolute", left: "30%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} />
+            {/* <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} /> */}
             <img src={aboutIconScalable} alt="scalable" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
-            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "8px" }}>Scalable</span>
+            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Scalable</span>
           </div>
 
           {/* Self-guided â€” top center-right */}
           <div style={{ position: "absolute", left: "56%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} />
+            {/* <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} /> */}
             <img src={aboutIconSelfGuided} alt="self-guided" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
-            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "8px" }}>Self-guided</span>
+            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Self-guided</span>
           </div>
 
           {/* Time Saving â€” bottom left */}
           <div style={{ position: "absolute", left: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} />
+            {/* <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} /> */}
             <img src={aboutIconTimeSaving} alt="time saving" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
-            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "8px" }}>Time Saving</span>
+            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Time Saving</span>
           </div>
 
           {/* Human Centered â€” bottom right */}
           <div style={{ position: "absolute", right: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} />
+            {/* <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} /> */}
             <img src={aboutIconHumanCentered} alt="human centered" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
-            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "8px" }}>Human Centered</span>
+            <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Human Centered</span>
           </div>
         </div>
 
@@ -494,7 +568,7 @@ const Project2 = () => {
       </div>
 
       {/* Design Process Section */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+      <div className="challenges-section-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
         {/* Section heading */}
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px", marginBottom: "40px" }}>
           <h2 style={{
@@ -503,18 +577,18 @@ const Project2 = () => {
           }}>Design Process</h2>
         </div>
 
-        {/* 1200Ã—1200 canvas scaled to 0.9, bg = Part4-Design-Process.png, cards on top */}
-        <div style={{ position: "relative", height: "1100px", overflow: "hidden" }}>
-          <div style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: "-600px",
-            top: 0,
-            width: "1200px",
-            height: "1200px",
-            transform: "scale(0.9)",
-            transformOrigin: "top center",
-          }}>
+        {/* 1200×1200 canvas scaled to 0.9 on desktop and proportionally scaled on mobile */}
+        <div
+          className="mobile-proportional-scale-shell design-process-scale-shell"
+          style={{
+            ["--mobile-shell-desktop-design-width" as string]: "1440px",
+            ["--mobile-shell-desktop-width" as string]: "1200px",
+            ["--mobile-shell-canvas-height" as string]: "1200px",
+            ["--mobile-shell-desktop-height" as string]: "1100px",
+            ["--mobile-shell-base-scale" as string]: "0.9",
+          }}
+        >
+          <div className="mobile-proportional-scale-content">
 
             {/* Background image */}
             <img src={designProcess} alt="Design Process" style={{
@@ -593,27 +667,29 @@ const Project2 = () => {
       </div>
 
       {/* Challenges / Problem / Solutions Section */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+      <div className="challenges-section-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
         {/* Fixed 1200Ã—900px Figma canvas */}
-        <div style={{ position: "relative", height: `${layout.challengesHeight}px`, overflow: "hidden" }}>
-          <div style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: "-600px",
-            top: 0,
-            width: "1200px",
-            height: "900px",
-            transform: `scale(${layout.sectionScale1200})`,
-            transformOrigin: "top center",
-          }}>
+        <div
+          className="mobile-proportional-scale-shell challenges-scale-shell"
+          style={{
+            ["--mobile-shell-desktop-design-width" as string]: "1440px",
+            ["--mobile-shell-desktop-width" as string]: "1200px",
+            ["--mobile-shell-canvas-height" as string]: "900px",
+            ["--mobile-shell-desktop-height" as string]: `${layout.challengesHeight}px`,
+            ["--mobile-shell-base-scale" as string]: `${layout.sectionScale1200}`,
+            ["--mobile-shell-mobile-boost" as string]: "1.42",
+            ["--mobile-shell-mobile-top-offset" as string]: "96px",
+          }}
+        >
+          <div className="mobile-proportional-scale-content">
 
             {/* Challenges heading */}
-            <div style={{ position: "absolute", left: "30px", top: "68px" }}>
-              <span style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Challenges</span>
+            <div className="challenges-intro-heading" style={{ position: "absolute", left: "30px", top: "68px" }}>
+              <span className="mobile-proportional-keep-text challenges-mobile-heading" style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Challenges</span>
             </div>
 
             {/* Challenges description */}
-            <p style={{
+            <p className="challenges-intro-text" style={{
               position: "absolute", left: "73px", top: "127px", width: "711px",
               fontSize: "21px", fontWeight: 300,
               fontFamily: typography.body.fontFamily,
@@ -625,8 +701,8 @@ const Project2 = () => {
             </p>
 
             {/* Problem heading */}
-            <div style={{ position: "absolute", left: "30px", top: "304px" }}>
-              <span style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Problems</span>
+            <div className="challenges-problems-heading" style={{ position: "absolute", left: "30px", top: "304px" }}>
+              <span className="mobile-proportional-keep-text challenges-mobile-heading" style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Problems</span>
             </div>
 
             {/* Problem cards â€” render highlighted first (lower z) then regular cards on top... */}
@@ -681,8 +757,8 @@ const Project2 = () => {
             </div>
 
             {/* Solutions heading */}
-            <div style={{ position: "absolute", left: "30px", top: "598px" }}>
-              <span style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Solutions</span>
+            <div className="challenges-solutions-heading" style={{ position: "absolute", left: "30px", top: "598px" }}>
+              <span className="mobile-proportional-keep-text challenges-mobile-heading" style={getScaledSectionHeadingStyle(layout.sectionScale1200)}>Solutions</span>
             </div>
 
             {/* Solution card 1 â€” AI-driven vehicle health insights (highlighted, taller) */}
@@ -691,7 +767,7 @@ const Project2 = () => {
               width: "206.52px", height: "227px",
               ...glassCardStyle,
             }}>
-              <div style={{ position: "absolute", left: "18px", top: "34px", width: "30px", height: "30px" }}>
+              <div style={{ position: "absolute", left: "18px", top: "34px", width: "40px", height: "40px" }}>
                 <img src={imgTickCircle} alt="" style={{ width: "100%", height: "100%", display: "block" }} />
               </div>
               <p style={{ position: "absolute", left: "21px", top: "94px", width: "168px", fontSize: "16px", fontFamily: typography.heading.fontFamily, fontWeight: 400, color: "#10b981", lineHeight: "28.14px", margin: 0 }}>AI-driven vehicle health insights</p>
@@ -1000,22 +1076,22 @@ const Project2 = () => {
               borderRadius: 40, overflow: "hidden",
             }}>
               <img className="ui-blue-card-image" src={uiPage1} alt="Car Health Overview" style={{ position: "absolute", left: 80, top: 52, width: 346, height: 522, objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", left: 380, top: 159, width: 22, height: 22 }}>
-                <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
-              </div>
-              <div style={{ position: "absolute", left: 377, top: 487, width: 22, height: 22 }}>
-                <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
-              </div>
             </div>
 
             {/* Arrow 1 */}
             <div style={{ position: "absolute", left: 468, top: 542, width: 175, height: 56 }}>
               <img src={imgArrow1} alt="" style={{ width: 175, height: 57, display: "block" }} />
+              <div style={{ position: "absolute", left: -16, top: 46, width: 22, height: 22 }}>
+                <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
+              </div>
             </div>
 
             {/* Arrow 2 */}
             <div style={{ position: "absolute", left: 465, top: 803, width: 175, height: 121 }}>
               <img src={imgArrow2} alt="" style={{ width: 175, height: 122, display: "block" }} />
+              <div style={{ position: "absolute", left: -16, top: 113, width: 22, height: 22 }}>
+                <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
+              </div>
             </div>
 
             {/* Glass Card - Overall Health Score */}
@@ -1230,7 +1306,7 @@ const Project2 = () => {
               }}>
                 
                 <div style={{ position: "absolute", left: 35.64, top: 1.33, width: 8.013, height: 8.013 }}>
-                  <img src={imgSeeWhyIcon} alt="" style={{ width: 8, height: 8, display: "block" }} />
+                  {/* <img src={imgSeeWhyIcon} alt="" style={{ width: 8, height: 8, display: "block" }} /> */}
                 </div>
               </div>
             </div>
@@ -1293,19 +1369,16 @@ const Project2 = () => {
 
             {/* Blue Gradient Card - See Why */}
             <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
-              position: "absolute", left: 618, top: 3857, width: 510, height: 444,
+              position: "absolute", left: seeWhySection.blueCardLeft, top: seeWhySection.blueCardTop, width: 510, height: 444,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
               <img className="ui-blue-card-image" src={uiPage6} alt="See Why" style={{ position: "absolute", left: 80, top: 82, width: 346, height: 362, objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", left: 336, top: 286, width: 22, height: 22, transform: "rotate(180deg) scaleY(-1)" }}>
-                <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
-              </div>
             </div>
 
             {/* Glass Card - Context-Aware See Why */}
             <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
-              position: "absolute", left: 72, top: 3975, width: 485, height: 195,
+              position: "absolute", left: seeWhySection.contextCardLeft, top: seeWhySection.contextCardTop, width: 485, height: 195,
               ...glassCardStyle,
             }}>
               <p style={{
@@ -1324,8 +1397,20 @@ const Project2 = () => {
             </div>
 
             {/* Arrow for See Why section */}
-            <div style={{ position: "absolute", left: 558, top: 4005, width: 402, height: 147}}>
+            <div style={{ position: "absolute", left: seeWhySection.arrowLeft, top: seeWhySection.arrowTop, width: 402, height: 147}}>
               <img src={imgArrow9} alt="" style={{ width: 402, height: 148, display: "block" }} />
+            </div>
+
+            {/* Connector dot for Context-Aware "See Why" section */}
+            <div style={{
+              position: "absolute",
+              left: seeWhySection.arrowLeft + seeWhySection.connectorOffsetFromArrow.left,
+              top: seeWhySection.arrowTop + seeWhySection.connectorOffsetFromArrow.top,
+              width: 22,
+              height: 22,
+              transform: "rotate(180deg) scaleY(-1)",
+            }}>
+              <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
 
             {/* Blue Gradient Card - Coupons */}
@@ -1349,7 +1434,7 @@ const Project2 = () => {
             <div style={{ position: "absolute", left: 415, top: 4749, width: 228, height: 117 }}>
               <img src={imgArrow11} alt="" style={{ width: 228, height: 118, display: "block" }} />
             </div>
-            <div style={{ position: "absolute", left: 390, top: 4534, width: 253, height: 278 }}>
+            <div style={{ position: "absolute", left: 390, top: 4564, width: 253, height: 278 }}>
               <img src={imgArrow10} alt="" style={{ width: 253, height: 279, display: "block" }} />
             </div>
 
@@ -1587,6 +1672,3 @@ const Project2 = () => {
 };
 
 export default Project2;
-
-
-

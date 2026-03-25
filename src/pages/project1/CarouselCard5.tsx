@@ -38,6 +38,8 @@ const CarouselCard5 = ({ children }: CarouselCard5Props) => {
           className="anim-mouse-5"
           style={{ 
             position: "absolute", 
+            top: "60%",
+            right: "40%",
             width: "40px", 
             pointerEvents: "none" 
           }} 
@@ -61,19 +63,26 @@ const CarouselCard5 = ({ children }: CarouselCard5Props) => {
           11%  { opacity: 0; top: 60%; right: 40%; }
           13%  { opacity: 1; top: 60%; right: 40%; }
           54%  { opacity: 1; top: 10%; right: 30%; }
-          68%  { opacity: 0; top: 10%; right: 30%; }
-          100% { opacity: 0; top: 60%; right: 40%; }
+          68%  { opacity: 1; top: 10%; right: 30%; }
+          100% { opacity: 1; top: 60%; right: 40%; }
         }
 
         .anim-wand-5 {
-          clip-path: inset(100% 0% 0% 0%);
+          position: absolute;
+          top: 30%;
+          right: 35%;
+          width: 30%;
           opacity: 0;
+          clip-path: inset(100% 0% 0% 0%);
+          transform-origin: bottom center;
         }
 
         .anim-mouse-5 {
-          opacity: 0;
+          position: absolute;
           top: 60%;
           right: 40%;
+          width: 40px;
+          opacity: 0;
         }
 
         .carousel-card-active .anim-wand-5,

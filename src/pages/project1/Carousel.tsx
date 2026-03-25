@@ -7,6 +7,8 @@ interface CarouselProps {
 }
 
 const DEFAULT_CYCLE_DURATION = 2000;
+const CAROUSEL_CARD_WIDTH = 480;
+const CAROUSEL_CARD_HEIGHT = 320;
 
 const Carousel = ({ slots, cycleDurations = [] }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -158,6 +160,12 @@ const Carousel = ({ slots, cycleDurations = [] }: CarouselProps) => {
                 className={isActive ? "carousel-card-active" : ""}
                 style={{
                   ...styles.carouselImage(hoveredImage === i + 1),
+                  width: `${CAROUSEL_CARD_WIDTH}px`,
+                  minWidth: `${CAROUSEL_CARD_WIDTH}px`,
+                  maxWidth: `${CAROUSEL_CARD_WIDTH}px`,
+                  height: `${CAROUSEL_CARD_HEIGHT}px`,
+                  minHeight: `${CAROUSEL_CARD_HEIGHT}px`,
+                  maxHeight: `${CAROUSEL_CARD_HEIGHT}px`,
                   display: hasCustomContent ? "block" : "flex",
                   backgroundColor: hasCustomContent ? "transparent" : "#f5f5f5",
                   overflow: "hidden",

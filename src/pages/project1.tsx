@@ -10,10 +10,12 @@ import ProjectDetails from "./project1/sections/ProjectDetails";
 import QuoteSection from "./project1/sections/QuoteSection";
 import CaseStudyContent from "./project1/sections/CaseStudyContent";
 import ImpactSection from "./project1/sections/ImpactSection";
-import p12 from "../assets/p1-2.png";
-import p122 from "../assets/p1-2-2.png";
-import dragShade from "../assets/drag-shade.png";
-import arrow from "../assets/arrow.png";
+import {
+  p12,
+  p122,
+  dragShade,
+  arrow,
+} from "../constants/project1Images";
 
 const Project1 = () => {
   useEffect(() => {
@@ -26,19 +28,17 @@ const Project1 = () => {
         <HeroSection
           tags="UX Design · AI · Product Design"
           title="Workflow Studio"
-          subtitle="Designing AI experiences that enable anyone to automate workflows.\n\nBuilding an intuitive AI-powered platform that allows people - even without coding knowledge - to create powerful workflows and automate repetitive tasks with ease."
+          subtitle={"Designing AI experiences that enable anyone to automate workflows. Building an intuitive AI-powered platform that allows people, even without coding knowledge to create powerful workflows and automate repetitive tasks with ease."}
         />
 
         {/* 4. UI Screens Carousel */}
         <Carousel
-          cycleDurations={[3500, 4000, 3000, 3500]}
+          cycleDurations={[2000, 2000, 1800, 2000]}
           slots={[
-          /* Slot 1 - temporarily commented out
-          <img
-            src="/src/assets/Project1/cscreen1.png"
-            alt="UI Screen 1"
-            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "0" }}
-          />,
+          /* Slot 1 - UI Screen 1 (temporarily disabled)
+          <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden" }}>
+            ...
+          </div>,
           */
           /* Slot 2 - animated composition */
           <CarouselCard2>
@@ -58,11 +58,13 @@ const Project1 = () => {
           ]}
         />
 
-        <ProjectDetails
-          company="AgentAnalytics.AI"
-          role="Product Designer"
-          tenure="2025"
-        />
+        <div className="project1-details-center">
+          <ProjectDetails
+            company="AgentAnalytics.AI"
+            role="Product Designer"
+            tenure="2025"
+          />
+        </div>
 
         <QuoteSection quote="Great design removes complexity so users can focus on outcomes rather than tools." />
 
@@ -99,6 +101,11 @@ const Project1 = () => {
           mask-composite: exclude;
           will-change: background-position;
         }
+
+        .project1-details-center > div > div {
+          text-align: center !important;
+        }
+
       `}</style>
     </div>
   );

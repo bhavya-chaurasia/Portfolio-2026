@@ -1,4 +1,4 @@
-﻿import { useState, FC } from "react";
+﻿import { useState, FC, useEffect } from "react";
 import Lottie from "lottie-react";
 import marutiAnimation from "./components/Mobile-app-showcase2.json";
 import msmeChatbotAnimation from "./components/Mobile-app-showcase3.json";
@@ -12,7 +12,7 @@ import Project1 from "./pages/project1";
 import Project2 from "./pages/Project2";
 import Project3 from "./pages/Project3";
 import { Link } from "react-router-dom";
-import project1Video from "./assets/project1.mp4";
+import { project1Video } from "./constants/project1Images";
 
 /* â”€â”€ Gallery data */
 
@@ -21,7 +21,17 @@ import project1Video from "./assets/project1.mp4";
 const App: FC = () => {
   const navigate = useNavigate();
   const [dark, setDark] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [isMobileView, setIsMobileView] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth <= 900 : false
+  );
   const t = dark ? THEMES.dark : THEMES.light;
+
+  useEffect(() => {
+    const onResize = () => setIsMobileView(window.innerWidth <= 900);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   // const iconLinkStyle: React.CSSProperties = {
   //   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -111,6 +121,31 @@ const App: FC = () => {
               pointer-events: none;
               animation: brushReveal 5s ease-in-out infinite;
             }
+            @media (max-width: 900px) {
+              .works-section {
+                padding: 72px 24px !important;
+              }
+              .works-heading {
+                margin-bottom: 40px !important;
+              }
+              .project-card {
+                grid-template-columns: 1fr !important;
+                gap: 24px !important;
+                margin-bottom: 72px !important;
+              }
+              .project-card .card-media {
+                order: 1;
+              }
+              .project-card .card-content {
+                order: 2;
+                align-items: flex-start !important;
+                text-align: left !important;
+              }
+              .project-card .card-desc {
+                max-width: 100% !important;
+                font-size: 16px !important;
+              }
+            }
           `}</style>
 
           <Cursor dark={dark} />
@@ -122,9 +157,11 @@ const App: FC = () => {
           {/* WORKS */}
           <section
             id="works"
+            className="works-section"
             style={{ padding: "120px 10vw", position: "relative", zIndex: 2 }}
           >
             <h2
+              className="works-heading"
               style={{
                 fontFamily: "'Libre Baskerville', serif",
                 fontSize: "clamp(28px, 3.5vw, 44px)",
@@ -167,7 +204,9 @@ transparency, cross-selling, and service adoption.`,
             ].map((card, i) => (
               <div
                 key={i}
-                className="card-wrap"
+                className="card-wrap project-card"
+                onMouseEnter={() => setHoveredCard(i)}
+                onMouseLeave={() => setHoveredCard(null)}
                 onClick={() => navigate(card.link)}
                 style={{
                   display: "grid",
@@ -181,6 +220,7 @@ transparency, cross-selling, and service adoption.`,
                 {/* Image */}
                 {i % 2 === 0 && (
                   <div
+                    className="card-media"
                     style={{
                       borderRadius: 12,
                       overflow: "hidden",
@@ -207,18 +247,26 @@ transparency, cross-selling, and service adoption.`,
                         }}
                       />
                     ) : (
-                      <Lottie
-                        animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
-                        loop
-                        autoplay
-                        style={{ width: "100%", height: "100%" }}
-                      />
+                      isMobileView || hoveredCard === i ? (
+                        <Lottie
+                          animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
+                          loop
+                          autoplay
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      ) : (
+                        <img
+                          src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                          alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        />
+                      )
                     )}
                   </div>
                 )}
 
                 {/* Text */}
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" , ...(i % 2 !== 0 ? { alignItems: "flex-end", textAlign: "right" as const } : {}) }}>
+                <div className="card-content" style={{ display: "flex", flexDirection: "column", justifyContent: "center" , ...(i % 2 !== 0 ? { alignItems: "flex-end", textAlign: "right" as const } : {}) }}>
                   <span
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
@@ -258,6 +306,7 @@ transparency, cross-selling, and service adoption.`,
                     {card.title}
                   </h3>
                   <p
+                    className="card-desc"
                     style={{
                       fontSize: 17,
                       color: t.ink2,
@@ -289,6 +338,7 @@ transparency, cross-selling, and service adoption.`,
                 {/* Image for odd rows (right side) */}
                 {i % 2 !== 0 && (
                   <div
+                    className="card-media"
                     style={{
                       borderRadius: 12,
                       overflow: "hidden",
@@ -299,12 +349,20 @@ transparency, cross-selling, and service adoption.`,
                       justifyContent: "center",
                     }}
                   >
-                    <Lottie
-                      animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
-                      loop
-                      autoplay
-                      style={{ width: "100%", height: "100%" }}
-                    />
+                    {isMobileView || hoveredCard === i ? (
+                      <Lottie
+                        animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
+                        loop
+                        autoplay
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    ) : (
+                      <img
+                        src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                        alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -323,4 +381,3 @@ transparency, cross-selling, and service adoption.`,
 };
 
 export default App;
-
