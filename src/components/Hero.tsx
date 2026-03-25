@@ -63,8 +63,45 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
   };
 
   return (
-    <section
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-section {
+            min-height: auto !important;
+            justify-content: flex-start !important;
+            padding: 124px 0 32px !important;
+          }
+          .hero-content {
+            max-width: 100% !important;
+            padding: 0 36px !important;
+          }
+          .hero-eyebrow {
+            margin-bottom: 20px !important;
+            letter-spacing: 0.28em !important;
+          }
+          .hero-body {
+            font-size: 20px !important;
+            line-height: 1.6 !important;
+            max-width: 100% !important;
+          }
+          .hero-cta {
+            margin-top: 28px !important;
+            gap: 12px !important;
+          }
+          .hero-btn-primary {
+            padding: 11px 22px !important;
+          }
+          .hero-scroll {
+            display: none !important;
+          }
+          .thub-note {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <section
       id="hero"
+      className="hero-section"
       style={{
         position: "relative",
         minHeight: "100vh",
@@ -93,6 +130,7 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
       {galleryKey && <HoverGallery activeKey={galleryKey} anchorEl={galleryAnchor} dark={dark} />}
 
       <div
+        className="hero-content"
         style={{
           position: "relative",
           zIndex: 2,
@@ -106,7 +144,7 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
         }}
       >
         <p
-          className="anim-fade-up-1"
+          className="anim-fade-up-1 hero-eyebrow"
           style={{
             fontSize: 10,
             letterSpacing: "0.4em",
@@ -120,7 +158,7 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
         </p>
 
         <p
-          className="anim-fade-up-2"
+          className="anim-fade-up-2 hero-body"
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: "clamp(15px, 2vw, 24px)",
@@ -181,12 +219,12 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
         </p>
 
         <div
-          className="anim-fade-up-3"
+          className="anim-fade-up-3 hero-cta"
           style={{ marginTop: 44, display: "flex", gap: 16, alignItems: "center", justifyContent: "center" }}
         >
           <a
             href="#works"
-            className="btn-primary"
+            className="btn-primary hero-btn-primary"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById("works")?.scrollIntoView({ behavior: "smooth" });
@@ -229,7 +267,7 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
       </div>
 
       <div
-        className="anim-fade-up-4"
+        className="anim-fade-up-4 hero-scroll"
         style={{
           position: "absolute",
           bottom: 36,
@@ -247,6 +285,7 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
         </span>
       </div>
     </section>
+    </>
   );
 };
 
