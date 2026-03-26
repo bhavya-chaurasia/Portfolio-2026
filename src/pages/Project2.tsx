@@ -19,7 +19,6 @@ import imgArrow11 from "../assets/Project2/arrows/imgArrow11.png";
 
 // UI Design Section Assetsb";
 
-const imgSeeWhyIcon = "https://www.figma.com/api/mcp/asset/245be301-c9fb-459e-b52f-67f3272c71ab";
 const imgCautionIcon = "/Project2/Part5 - P/Group.svg";
 const imgTickCircle = "/Project2/Part5 - P/teenyicons_tick-circle-solid.svg";
 import aboutIconTimeSaving from "../assets/Project2/icons/time.svg";

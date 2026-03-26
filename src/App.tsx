@@ -186,7 +186,7 @@ const App: FC = () => {
               },
               {
                 num: "02",
-                tags: "UX DESIGN, AI, PRODUCT DESIGN",
+                tags: "UX DESIGN, AI, INTERACTION DESIGN",
                 title: "Maruti –⁠ Service Experience",
                 desc: `Reimagining servicing through improving
 transparency, cross-selling, and service adoption.`,
