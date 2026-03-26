@@ -42,6 +42,7 @@ import uiPage6 from "../assets/Project2/page6.png";
 import uiPage7 from "../assets/Project2/page7.png";
 import chart3 from "../assets/Project2/chart3.svg";
 import chart4 from "../assets/Project2/chart4.svg";
+import "./Project2.mobile.css";
 
 const Project2 = () => {
   useEffect(() => {
@@ -318,6 +319,93 @@ const Project2 = () => {
 
           .challenges-section-mobile-spacing .challenges-solutions-heading {
             transform: translateY(-60px);
+          }
+
+          .user-journey-scale-shell .user-journey-heading-wrap {
+            transform: translateY(-60px);
+          }
+
+          .ux-research-desktop-canvas {
+            display: none;
+          }
+
+          .ux-research-mobile-stack {
+            display: block;
+          }
+        }
+
+        .ux-research-desktop-canvas {
+          display: block;
+        }
+
+        .ux-research-mobile-stack {
+          display: none;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-container {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 0 24px;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-item {
+          margin-bottom: 28px;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-item:last-child {
+          margin-bottom: 0;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-image {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 22.73px;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-card {
+          color: #ffffff;
+          padding: 24px;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-card-title {
+          margin: 0;
+          font-size: 24px;
+          font-weight: 600;
+          font-family: ${typography.heading.fontFamily};
+          line-height: 1.35;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-card-text {
+          margin: 16px 0 0;
+          font-size: 16px;
+          font-weight: 400;
+          font-family: ${typography.heading.fontFamily};
+          line-height: 1.7;
+          color: #ffffff;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-list {
+          margin: 16px 0 0;
+          padding-left: 22px;
+          font-size: 16px;
+          font-weight: 400;
+          font-family: ${typography.heading.fontFamily};
+          color: #ffffff;
+          list-style-type: disc;
+        }
+
+        .ux-research-mobile-stack .uxr-mobile-list-item {
+          line-height: 1.8;
+        }
+
+        @media (max-width: 767px) {
+          .ux-research-desktop-canvas {
+            display: none;
+          }
+
+          .ux-research-mobile-stack {
+            display: block;
           }
         }
       `}</style>
@@ -844,7 +932,7 @@ const Project2 = () => {
       </div>
       {/* UX Research â€” Figma frame 363-2249, 1200Ã—1431px canvas */}
       <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
-        <div style={{ position: "relative", height: `${layout.uxResearchHeight}px`, overflow: "hidden" }}>
+        <div className="ux-research-desktop-canvas" style={{ position: "relative", height: `${layout.uxResearchHeight}px`, overflow: "hidden" }}>
           <div style={{
             position: "absolute",
             left: "50%",
@@ -912,6 +1000,44 @@ const Project2 = () => {
 
           </div>
         </div>
+
+        <div className="ux-research-mobile-stack">
+          <div className="uxr-mobile-container">
+            <div className="uxr-mobile-item">
+              <img className="uxr-mobile-image" src={uxGoalsImg} alt="Research Goals" />
+            </div>
+            <div className="uxr-mobile-item uxr-mobile-card" style={glassCardStyle}>
+              <p className="uxr-mobile-card-title">Research Goals</p>
+              <p className="uxr-mobile-card-text">
+                Aimed to design a transparent, self-guided, and AI-assisted vehicle service experience that reduces advisor dependency and increases in-app engagement.
+              </p>
+            </div>
+
+            <div className="uxr-mobile-item">
+              <img className="uxr-mobile-image" src={uxFindingsImg} alt="Key Findings" />
+            </div>
+            <div className="uxr-mobile-item uxr-mobile-card" style={glassCardStyle}>
+              <p className="uxr-mobile-card-title">Key Findings</p>
+              <ul className="uxr-mobile-list">
+                {["Users lacked vehicle health visibility","No clarity on service urgency","Absence of pricing transparency","No personalized service recommendations","No reward system to encourage rebooking"].map(item => (
+                  <li key={item} className="uxr-mobile-list-item">{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="uxr-mobile-item">
+              <img className="uxr-mobile-image" src={uxPainPointsImg} alt="Pain Points" />
+            </div>
+            <div className="uxr-mobile-item uxr-mobile-card" style={glassCardStyle}>
+              <p className="uxr-mobile-card-title">Pain Points Identification</p>
+              <ul className="uxr-mobile-list">
+                {["Empty and transactional booking flow","No health-based service guidance","High dependency on service advisors","Low incentive to return to the app","Limited cross-sell integration","Time-consuming and unclear process"].map(item => (
+                  <li key={item} className="uxr-mobile-list-item">{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       {/* Scan Mockup Section */}
       <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0" }}>
@@ -931,21 +1057,22 @@ const Project2 = () => {
       </div>
       {/* User Journey Section â€” 1172Ã—1000px canvas */}
       <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
-        <div style={{ position: "relative", height: `${layout.userJourneyHeight}px`, overflow: "hidden" }}>
-          <div style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: "-586px",
-            top: 0,
-            width: "1172px",
-            height: "1000px",
-            transform: `scale(${layout.sectionScale1172})`,
-            transformOrigin: "top center",
-          }}>
+        <div
+          className="mobile-proportional-scale-shell user-journey-scale-shell"
+          style={{
+            ["--mobile-shell-desktop-design-width" as string]: "1440px",
+            ["--mobile-shell-desktop-width" as string]: "1172px",
+            ["--mobile-shell-canvas-height" as string]: "1000px",
+            ["--mobile-shell-desktop-height" as string]: `${layout.userJourneyHeight}px`,
+            ["--mobile-shell-base-scale" as string]: `${layout.sectionScale1172}`,
+            ["--mobile-shell-mobile-boost" as string]: "1.48",
+          }}
+        >
+          <div className="mobile-proportional-scale-content">
 
             {/* Title */}
-            <div style={{ position: "absolute", left: "72px", top: "63px", whiteSpace: "nowrap" }}>
-              <span style={getScaledSectionHeadingStyle(layout.sectionScale1172)}>User Journey</span>
+            <div className="user-journey-heading-wrap" style={{ position: "absolute", left: "72px", top: "64px", whiteSpace: "nowrap" }}>
+              <span className="mobile-proportional-keep-text" style={getScaledSectionHeadingStyle(layout.sectionScale1172)}>User Journey</span>
             </div>
 
             {/* Description */}
@@ -1031,9 +1158,9 @@ const Project2 = () => {
       </div>
 
       {/* UI Design Section â€” 1200Ã—4922px canvas */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
-        <div style={{ position: "relative", height: layout.uiDesignHeight, overflow: "hidden" }}>
-          <div style={{
+      <div className="ui-design-section" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+        <div className="ui-design-shell" style={{ position: "relative", height: layout.uiDesignHeight, overflow: "hidden" }}>
+          <div className="ui-design-canvas" style={{
             position: "absolute",
             left: "50%",
             marginLeft: -600,
@@ -1046,14 +1173,14 @@ const Project2 = () => {
           }}>
 
             {/* Section Title */}
-            <p style={{
+            <p className="ui-design-main-title" style={{
               position: "absolute", left: 72, top: 58, margin: 0,
               ...getScaledSectionHeadingStyle(layout.sectionScale1200),
               whiteSpace: "nowrap",
             }}>UI Design</p>
 
             {/* Description */}
-            <p style={{
+            <p className="ui-design-main-desc" style={{
               position: "absolute", left: 72, top: 130, width: 624, margin: 0,
               fontSize: 21.017, fontWeight: 300, fontFamily: typography.body.fontFamily,
               color: "#787878", lineHeight: "24.52px", letterSpacing: "-0.42px",
@@ -1062,14 +1189,14 @@ const Project2 = () => {
             </p>
 
             {/* Car Health Overview Title */}
-            <p style={{
+            <p className="ui-design-mobile-heading" style={{
               position: "absolute", left: 72, top: 294, width: 554, height: 57, margin: 0,
               fontSize: 48, fontWeight: 400, fontFamily: typography.body.fontFamily,
               color: "#ffffff", lineHeight: "37px",
             }}>Car Health Overview</p>
 
             {/* Blue Gradient Card 1 */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 429, width: 510, height: 573,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1078,7 +1205,7 @@ const Project2 = () => {
             </div>
 
             {/* Arrow 1 */}
-            <div style={{ position: "absolute", left: 468, top: 542, width: 175, height: 56 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 468, top: 542, width: 175, height: 56 }}>
               <img src={imgArrow1} alt="" style={{ width: 175, height: 57, display: "block" }} />
               <div style={{ position: "absolute", left: -16, top: 46, width: 22, height: 22 }}>
                 <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
@@ -1086,7 +1213,7 @@ const Project2 = () => {
             </div>
 
             {/* Arrow 2 */}
-            <div style={{ position: "absolute", left: 465, top: 803, width: 175, height: 121 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 465, top: 803, width: 175, height: 121 }}>
               <img src={imgArrow2} alt="" style={{ width: 175, height: 122, display: "block" }} />
               <div style={{ position: "absolute", left: -16, top: 113, width: 22, height: 22 }}>
                 <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
@@ -1094,7 +1221,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Overall Health Score */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.075" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.075" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 503, width: 485, height: 248,
               ...glassCardStyle,
             }}>
@@ -1115,7 +1242,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Context-Aware Maintenance */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 784, width: 485, height: 196,
               ...glassCardStyle,
             }}>
@@ -1135,7 +1262,7 @@ const Project2 = () => {
             </div>
 
             {/* Second Row - Right Blue Card */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 618, top: 1125, width: 510, height: 544,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1144,7 +1271,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Declined Service Intelligence */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 1207, width: 485, height: 192,
               ...glassCardStyle,
             }}>
@@ -1164,7 +1291,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Service History Transparency */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 1445, width: 485, height: 168,
               ...glassCardStyle,
             }}>
@@ -1184,28 +1311,28 @@ const Project2 = () => {
             </div>
 
             {/* Connector dots and arrows for second row */}
-            <div style={{ position: "absolute", left: 720, top: 1338, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 720, top: 1338, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
-            <div style={{ position: "absolute", left: 720, top: 1580, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 720, top: 1580, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
-            <div style={{ position: "absolute", left: 557, top: 1241, width: 163, height: 106 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 557, top: 1241, width: 163, height: 106 }}>
               <img src={imgArrow3} alt="" style={{ width: 163, height: 107, display: "block" }} />
             </div>
-            <div style={{ position: "absolute", left: 557, top: 1481, width: 163, height: 106 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 557, top: 1481, width: 163, height: 106 }}>
               <img src={imgArrow3} alt="" style={{ width: 163, height: 107, display: "block" }} />
             </div>
 
             {/* Car Service Input Title */}
-            <p style={{
+            <p className="ui-design-mobile-heading" style={{
               position: "absolute", left: 72, top: 1759, width: 554, height: 57, margin: 0,
               fontSize: 48, fontWeight: 400, fontFamily: typography.body.fontFamily,
               color: "#ffffff", lineHeight: "37px",
             }}>Car Service Input</p>
 
             {/* Blue Gradient Card - Service Input */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 1895, width: 510, height: 544,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1214,17 +1341,17 @@ const Project2 = () => {
             </div>
 
             {/* Connector dot */}
-            <div style={{ position: "absolute", left: 457, top: 2149, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 457, top: 2149, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
 
             {/* Arrow */}
-            <div style={{ position: "absolute", left: 473, top: 2059, width: 170, height: 98 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 473, top: 2059, width: 170, height: 98 }}>
               <img src={imgArrow5} alt="" style={{ width: 170, height: 99, display: "block" }} />
             </div>
 
             {/* Glass Card - Voice-to-Text Assistant */}
-              <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+              <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
                 position: "absolute", left: 643, top: 2027, width: 485, height: 195,
                 ...glassCardStyle,
               }}>
@@ -1249,14 +1376,14 @@ const Project2 = () => {
             </div> */}
 
             {/* Service Selection Title */}
-            <p style={{
+            <p className="ui-design-mobile-heading" style={{
               position: "absolute", left: 72, top: 2546, width: 554, height: 57, margin: 0,
               fontSize: 48, fontWeight: 400, fontFamily: typography.body.fontFamily,
               color: "#ffffff", lineHeight: "37px",
             }}>Service Selection</p>
 
             {/* Blue Gradient Card - Service Selection Right */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 618, top: 2652, width: 510, height: 400,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1265,7 +1392,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Milestone-Based Free Ancillary Unlocks */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 2737, width: 485, height: 195,
               ...glassCardStyle,
             }}>
@@ -1285,15 +1412,15 @@ const Project2 = () => {
             </div>
 
             {/* Connector and arrows for milestone section */}
-            <div style={{ position: "absolute", left: 725, top: 2878, width: 22.576, height: 26.4, transform: "rotate(180deg) scaleY(-1)" }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 725, top: 2878, width: 22.576, height: 26.4, transform: "rotate(180deg) scaleY(-1)" }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -7 }} />
             </div>
-            <div style={{ position: "absolute", left: 557, top: 2766, width: 174, height: 118 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 557, top: 2766, width: 174, height: 118 }}>
               <img src={imgArrow6} alt="" style={{ width: 174, height: 119, display: "block" }} />
             </div>
 
             {/* Blue Gradient Card - Service Selection Left */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 3176, width: 510, height: 545,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1311,23 +1438,23 @@ const Project2 = () => {
             </div>
 
             {/* Connector dots */}
-            <div style={{ position: "absolute", left: 456, top: 3277, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 456, top: 3277, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
-            <div style={{ position: "absolute", left: 275, top: 3387, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 275, top: 3387, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
 
             {/* Arrows */}
-            <div style={{ position: "absolute", left: 471, top: 3239, width: 172, height: 47 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 471, top: 3239, width: 172, height: 47 }}>
               <img src={imgArrow7} alt="" style={{ width: 172, height: 48, display: "block" }} />
             </div>
-            <div style={{ position: "absolute", left: 291, top: 3396, width: 352, height: 90 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 291, top: 3396, width: 352, height: 90 }}>
               <img src={imgArrow8} alt="" style={{ width: 352, height: 91, display: "block" }} />
             </div>
 
             {/* Glass Card - Value-First Pricing Hierarchy */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 3210, width: 485, height: 195,
               ...glassCardStyle,
             }}>
@@ -1347,7 +1474,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Categorized Service Architecture */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 3458, width: 485, height: 195,
               ...glassCardStyle,
             }}>
@@ -1367,7 +1494,7 @@ const Project2 = () => {
             </div>
 
             {/* Blue Gradient Card - See Why */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: seeWhySection.blueCardLeft, top: seeWhySection.blueCardTop, width: 510, height: 444,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1376,7 +1503,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Context-Aware See Why */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: seeWhySection.contextCardLeft, top: seeWhySection.contextCardTop, width: 485, height: 195,
               ...glassCardStyle,
             }}>
@@ -1396,12 +1523,12 @@ const Project2 = () => {
             </div>
 
             {/* Arrow for See Why section */}
-            <div style={{ position: "absolute", left: seeWhySection.arrowLeft, top: seeWhySection.arrowTop, width: 402, height: 147}}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: seeWhySection.arrowLeft, top: seeWhySection.arrowTop, width: 402, height: 147}}>
               <img src={imgArrow9} alt="" style={{ width: 402, height: 148, display: "block" }} />
             </div>
 
             {/* Connector dot for Context-Aware "See Why" section */}
-            <div style={{
+            <div className="ui-design-mobile-hide" style={{
               position: "absolute",
               left: seeWhySection.arrowLeft + seeWhySection.connectorOffsetFromArrow.left,
               top: seeWhySection.arrowTop + seeWhySection.connectorOffsetFromArrow.top,
@@ -1413,7 +1540,7 @@ const Project2 = () => {
             </div>
 
             {/* Blue Gradient Card - Coupons */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.085" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-blue" data-parallax-speed="0.085" data-parallax-max="70" style={{
               position: "absolute", left: 72, top: 4425, width: 510, height: 497,
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
@@ -1422,23 +1549,23 @@ const Project2 = () => {
             </div>
 
             {/* Connector dots */}
-            <div style={{ position: "absolute", left: 399, top: 4858.5, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 399, top: 4858.5, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
-            <div style={{ position: "absolute", left: 374, top: 4803, width: 22, height: 22 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 374, top: 4803, width: 22, height: 22 }}>
               <img src={imgConnectorDot} alt="" style={{ width: 22, height: 22, marginLeft: -6, marginTop: -6 }} />
             </div>
 
             {/* Arrows */}
-            <div style={{ position: "absolute", left: 415, top: 4749, width: 228, height: 117 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 415, top: 4749, width: 228, height: 117 }}>
               <img src={imgArrow11} alt="" style={{ width: 228, height: 118, display: "block" }} />
             </div>
-            <div style={{ position: "absolute", left: 390, top: 4564, width: 253, height: 278 }}>
+            <div className="ui-design-mobile-hide" style={{ position: "absolute", left: 390, top: 4534, width: 253, height: 278 }}>
               <img src={imgArrow10} alt="" style={{ width: 253, height: 279, display: "block" }} />
             </div>
 
             {/* Glass Card - Integrated Coupons & Offers */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 4503, width: 485, height: 168,
               ...glassCardStyle,
             }}>
@@ -1458,7 +1585,7 @@ const Project2 = () => {
             </div>
 
             {/* Glass Card - Health Progress Indicator */}
-            <div className="ui-design-parallax-card" data-parallax-speed="0.07" data-parallax-max="70" style={{
+            <div className="ui-design-parallax-card ui-design-card-glass" data-parallax-speed="0.07" data-parallax-max="70" style={{
               position: "absolute", left: 643, top: 4717, width: 485, height: 195,
               ...glassCardStyle,
             }}>
