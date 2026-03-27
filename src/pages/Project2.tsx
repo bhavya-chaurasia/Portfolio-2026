@@ -93,13 +93,29 @@ const Project2 = () => {
 
     const updateParallax = () => {
       const viewportCenter = window.innerHeight / 2;
+      const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
 
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
         const cardCenter = rect.top + rect.height / 2;
         const distanceFromCenter = cardCenter - viewportCenter;
-        const speed = Number(card.dataset.parallaxSpeed ?? "0.38");
-        const maxShift = Number(card.dataset.parallaxMax ?? "280");
+        const baseSpeed = Number(card.dataset.parallaxSpeed ?? "0.38");
+        const baseMaxShift = Number(card.dataset.parallaxMax ?? "280");
+        const isUserSurveyCard = card.classList.contains("user-survey-parallax-card");
+        const isDesignProcessCard = card.classList.contains("design-process-parallax-card");
+
+        let speed = baseSpeed;
+        let maxShift = baseMaxShift;
+
+        if (isMobileViewport && isUserSurveyCard) {
+          speed *= 1.35;
+          maxShift *= 1.35;
+        }
+
+        if (isDesignProcessCard) {
+          speed *= 1.45;
+          maxShift *= 1.35;
+        }
         const shiftYRaw = -distanceFromCenter * speed;
         const shiftY = Math.max(-maxShift, Math.min(maxShift, shiftYRaw));
 
@@ -175,7 +191,7 @@ const Project2 = () => {
     fontSize: "24px",
     fontWeight: 600,
     fontFamily: typography.heading.fontFamily,
-    background: "linear-gradient(to right, #ffffff, #7b95ff)",
+    background: "linear-gradient(to right, #ffffff, #c6d1ff)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
@@ -301,8 +317,8 @@ const Project2 = () => {
           }
 
           .challenges-scale-shell .challenges-mobile-heading {
-            font-size: 24px !important;
-            line-height: 28.141px !important;
+            font-size: 19px !important;
+            line-height: 22.3px !important;
           }
 
           .challenges-section-mobile-spacing .challenges-intro-heading {
@@ -310,15 +326,19 @@ const Project2 = () => {
           }
 
           .challenges-section-mobile-spacing .challenges-intro-text {
-            transform: translateY(-108px);
+            transform: translateY(-40px);
           }
 
           .challenges-section-mobile-spacing .challenges-problems-heading {
-            transform: translateY(-48px);
+            transform: translateY(-60px);
           }
 
           .challenges-section-mobile-spacing .challenges-solutions-heading {
-            transform: translateY(-60px);
+            transform: translateY(0px);
+          }
+
+          .challenges-section-mobile-spacing .challenges-solution-card {
+            transform: translateY(72px);
           }
 
           .user-journey-scale-shell .user-journey-heading-wrap {
@@ -366,6 +386,8 @@ const Project2 = () => {
         .ux-research-mobile-stack .uxr-mobile-card {
           color: #ffffff;
           padding: 24px;
+          margin-bottom: 48px;
+          margin-top: 2px;
         }
 
         .ux-research-mobile-stack .uxr-mobile-card-title {
@@ -430,7 +452,7 @@ const Project2 = () => {
       </div>
 
       {/* Overview Section */}
-      <div style={{
+      <div className="overview-mobile-spacing" style={{
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#0E0E0E",
@@ -510,7 +532,7 @@ const Project2 = () => {
       </div>
 
       {/* About Project Section */}
-      <div style={{
+      <div className="about-project-mobile-spacing" style={{
         backgroundColor: "#0E0E0E",
         padding: "80px 0 0px",
         fontFamily: typography.body.fontFamily,
@@ -563,54 +585,31 @@ const Project2 = () => {
         </div>{/* end text container */}
 
         {/* Feature icons with glow arc â€” full width, no grid constraint */}
-        <div style={{
+        <div className="feature-icons-arc" style={{
           position: "relative",
           height: "420px",
           overflow: "hidden",
         }}>
-          {/* Ellipse glow 1 */}
-          {/* <img src={aboutEllipse1} alt="" style={{
-            position: "absolute",
-            left: "50%",
-            top: "-10%",
-            transform: "translateX(-50%)",
-            width: "100%",
-            pointerEvents: "none",
-          }} /> */}
-          {/* Ellipse glow 2 */}
-          {/* <img src={aboutEllipse2} alt="" style={{
-            position: "absolute",
-            left: "50%",
-            bottom: "-30%",
-            transform: "translateX(-50%)",
-            width: "100%",
-            pointerEvents: "none",
-          }} /> */}
-
           {/* Scalable â€” top center-left */}
-          <div style={{ position: "absolute", left: "30%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            {/* <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} /> */}
+          <div className="feature-icon-item feature-icon-item--scalable" style={{ position: "absolute", left: "30%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <img src={aboutIconScalable} alt="scalable" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
             <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Scalable</span>
           </div>
 
           {/* Self-guided â€” top center-right */}
-          <div style={{ position: "absolute", left: "56%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            {/* <img src={aboutEllipse9} alt="" style={{ width: "72px", height: "72px" }} /> */}
+          <div className="feature-icon-item feature-icon-item--self-guided" style={{ position: "absolute", left: "56%", top: "80px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <img src={aboutIconSelfGuided} alt="self-guided" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
             <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Self-guided</span>
           </div>
 
           {/* Time Saving â€” bottom left */}
-          <div style={{ position: "absolute", left: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            {/* <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} /> */}
+          <div className="feature-icon-item feature-icon-item--time-saving" style={{ position: "absolute", left: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <img src={aboutIconTimeSaving} alt="time saving" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
             <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Time Saving</span>
           </div>
 
           {/* Human Centered â€” bottom right */}
-          <div style={{ position: "absolute", right: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            {/* <img src={aboutEllipse5} alt="" style={{ width: "72px", height: "72px" }} /> */}
+          <div className="feature-icon-item feature-icon-item--human-centered" style={{ position: "absolute", right: "8%", top: "220px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <img src={aboutIconHumanCentered} alt="human centered" style={{ position: "absolute", top: "8px", width: "56px", height: "56px", objectFit: "contain" }} />
             <span style={{ color: "#ffffff", fontSize: "21px", fontWeight: 300, fontFamily: typography.body.fontFamily, letterSpacing: "-0.02em", marginTop: "-20px" }}>Human Centered</span>
           </div>
@@ -619,7 +618,7 @@ const Project2 = () => {
         {/* Bottom quote */}
         <div style={{ position: "relative" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
-        <div style={{
+        <div className="bottom-quote-block" style={{
           backgroundColor: "#0E0E0E",
           padding: "60px 0 80px",
         }}>
@@ -640,6 +639,7 @@ const Project2 = () => {
         </div>
         </div>{/* end bottom quote text container */}
         <img
+          className="bottom-quote-image4"
           src={image4}
           alt=""
           style={{
@@ -655,9 +655,9 @@ const Project2 = () => {
       </div>
 
       {/* Design Process Section */}
-      <div className="challenges-section-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+      <div className="design-process-section challenges-section-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
         {/* Section heading */}
-        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px", marginBottom: "40px" }}>
+        <div className="design-process-heading-wrap" style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px", marginBottom: "40px" }}>
           <h2 style={{
             ...sectionHeadingTextStyle,
             margin: 0,
@@ -673,6 +673,7 @@ const Project2 = () => {
             ["--mobile-shell-canvas-height" as string]: "1200px",
             ["--mobile-shell-desktop-height" as string]: "1100px",
             ["--mobile-shell-base-scale" as string]: "0.9",
+            ["--mobile-shell-mobile-boost" as string]: "1.25",
           }}
         >
           <div className="mobile-proportional-scale-content">
@@ -691,10 +692,10 @@ const Project2 = () => {
             {/* Cards overlaid on top */}
             {([
               { label: "Define",      duration: "3d", left: 443,   top: 96,  tags: ["Business Goals","Problem Framing","Scope Definition","Success Criteria"] },
-              { label: "Research",    duration: "4d", left: 834.5, top: 500,  tags: ["Current Flow Audit","Persona","Friction Point Identification"] },
-              { label: "Design",      duration: "6d", left: 779,   top: 908,  tags: ["User Flow","Feature Prioritization","UX Strategy","Interaction Design"] },
-              { label: "Prototyping", duration: "9d", left: 116,   top: 908,  tags: ["UI Stags","High-Fidelity Mockups","Design Language","Interaction Design"] },
-              { label: "Deliver",     duration: "4d", left: 40,    top: 500,  tags: ["UI Stags","High-Fidelity Mockups","Design Language","Interaction Design"] },
+              { label: "Research",    duration: "4d", left: 814.5, top: 500,  tags: ["Current Flow Audit","Persona","Friction Point Identification"] },
+              { label: "Design",      duration: "6d", left: 759,   top: 908,  tags: ["User Flow","Feature Prioritization","UX Strategy","Interaction Design"] },
+              { label: "Prototyping", duration: "9d", left: 106,   top: 908,  tags: ["UI Stags","High-Fidelity Mockups","Design Language","Interaction Design"] },
+              { label: "Deliver",     duration: "4d", left: 30,    top: 500,  tags: ["UI Stags","High-Fidelity Mockups","Design Language","Interaction Design"] },
             ] as const).map((card, index) => (
               <div
                 key={card.label}
@@ -732,7 +733,7 @@ const Project2 = () => {
       </div>
 
       {/* image5 â€” full-bleed, Project1 carousel layout */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "0 0 80px" }}>
+      <div className="image5-section" style={{ backgroundColor: "#0E0E0E", padding: "0 0 80px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
           <div style={{
             marginLeft: "-24px",
@@ -849,7 +850,7 @@ const Project2 = () => {
             </div>
 
             {/* Solution card 1 â€” AI-driven vehicle health insights (highlighted, taller) */}
-            <div style={{
+            <div className="challenges-solution-card" style={{
               position: "absolute", left: "72px", top: "658px",
               width: "206.52px", height: "227px",
               ...glassCardStyle,
@@ -861,7 +862,7 @@ const Project2 = () => {
             </div>
 
             {/* Solution card 2 â€” Categorized services */}
-            <div style={{
+            <div className="challenges-solution-card" style={{
               position: "absolute", left: "294.8px", top: "701px",
               width: "194.312px", height: "142px",
               ...glassCardStyle,
@@ -870,7 +871,7 @@ const Project2 = () => {
             </div>
 
             {/* Solution card 3 â€” Loyalty points */}
-            <div style={{
+            <div className="challenges-solution-card" style={{
               position: "absolute", left: "505.39px", top: "691px",
               width: "194.312px", height: "142px",
               ...glassCardStyle,
@@ -879,7 +880,7 @@ const Project2 = () => {
             </div>
 
             {/* Solution card 4 â€” AI-powered cart add-ons */}
-            <div style={{
+            <div className="challenges-solution-card" style={{
               position: "absolute", left: "715.98px", top: "691px",
               width: "201.434px", height: "142px",
               ...glassCardStyle,
@@ -888,7 +889,7 @@ const Project2 = () => {
             </div>
 
             {/* Solution card 5 â€” Transparent pricing */}
-            <div style={{
+            <div className="challenges-solution-card" style={{
               position: "absolute", left: "933.69px", top: "691px",
               width: "194.312px", height: "142px",
               ...glassCardStyle,
@@ -900,7 +901,7 @@ const Project2 = () => {
         </div>
       </div>
       {/* User Research Section */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "60px 0 80px" }}>
+      <div className="user-research-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "60px 0 80px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
           {/* Section title */}
           <h2 style={{
@@ -1040,7 +1041,7 @@ const Project2 = () => {
         </div>
       </div>
       {/* Scan Mockup Section */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0" }}>
+      <div className="scan-mockup-mobile-spacing" style={{ backgroundColor: "#0E0E0E", padding: "80px 0" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
           <div style={{ marginLeft: "-24px", marginRight: "-24px", width: "calc(100% + 48px)" }}>
             <img
@@ -1201,7 +1202,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage1} alt="Car Health Overview" style={{ position: "absolute", left: 80, top: 52, width: 346, height: 522, objectFit: "cover", display: "block" }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page1" src={uiPage1} alt="Car Health Overview" style={{ position: "absolute", left: 80, top: 52, width: 346, height: 522, objectFit: "cover", display: "block" }} />
             </div>
 
             {/* Arrow 1 */}
@@ -1267,7 +1268,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage2} alt="Service Intelligence" style={{ position: "absolute", left: 80, top: 80, width: 346, height: 464, objectFit: "cover", display: "block" }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page2" src={uiPage2} alt="Service Intelligence" style={{ position: "absolute", left: 80, top: 80, width: 346, height: 464, objectFit: "cover", display: "block" }} />
             </div>
 
             {/* Glass Card - Declined Service Intelligence */}
@@ -1337,7 +1338,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image ui-blue-card-image--from-top" src={uiPage3} alt="Car Service Input" style={{ position: "absolute", left: 80, top: 0, width: 348, height: 440, objectFit: "cover", display: "block"  }} />
+              <img className="ui-blue-card-image ui-blue-card-image--from-top ui-blue-card-image--page3" src={uiPage3} alt="Car Service Input" style={{ position: "absolute", left: 80, top: 0, width: 348, height: 440, objectFit: "cover", display: "block"  }} />
             </div>
 
             {/* Connector dot */}
@@ -1388,7 +1389,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage4} alt="Service Selection" style={{ position: "absolute", left: 80, top: 80, width: 346, height: 320, objectFit: "cover", display: "block"  }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page4" src={uiPage4} alt="Service Selection" style={{ position: "absolute", left: 80, top: 80, width: 346, height: 320, objectFit: "cover", display: "block"  }} />
             </div>
 
             {/* Glass Card - Milestone-Based Free Ancillary Unlocks */}
@@ -1425,7 +1426,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage5} alt="Service Selection" style={{ position: "absolute", left: 80, top: -200, width: 352, height: 896, objectFit: "cover", display: "block" }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page5" src={uiPage5} alt="Service Selection" style={{ position: "absolute", left: 80, top: -200, width: 352, height: 896, objectFit: "cover", display: "block" }} />
               {/* See why button */}
               <div style={{
                 position: "absolute", left: 349, top: 159, width: 43.654, height: 10.679,
@@ -1499,7 +1500,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage6} alt="See Why" style={{ position: "absolute", left: 80, top: 82, width: 346, height: 362, objectFit: "cover", display: "block" }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page6" src={uiPage6} alt="See Why" style={{ position: "absolute", left: 80, top: 82, width: 346, height: 362, objectFit: "cover", display: "block" }} />
             </div>
 
             {/* Glass Card - Context-Aware See Why */}
@@ -1545,7 +1546,7 @@ const Project2 = () => {
               background: "linear-gradient(to bottom, #171c8f, #6368da)",
               borderRadius: 40, overflow: "hidden",
             }}>
-              <img className="ui-blue-card-image" src={uiPage7} alt="Coupons" style={{ position: "absolute", left: 80, top: 89, width: 348, height: 408, objectFit: "cover", display: "block" }} />
+              <img className="ui-blue-card-image ui-blue-card-image--page7" src={uiPage7} alt="Coupons" style={{ position: "absolute", left: 80, top: 89, width: 348, height: 408, objectFit: "cover", display: "block" }} />
             </div>
 
             {/* Connector dots */}
@@ -1609,9 +1610,10 @@ const Project2 = () => {
       </div>
 
       {/* User Survey Section â€” 1200Ã—1220px canvas */}
-      <div style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
-        <div style={{ position: "relative", height: `max(${layout.userSurveyMinHeight}px, calc(68.1vw + 132px))`, overflow: "hidden" }}>
+      <div className="user-survey-section" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+        <div className="user-survey-shell" style={{ position: "relative", height: `max(${layout.userSurveyMinHeight}px, calc(68.1vw + 132px))`, overflow: "hidden" }}>
           <img
+            className="user-survey-bg"
             src={image8}
             alt=""
             style={{
@@ -1626,7 +1628,7 @@ const Project2 = () => {
               pointerEvents: "none",
             }}
           />
-          <div style={{
+          <div className="user-survey-canvas" style={{
             position: "absolute",
             left: "50%",
             marginLeft: -600,
@@ -1638,14 +1640,14 @@ const Project2 = () => {
             backgroundColor: "transparent",
           }}>
             {/* Section Title */}
-            <p style={{
+            <p className="user-survey-title" style={{
               position: "absolute", left: 72, top: 85, margin: 0,
               ...getScaledSectionHeadingStyle(layout.sectionScale1200),
               whiteSpace: "nowrap",
             }}>User Survey</p>
 
             {/* Main Headline */}
-            <p style={{
+            <p className="user-survey-headline" style={{
               position: "absolute", left: 73, top: 184, width: 834.571, margin: 0,
               fontSize: 36.09, fontWeight: 600, fontFamily: typography.heading.fontFamily,
               color: "#ffffff", lineHeight: "42.105px", whiteSpace: "nowrap",
@@ -1656,7 +1658,7 @@ const Project2 = () => {
             </p>
 
             {/* Description */}
-            <p style={{
+            <p className="user-survey-desc" style={{
               position: "absolute", left: 503, top: 341, width: 624, margin: 0,
               fontSize: 21.017, fontWeight: 300, fontFamily: typography.body.fontFamily,
               color: "#787878", lineHeight: "24.52px", letterSpacing: "-0.42px",
@@ -1665,7 +1667,7 @@ const Project2 = () => {
             </p>
 
             {/* Card 1: Higher Add-to-Cart Behavior (top left) */}
-            <div className="user-survey-parallax-card" data-parallax-speed="0.38" style={{
+            <div className="user-survey-parallax-card user-survey-card" data-parallax-speed="0.52" data-parallax-max="420" style={{
               position: "absolute", left: 164, top: 605, width: 421, height: 244,
               willChange: "transform",
               ...glassCardStyle,
@@ -1697,7 +1699,7 @@ const Project2 = () => {
             </div>
 
             {/* Card 2: Reduced Dependence on Service Calls (top right) */}
-            <div className="user-survey-parallax-card" data-parallax-speed="0.46" style={{
+            <div className="user-survey-parallax-card user-survey-card" data-parallax-speed="0.62" data-parallax-max="420" style={{
               position: "absolute", left: 757, top: 677, width: 352, height: 244,
               willChange: "transform",
               ...glassCardStyle,
@@ -1725,7 +1727,7 @@ const Project2 = () => {
             </div>
 
             {/* Card 3: Higher Booking Confidence (bottom left) */}
-            <div className="user-survey-parallax-card" data-parallax-speed="0.34" style={{
+            <div className="user-survey-parallax-card user-survey-card" data-parallax-speed="0.48" data-parallax-max="420" style={{
               position: "absolute", left: 43, top: 975, width: 407, height: 244,
               willChange: "transform",
               ...glassCardStyle,
@@ -1758,7 +1760,7 @@ const Project2 = () => {
             </div>
 
             {/* Card 4: Higher Interaction with "See Why" (bottom right) */}
-            <div className="user-survey-parallax-card" data-parallax-speed="0.42" style={{
+            <div className="user-survey-parallax-card user-survey-card" data-parallax-speed="0.58" data-parallax-max="420" style={{
               position: "absolute", left: 634, top: 1073, width: 421, height: 244,
               willChange: "transform",
               ...glassCardStyle,
