@@ -2,6 +2,8 @@
   .ui-design-section {
     --ui-design-blue-card-width: 382px;
     --ui-design-blue-card-height: 264px;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
   }
 
   .ui-design-section .ui-design-shell {
@@ -46,15 +48,18 @@
     width: 100% !important;
     max-width: 510px;
     align-self: center;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
   }
 
   .ui-design-section .ui-design-mobile-heading {
     width: 100% !important;
     max-width: 510px;
     align-self: center;
-    margin-top: 16px !important;
+    margin-top: 48px !important;
+    margin-bottom: 0 !important;
     font-size: 24px !important;
-    line-height: 1.2 !important;
+    line-height: 0.001 !important;
   }
 
   .ui-design-section .ui-design-card-blue {
@@ -78,8 +83,38 @@
     height: auto !important;
     margin: 0 auto;
     display: block;
-    transform: none !important;
+    transform: translateY(var(--ui-design-blue-image-top-offset, 0px)) !important;
     object-fit: contain !important;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page1 {
+    --ui-design-blue-image-top-offset: 48px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page2,
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page6,
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page7 {
+    --ui-design-blue-image-top-offset: 24px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page3 {
+    --ui-design-blue-image-top-offset: -28px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page4 {
+    --ui-design-blue-image-top-offset: 0px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page5 {
+    --ui-design-blue-image-top-offset: 104px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page6 {
+    --ui-design-blue-image-top-offset: 0px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image--page7 {
+    --ui-design-blue-image-top-offset: 0px;
   }
 
   .ui-design-section .ui-design-card-glass {
@@ -118,5 +153,306 @@
 
   .ui-design-section .ui-design-mobile-hide {
     display: none !important;
+  }
+
+  .feature-icons-arc {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 16px 24px 20px;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    column-gap: 28px;
+    row-gap: 44px;
+    justify-items: center;
+    align-items: start;
+    box-sizing: border-box;
+  }
+
+  .feature-icons-arc .feature-icon-item {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .feature-icons-arc .feature-icon-item > img {
+    position: static !important;
+    top: auto !important;
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: contain;
+  }
+
+  .feature-icons-arc .feature-icon-item > span {
+    margin-top: 0 !important;
+  }
+
+  .about-project-mobile-spacing {
+    padding-top: 0 !important;
+  }
+
+  .overview-mobile-spacing {
+    padding-top: 0px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .bottom-quote-block {
+    padding-top: 40px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .bottom-quote-image4 {
+    transform: translateY(78px) !important;
+  }
+
+  .design-process-section {
+    padding-top: 32px !important;
+  }
+
+  .design-process-heading-wrap {
+    margin-top: 36px !important;
+  }
+
+  .image5-section {
+    padding-bottom: 0 !important;
+  }
+
+  .challenges-section-mobile-spacing {
+    padding-top: 0 !important;
+    padding-bottom: 20px !important;
+  }
+
+  .challenges-section-mobile-spacing .challenges-intro-heading,
+  .challenges-section-mobile-spacing .challenges-problems-heading,
+  .challenges-section-mobile-spacing .challenges-solutions-heading,
+  .challenges-section-mobile-spacing .challenges-intro-text {
+    left: 72px !important;
+  }
+
+  .challenges-scale-shell {
+    --mobile-shell-mobile-boost: 1.55 !important;
+    --mobile-shell-mobile-top-offset: 56px !important;
+  }
+
+  .user-research-mobile-spacing {
+    padding-top: 16px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .user-research-mobile-spacing h2 {
+    margin-bottom: 24px !important;
+  }
+
+  .user-survey-section {
+    overflow-x: hidden;
+  }
+
+  .user-survey-section .user-survey-shell {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .user-survey-section .user-survey-bg {
+    width: 170vw !important;
+    max-width: none !important;
+    top: 220px !important;
+  }
+
+  .user-survey-section .user-survey-canvas {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
+  .user-survey-section .user-survey-canvas > * {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .user-survey-section .user-survey-title {
+    width: 100%;
+    max-width: 510px;
+    font-size: 24px !important;
+    line-height: 28.141px !important;
+    align-self: center;
+  }
+
+  .user-survey-section .user-survey-headline {
+    width: 100% !important;
+    max-width: 510px;
+    white-space: normal !important;
+    text-wrap: pretty;
+    align-self: center;
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .user-survey-section .user-survey-desc {
+    width: 100% !important;
+    max-width: 510px;
+    text-align: center !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    align-self: left;
+  }
+
+  .user-survey-section .user-survey-card {
+    width: 100% !important;
+    max-width: 510px;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 18px !important;
+    box-sizing: border-box;
+    align-self: center;
+  }
+
+  .user-survey-section .user-survey-card > p {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: auto !important;
+    margin: 0 !important;
+    white-space: normal !important;
+  }
+
+  .user-survey-section .user-survey-card > p:nth-of-type(2) {
+    margin-top: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .user-survey-section .user-survey-card > p:nth-of-type(3) {
+    margin-top: 10px !important;
+  }
+
+  .user-survey-section .user-survey-card > div {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 12px auto 0 !important;
+    transform: none !important;
+  }
+
+  .user-survey-section .user-survey-card:first-of-type {
+    position: relative !important;
+    padding-top: 20px !important;
+  }
+
+  .user-survey-section .user-survey-card:first-of-type > p:nth-of-type(3) {
+    max-width: calc(100% - 154px) !important;
+  }
+
+  .user-survey-section .user-survey-card:first-of-type > div {
+    position: absolute !important;
+    top: 50% !important;
+    right: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: translateY(-50%) rotate(-45deg) !important;
+    width: 132px !important;
+    height: 132px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(2) {
+    position: relative !important;
+    padding-top: 20px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(2) > p:nth-of-type(3) {
+    max-width: calc(100% - 104px) !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(2) > div:nth-of-type(1) {
+    position: absolute !important;
+    top: 50% !important;
+    right: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+    width: 39px !important;
+    height: 147px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(2) > div:nth-of-type(2) {
+    position: absolute !important;
+    top: calc(50% - 46.5px) !important;
+    right: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    width: 39px !important;
+    height: 120px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(3) {
+    position: relative !important;
+    padding-top: 20px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(3) > p:nth-of-type(3) {
+    max-width: calc(100% - 170px) !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(3) > div {
+    position: absolute !important;
+    top: 50% !important;
+    right: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(4) {
+    position: relative !important;
+    padding-top: 20px !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(4) > p:nth-of-type(3) {
+    max-width: calc(100% - 170px) !important;
+  }
+
+  .user-survey-section .user-survey-card:nth-of-type(4) > div {
+    position: absolute !important;
+    top: 50% !important;
+    right: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .scan-mockup-mobile-spacing {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+
+  .user-journey-mobile-spacing {
+    padding-top: 20px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .user-journey-scale-shell .user-journey-heading-wrap .mobile-proportional-keep-text {
+    font-size: 24px !important;
+    line-height: 28.141px !important;
   }
 }
