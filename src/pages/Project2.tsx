@@ -1,5 +1,6 @@
-﻿import { useEffect } from "react";
-import frame1 from "../assets/Project2/Frame1.svg";
+﻿import { useEffect, useState } from "react";
+import Lottie from "lottie-react";
+import project2MockupAnimation from "../components/Project2-mockup.json";
 import carImg from "../assets/Project2/image3.png";
 import aaaiLogo from "../assets/Project2/image2.png";
 import image4 from "../assets/Project2/image4.png";
@@ -45,14 +46,19 @@ import chart4 from "../assets/Project2/chart4.svg";
 import "./Project2.mobile.css";
 
 const Project2 = () => {
+  const [mockupReplayKey, setMockupReplayKey] = useState(0);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const prev = document.body.style.cssText;
+    const prevHtml = document.documentElement.style.cssText;
     document.body.style.margin = "0";
     document.body.style.padding = "0";
     document.body.style.backgroundColor = "#0E0E0E";
+    document.documentElement.style.backgroundColor = "#0E0E0E";
     return () => {
       document.body.style.cssText = prev;
+      document.documentElement.style.cssText = prevHtml;
     };
   }, []);
 
@@ -438,14 +444,22 @@ const Project2 = () => {
           {`Reimagining vehicle servicing through giving health insights, enabling cross-selling, and increasing in-app adoption for Maruti Suzuki's mobile app.`}
         </p>
 
-        <div style={styles.imageContainer}>
-          <img
-            src={frame1}
-            alt="Vehicle Health Report mockup"
+        <div
+          className="project2-hero-lottie-wrap"
+          style={{ ...styles.imageContainer, cursor: "pointer" }}
+          onClick={() => setMockupReplayKey((prev) => prev + 1)}
+        >
+          <Lottie
+            className="project2-hero-lottie"
+            key={mockupReplayKey}
+            animationData={project2MockupAnimation}
+            loop={false}
+            autoplay={true}
             style={{
-              maxWidth: "320px",
+              maxWidth: "1000px",
               width: "100%",
-              filter: "drop-shadow(0 32px 80px rgba(0,0,0,0.7))",
+              transform: "scale(1.24)",
+              transformOrigin: "center center",
             }}
           />
         </div>

@@ -1,4 +1,18 @@
 @media (max-width: 767px) {
+  .project2-hero-lottie-wrap {
+    overflow: visible !important;
+  }
+
+  .project2-hero-lottie {
+    width: 124% !important;
+    max-width: none !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: scale(1.24) !important;
+    transform-origin: top center !important;
+  }
+
   .ui-design-section {
     --ui-design-blue-card-width: 382px;
     --ui-design-blue-card-height: 264px;
@@ -83,8 +97,25 @@
     height: auto !important;
     margin: 0 auto;
     display: block;
-    transform: translateY(var(--ui-design-blue-image-top-offset, 0px)) !important;
+    --ui-design-mobile-slide-distance: 120px;
+    opacity: 0;
+    transform: translateY(
+      calc(
+        var(--ui-design-blue-image-top-offset, 0px) +
+        var(--ui-design-mobile-slide-distance)
+      )
+    ) !important;
+    transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1), opacity 650ms ease-out;
     object-fit: contain !important;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image.ui-blue-card-image--from-top {
+    --ui-design-mobile-slide-distance: -120px;
+  }
+
+  .ui-design-section .ui-design-card-blue .ui-blue-card-image.ui-blue-card-image-visible {
+    opacity: 1;
+    transform: translateY(var(--ui-design-blue-image-top-offset, 0px)) !important;
   }
 
   .ui-design-section .ui-design-card-blue .ui-blue-card-image--page1 {
