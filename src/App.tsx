@@ -1,4 +1,4 @@
-﻿import { useState, FC, useEffect } from "react";
+﻿import { useState, FC, useEffect, ReactNode } from "react";
 import Lottie from "lottie-react";
 import marutiAnimation from "./components/Mobile-app-showcase2.json";
 import msmeChatbotAnimation from "./components/Mobile-app-showcase3.json";
@@ -7,6 +7,7 @@ import FontLoader from "./styles/FontLoader";
 import Cursor from "./components/Cursor";
 import Navbar from "./components/navbar";
 import Hero from "./components/Hero.tsx";
+import Footer from "./components/Footer";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Project1 from "./pages/project1";
 import Project2 from "./pages/Project2";
@@ -27,6 +28,29 @@ const App: FC = () => {
   );
   const t = dark ? THEMES.dark : THEMES.light;
 
+  const withSiteChrome = (
+    content: ReactNode,
+    backgroundColor?: string,
+    showThemeToggle: boolean = false,
+    themeOverride?: "dark" | "light"
+  ) => {
+    const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
+    return (
+    <div style={backgroundColor ? { backgroundColor, minHeight: "100vh" } : undefined}>
+      <Navbar
+        dark={dark}
+        setDark={setDark}
+        showThemeToggle={showThemeToggle}
+        themeOverride={themeOverride}
+      />
+      <div style={{ paddingTop: 60 }}>
+        {content}
+      </div>
+      <Footer dark={isDarkTheme} />
+    </div>
+  );
+  };
+
   useEffect(() => {
     const onResize = () => setIsMobileView(window.innerWidth <= 900);
     window.addEventListener("resize", onResize);
@@ -45,7 +69,7 @@ const App: FC = () => {
   <Routes>
     <Route
       path="/"
-      element={
+      element={withSiteChrome(
         <div
           style={{
             background: t.bg,
@@ -149,8 +173,6 @@ const App: FC = () => {
           `}</style>
 
           <Cursor dark={dark} />
-
-          <Navbar dark={dark} setDark={setDark} />
 
           <Hero dark={dark} t={t} />
 
@@ -272,7 +294,7 @@ transparency, cross-selling, and service adoption.`,
                       fontFamily: "'Libre Baskerville', serif",
                       fontStyle: "italic",
                       fontSize: "clamp(42px, 5vw, 64px)",
-                      color: t.border,
+                      color: t.ink3,
                       fontWeight: 400,
                       lineHeight: 1,
                       marginBottom: 20,
@@ -367,15 +389,73 @@ transparency, cross-selling, and service adoption.`,
                 )}
               </div>
             ))}
+
+            <div
+              style={{
+                marginTop: 12,
+                padding: "56px 0 48px",
+                textAlign: "center",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontStyle: "italic",
+                  fontSize: "clamp(26px, 3vw, 38px)",
+                  fontWeight: 400,
+                  color: t.ink,
+                  marginBottom: 14,
+                  lineHeight: 1.3,
+                }}
+              >
+                Lets talk
+              </h3>
+              <p
+                style={{
+                  fontSize: 17,
+                  color: t.ink2,
+                  lineHeight: 1.6,
+                  maxWidth: 680,
+                  margin: "0 auto 28px",
+                }}
+              >
+                Open to conversations about AI, design systems, and the intersection
+                of design and code.
+              </p>
+              <a
+                href="mailto:contact@bhavyachaurasia.in"
+                style={{
+                  background: t.ink,
+                  color: t.bg,
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  padding: "12px 28px",
+                  borderRadius: 40,
+                  border: "none",
+                  textDecoration: "none",
+                  display: "inline-block",
+                  transition: "background 0.2s, transform 0.2s",
+                  cursor: "pointer",
+                }}
+              >
+                Get in touch
+              </a>
+            </div>
           </section>
-        </div>
-      }
+
+        </div>,
+        undefined,
+        true
+      )}
     />
 
-    <Route path="/project-1" element={<Project1 />} />
-    <Route path="/project-2" element={<Project2 />} />
-    <Route path="/project-3" element={<Project3 />} />
-    <Route path="/Project-3" element={<Project3 />} />
+    <Route path="/project-1" element={withSiteChrome(<Project1 />, undefined, false)} />
+    <Route path="/project-2" element={withSiteChrome(<Project2 />, undefined, false, "dark")} />
+    <Route path="/project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
+    <Route path="/Project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
   </Routes>
 );
 };

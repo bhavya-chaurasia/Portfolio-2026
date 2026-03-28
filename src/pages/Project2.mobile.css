@@ -1,4 +1,9 @@
 @media (max-width: 767px) {
+  .project2-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   .project2-hero-lottie-wrap {
     overflow: visible !important;
   }
@@ -256,7 +261,7 @@
   }
 
   .challenges-section-mobile-spacing {
-    padding-top: 0 !important;
+    padding-top: 20px !important;
     padding-bottom: 20px !important;
   }
 
@@ -267,9 +272,23 @@
     left: 72px !important;
   }
 
+  .challenges-section-mobile-spacing .challenges-intro-text {
+    font-size: 25px !important;
+    line-height: 30px !important;
+  }
+
+  .challenges-section-mobile-spacing .challenges-solutions-heading {
+    transform: translateY(-30px) !important;
+  }
+
   .challenges-scale-shell {
+    --mobile-shell-desktop-height: 720px !important;
     --mobile-shell-mobile-boost: 1.55 !important;
     --mobile-shell-mobile-top-offset: 56px !important;
+  }
+
+  .challenges-section-mobile-spacing .challenges-solution-card {
+    transform: translateY(20px) !important;
   }
 
   .user-research-mobile-spacing {
@@ -343,10 +362,12 @@
   .user-survey-section .user-survey-desc {
     width: 100% !important;
     max-width: 510px;
-    text-align: center !important;
+    text-align: left !important;
     font-size: 14px !important;
-    line-height: 1.5 !important;
-    align-self: left;
+    line-height: 1.65 !important;
+    letter-spacing: -0.02em !important;
+    align-self: center;
+    margin-bottom: 14px !important;
   }
 
   .user-survey-section .user-survey-card {

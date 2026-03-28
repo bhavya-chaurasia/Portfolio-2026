@@ -215,8 +215,10 @@ const Project2 = () => {
     page: {
       backgroundColor: "#0E0E0E",
       minHeight: "100vh",
+      width: "100%",
       margin: 0,
       padding: 0,
+      overflowX: "hidden",
       fontFamily: typography.body.fontFamily,
       color: "#ffffff",
       lineHeight: 1.7,
@@ -258,7 +260,7 @@ const Project2 = () => {
   };
 
   return (
-      <div style={styles.page}>
+      <div className="project2-page" style={styles.page}>
       <style>{`
         .ui-blue-card-image {
           opacity: 0;
@@ -332,7 +334,7 @@ const Project2 = () => {
           }
 
           .challenges-section-mobile-spacing .challenges-intro-text {
-            transform: translateY(-40px);
+            transform: translateY(-60px);
           }
 
           .challenges-section-mobile-spacing .challenges-problems-heading {
@@ -792,13 +794,13 @@ const Project2 = () => {
 
             {/* Challenges description */}
             <p className="challenges-intro-text" style={{
-              position: "absolute", left: "73px", top: "127px", width: "711px",
+              position: "absolute", left: "73px", top: "127px", width: "980px",
               fontSize: "21px", fontWeight: 300,
               fontFamily: typography.body.fontFamily,
               color: "#787878", lineHeight: "24.52px",
               letterSpacing: "-0.42px", margin: 0,
             }}>
-              The current service booking flow is transactional and lacks transparency.<br />
+              The current service booking flow is transactional and lacks transparency.
               Users can schedule an appointment, but they cannot view vehicle health insights, understand service urgency, see pricing breakdowns, or receive recommendations based on their reported issues.
             </p>
 
@@ -1196,7 +1198,7 @@ const Project2 = () => {
 
             {/* Description */}
             <p className="ui-design-main-desc" style={{
-              position: "absolute", left: 72, top: 130, width: 624, margin: 0,
+              position: "absolute", left: 72, top: 130, width: 1056, margin: 0,
               fontSize: 21.017, fontWeight: 300, fontFamily: typography.body.fontFamily,
               color: "#787878", lineHeight: "24.52px", letterSpacing: "-0.42px",
             }}>
@@ -1624,7 +1626,7 @@ const Project2 = () => {
       </div>
 
       {/* User Survey Section â€” 1200Ã—1220px canvas */}
-      <div className="user-survey-section" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 60px" }}>
+      <div className="user-survey-section" style={{ backgroundColor: "#0E0E0E", padding: "80px 0 0" }}>
         <div className="user-survey-shell" style={{ position: "relative", height: `max(${layout.userSurveyMinHeight}px, calc(68.1vw + 132px))`, overflow: "hidden" }}>
           <img
             className="user-survey-bg"
@@ -1664,7 +1666,7 @@ const Project2 = () => {
             <p className="user-survey-headline" style={{
               position: "absolute", left: 73, top: 184, width: 834.571, margin: 0,
               fontSize: 36.09, fontWeight: 600, fontFamily: typography.heading.fontFamily,
-              color: "#ffffff", lineHeight: "42.105px", whiteSpace: "nowrap",
+              color: "#ffffff", lineHeight: "42.105px", whiteSpace: "normal",
             }}>
               <span style={{ color: "#787878" }}>Insights from survey played a </span>
               <span style={{ color: "#ffffff" }}>critical role in shaping Maruti Suzuki </span>
@@ -1673,9 +1675,9 @@ const Project2 = () => {
 
             {/* Description */}
             <p className="user-survey-desc" style={{
-              position: "absolute", left: 503, top: 341, width: 624, margin: 0,
-              fontSize: 21.017, fontWeight: 300, fontFamily: typography.body.fontFamily,
-              color: "#787878", lineHeight: "24.52px", letterSpacing: "-0.42px",
+              position: "absolute", left: 73, top: 341, width: 1054, margin: 0,
+              fontSize: "clamp(14px, 1.4vw, 21px)", fontWeight: 300, fontFamily: typography.body.fontFamily,
+              color: "#787878", lineHeight: 1.65, letterSpacing: "-0.02em",
             }}>
               A modern engaging survey designed to gather use feedback and evaluate the effectiveness of the newly introduced Maruti Suzuki Vehicle Health & Service Booking flow.
             </p>
