@@ -64,7 +64,7 @@ const Navbar: FC<NavbarProps> = ({ dark, setDark }) => {
       <a className="nav-brand" href="#" style={{ fontFamily: "'Argine', serif", fontSize: 22, fontWeight: 700, fontStyle: 'italic', color: t.ink, letterSpacing: '0.01em', textDecoration: 'none' }}>
         Bhavya
       </a>
-      <div className="nav-social" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+      <div className="nav-social" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
         <a href="https://in.linkedin.com/in/bhavya-chaurasia" className="nav-icon-link" style={iconLinkStyle}><LinkedInIcon /></a>
         <a href="mailto:contact@bhavyachaurasia.in" className="nav-icon-link" style={iconLinkStyle}><MailIcon /></a>
         <a href="tel:+919109502001" className="nav-icon-link" style={iconLinkStyle}><PhoneIcon /></a>
