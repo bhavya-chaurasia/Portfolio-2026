@@ -1,6 +1,7 @@
 ﻿import { useEffect } from "react";
 import typographyImage from "../../public/Project3/typography.png";
 import colorPaletteImage from "../../public/Project3/color-pallete.png";
+import "./Project3.css";
 
 const contributions = [
   "UX Research",
@@ -16,11 +17,11 @@ const contributions = [
 ];
 
 const roleStats = [
-  { number: "01", label: "Project Lead" },
-  { number: "02", label: "Team of 6" },
-  { number: "03", label: "2 Weeks" },
-  { number: "04", label: "Top 20 Teams" },
-  { number: "05", label: "$5K AWS Credits" },
+  { icon: "lead", label: "Project Lead" },
+  { icon: "team", label: "Team of 6" },
+  { icon: "timeline", label: "2 Weeks" },
+  { icon: "award", label: "Top 20 Teams" },
+  { icon: "credits", label: "$5K AWS Credits" },
 ];
 
 const metadataItems = [
@@ -104,7 +105,7 @@ const userPersonas = [
 ];
 
 const keyInsights = [
-  "Most MSMEs learn about schemes through word of mouth — not official channels.",
+  "Most MSMEs learn about schemes through word of mouth - not official channels.",
   "Form abandonment is highest when documents are requested mid-process.",
   "Rural users trust human-like interfaces more than dashboards or portals.",
   "Telugu-speaking users struggle to type in Telugu on digital keyboards.",
@@ -183,7 +184,7 @@ const timelineMilestones = [
 const chatbotDecisions = [
   {
     label: "Familiarity",
-    text: "Most rural users have never used a web portal. But conversational interfaces like IRCTC's Disha are increasingly familiar — a chat feels like talking to someone, not navigating a system.",
+    text: "Most rural users have never used a web portal. But conversational interfaces like IRCTC's Disha are increasingly familiar - a chat feels like talking to someone, not navigating a system.",
   },
   {
     label: "Cognitive Load",
@@ -191,7 +192,7 @@ const chatbotDecisions = [
   },
   {
     label: "Guided by Default",
-    text: "Every interaction in a chatbot is a guided step. Users never feel lost because the chatbot always asks the next question — removing the need to figure out what to do next.",
+    text: "Every interaction in a chatbot is a guided step. Users never feel lost because the chatbot always asks the next question - removing the need to figure out what to do next.",
   },
   {
     label: "Voice-First Ready",
@@ -202,8 +203,8 @@ const chatbotDecisions = [
 const ux4gCompliance = [
   { label: "Primary Color #2B318F", text: "Exact color from UX4G specification" },
   { label: "Noto Sans Typeface", text: "Official GoI typeface for citizen apps" },
-  { label: "Walkthrough ≤ 4 screens", text: "UX4G handbook rule 29 — maintained" },
-  { label: "Skip button included", text: "UX4G handbook rule 28 — implemented" },
+  { label: "Walkthrough ≤ 4 screens", text: "UX4G handbook rule 29 - maintained" },
+  { label: "Skip button included", text: "UX4G handbook rule 28 - implemented" },
   { label: "Logo top-left, menu top-right", text: "UX4G homepage layout standard" },
 ];
 
@@ -242,6 +243,67 @@ const Project3 = () => {
     fontSize: "16px",
   };
 
+  const renderRoleIcon = (icon: string) => {
+    const iconProps = {
+      width: 44,
+      height: 44,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: 1.8,
+      strokeLinecap: "round" as const,
+      strokeLinejoin: "round" as const,
+      "aria-hidden": true,
+    };
+
+    switch (icon) {
+      case "lead":
+        return (
+          <svg {...iconProps}>
+            <path d="M12 3l2.2 4.45 4.9.7-3.55 3.45.84 4.87L12 14.1l-4.39 2.37.84-4.87L4.9 8.15l4.9-.7L12 3z" />
+          </svg>
+        );
+      case "team":
+        return (
+          <svg {...iconProps}>
+            <circle cx="9" cy="9" r="3" />
+            <circle cx="16.5" cy="10" r="2.5" />
+            <path d="M3.5 19c.5-2.8 2.8-4.5 5.5-4.5s5 1.7 5.5 4.5" />
+            <path d="M14 19c.4-1.9 1.9-3.2 3.8-3.4 1.7-.2 3.2.6 4 1.9" />
+          </svg>
+        );
+      case "timeline":
+        return (
+          <svg {...iconProps}>
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M12 7.5v5l3.5 2" />
+          </svg>
+        );
+      case "award":
+        return (
+          <svg {...iconProps}>
+            <path d="M8 4h8v3a4 4 0 01-8 0V4z" />
+            <path d="M10 14h4" />
+            <path d="M12 7v7" />
+            <path d="M8 20h8" />
+            <path d="M6 5H4a2 2 0 002 3h2" />
+            <path d="M18 5h2a2 2 0 01-2 3h-2" />
+          </svg>
+        );
+      case "credits":
+        return (
+          <svg {...iconProps}>
+            <ellipse cx="12" cy="8" rx="5.5" ry="2.5" />
+            <path d="M6.5 8v5c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5V8" />
+            <path d="M10.5 10.5h3" />
+            <path d="M12 9v3" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       style={{
@@ -257,57 +319,11 @@ const Project3 = () => {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "48px 48px 0",
         }}
       >
-        {/* BLOCK 1 - Project Metadata Bar */}
+        {/* BLOCK 1 - What is Marga */}
         <section
-          style={{
-            borderTop: "1px solid #E5E5E5",
-            borderBottom: "1px solid #E5E5E5",
-            padding: "24px 0",
-            marginBottom: "100px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "24px",
-          }}
-          className="metadata-bar"
-        >
-          {metadataItems.map((item) => (
-            <div key={item.label}>
-              <div
-                style={{
-                  fontSize: "13px",
-                  fontWeight: "bold",
-                  color: "#131313",
-                  marginBottom: "4px",
-                }}
-              >
-                {item.value}
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "#888888",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                }}
-              >
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </section>
-
-        {/* BLOCK 2 - What is Marga */}
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -354,21 +370,53 @@ const Project3 = () => {
             <p style={{ margin: 0 }}>
               Marga is a GenAI-powered chatbot built for MSME owners across Telangana and
               Andhra Pradesh. It helps them discover relevant government schemes, apply
-              through a guided conversation, and track their application status — in Telugu
+              through a guided conversation, and track their application status - in Telugu
               or English, by voice or text.
             </p>
           </div>
         </section>
 
-        {/* BLOCK 3 - Challenge */}
+        {/* BLOCK 2 - Project Metadata Bar */}
         <section
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
+            borderTop: "1px solid #E5E5E5",
+            borderBottom: "1px solid #E5E5E5",
+            padding: "24px 0",
             marginBottom: "100px",
-            alignItems: "start",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "24px",
           }}
+          className="metadata-bar"
+        >
+          {metadataItems.map((item) => (
+            <div key={item.label}>
+              <div
+                style={{
+                  fontSize: "13px",
+                  fontWeight: "bold",
+                  color: "#131313",
+                  marginBottom: "4px",
+                }}
+              >
+                {item.value}
+              </div>
+              <div
+                style={{
+                  fontSize: "11px",
+                  color: "#888888",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* BLOCK 3 - Challenge */}
+        <section
           className="two-column-section"
         >
           <div>
@@ -407,8 +455,8 @@ const Project3 = () => {
             }}
           >
             <p style={{ margin: 0 }}>
-              Over 80 government schemes exist for MSMEs. Yet most owners — especially in
-              rural areas — never benefit. Not because they are ineligible, but because the
+              Over 80 government schemes exist for MSMEs. Yet most owners - especially in
+              rural areas - never benefit. Not because they are ineligible, but because the
               system was never designed for them. No guidance. No language support. No
               transparency.
             </p>
@@ -433,17 +481,20 @@ const Project3 = () => {
               style={{
                 paddingRight: index < roleStats.length - 1 ? "24px" : 0,
                 borderRight: index < roleStats.length - 1 ? "1px solid #E5E5E5" : "none",
+                textAlign: "center",
               }}
             >
               <div
                 style={{
-                  fontSize: "48px",
-                  fontWeight: "bold",
+                  height: "52px",
                   color: "#2B318F",
                   marginBottom: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                {stat.number}
+                {renderRoleIcon(stat.icon)}
               </div>
               <div
                 style={{
@@ -490,13 +541,6 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -539,7 +583,7 @@ const Project3 = () => {
             }}
           >
             <p style={{ margin: 0 }}>
-              Not because MSMEs are ineligible — but because the system was never built
+              Not because MSMEs are ineligible - but because the system was never built
               for them. No guidance. No language support. No way to know what they even
               qualify for.
             </p>
@@ -595,13 +639,6 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 3 - Pain Points */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -671,13 +708,6 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 4 - HMW */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -787,13 +817,6 @@ const Project3 = () => {
 
         {/* RESEARCH BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -838,7 +861,7 @@ const Project3 = () => {
             <p style={{ margin: 0 }}>
               Before designing a single screen, we studied the MSME ecosystem through
               published research, government challenge documents, and a deep understanding
-              of who our users actually were — not who we assumed them to be.
+              of who our users actually were - not who we assumed them to be.
             </p>
           </div>
         </section>
@@ -961,13 +984,6 @@ const Project3 = () => {
 
         {/* RESEARCH BLOCK 3 - User Personas */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.8fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -1070,13 +1086,6 @@ const Project3 = () => {
 
         {/* RESEARCH BLOCK 4 - Key Insights */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -1211,13 +1220,6 @@ const Project3 = () => {
 
         {/* PROCESS BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -1261,7 +1263,7 @@ const Project3 = () => {
           >
             <p style={{ margin: 0 }}>
               Every design decision followed the UX Design Process outlined in the Government
-              of India's UX4G Handbook — the same framework mandated for all citizen-facing
+              of India's UX4G Handbook - the same framework mandated for all citizen-facing
               government applications.
             </p>
           </div>
@@ -1549,8 +1551,8 @@ const Project3 = () => {
           >
             <p style={{ margin: 0 }}>
               The UX4G Design System is the official GoI framework for citizen-facing digital
-              products. By following it precisely — color system, typography, walkthrough rules,
-              accessibility — we ensured Marga met government UX standards and scored full marks
+              products. By following it precisely - color system, typography, walkthrough rules,
+              accessibility - we ensured Marga met government UX standards and scored full marks
               on the UX evaluation criteria.
             </p>
           </div>
@@ -1643,13 +1645,6 @@ const Project3 = () => {
 
         {/* DECISIONS BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -1691,7 +1686,7 @@ const Project3 = () => {
           >
             <p style={{ margin: 0 }}>
               Nothing in Marga was designed by default. From the name to the color, from
-              the mascot to the mic button — every choice was made deliberately, for a
+              the mascot to the mic button - every choice was made deliberately, for a
               specific user need.
             </p>
           </div>
@@ -1798,13 +1793,6 @@ const Project3 = () => {
 
         {/* DECISIONS BLOCK 3 - Naming & Mascot */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -1841,7 +1829,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Marga — मार्ग — means path in Sanskrit and Telugu. A guide who walks with
+              Marga - मार्ग - means path in Sanskrit and Telugu. A guide who walks with
               you, not a portal that processes you.
             </p>
             <div
@@ -1854,7 +1842,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              The mascot was deliberately designed as a relatable human figure — not a
+              The mascot was deliberately designed as a relatable human figure - not a
               robot, not an abstract AI icon. Rural users needed to feel like someone was
               helping them, not something.
             </div>
@@ -1908,13 +1896,6 @@ const Project3 = () => {
 
         {/* DECISIONS BLOCK 4 - UX4G Compliance */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -2029,13 +2010,6 @@ const Project3 = () => {
 
         {/* DECISIONS BLOCK 6 - Accessibility */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -2114,7 +2088,7 @@ const Project3 = () => {
               }}
             >
               Designed for someone who is blind, cannot type in Telugu, or has never used
-              a smartphone before — and still able to complete a full scheme application
+              a smartphone before - and still able to complete a full scheme application
               end to end.
             </div>
           </div>
@@ -2124,13 +2098,6 @@ const Project3 = () => {
 
         {/* FEATURES BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -2173,7 +2140,7 @@ const Project3 = () => {
             }}
           >
             <p style={{ margin: 0 }}>
-              Marga was built around the four biggest barriers MSMEs face — discovery, application,
+              Marga was built around the four biggest barriers MSMEs face - discovery, application,
               tracking, and access. Each feature was designed to remove one barrier entirely.
             </p>
           </div>
@@ -2251,7 +2218,7 @@ const Project3 = () => {
                 margin: "0 0 24px 0",
               }}
             >
-              Type anything — a category, a need, a single word like 'food' or 'loan' — and
+              Type anything - a category, a need, a single word like 'food' or 'loan' - and
               Marga's vector database retrieves the closest matching schemes using semantic
               search, not keyword matching.
             </p>
@@ -2265,7 +2232,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Powered by WaveflowDB — a next-gen vector database built by AgentAnalytics.AI
+              Powered by WaveflowDB - a next-gen vector database built by AgentAnalytics.AI
             </div>
           </div>
 
@@ -2558,7 +2525,7 @@ const Project3 = () => {
                 Auto-format
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Converts input to required format — caps, numbers, dates
+                Converts input to required format - caps, numbers, dates
               </div>
             </div>
             <div
@@ -2621,7 +2588,7 @@ const Project3 = () => {
                 margin: "0 0 24px 0",
               }}
             >
-              No more staring at a blank form. Marga asks one question at a time — your Aadhaar,
+              No more staring at a blank form. Marga asks one question at a time - your Aadhaar,
               your license number, your photo. It validates, formats, and auto-fills the form
               for you. You just answer. Marga does the rest.
             </p>
@@ -2635,7 +2602,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Chatbot checks eligibility before form filling begins — so users never waste time
+              Chatbot checks eligibility before form filling begins - so users never waste time
               on a scheme they don't qualify for.
             </div>
           </div>
@@ -2714,7 +2681,7 @@ const Project3 = () => {
               }}
             >
               Most MSME applications disappear into silence after submission. Marga shows
-              real-time status across 4 stages — and notifies users proactively so they
+              real-time status across 4 stages - and notifies users proactively so they
               always know what is happening and why.
             </p>
             <div
@@ -2727,7 +2694,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Applications are categorized as Successful, Incomplete, or Reverted — with a
+              Applications are categorized as Successful, Incomplete, or Reverted - with a
               reason shown for each.
             </div>
           </div>
@@ -2998,7 +2965,7 @@ const Project3 = () => {
                 ≤ 4 Steps
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                UX4G rule — short, purposeful, skippable
+                UX4G rule - short, purposeful, skippable
               </div>
             </div>
             <div
@@ -3061,7 +3028,7 @@ const Project3 = () => {
                 margin: "0 0 24px 0",
               }}
             >
-              A 4-step onboarding tour introduces every key feature — recommended queries,
+              A 4-step onboarding tour introduces every key feature - recommended queries,
               the menu, notifications, and language toggle. Users can skip anytime. Built
               exactly to UX4G handbook rule 28 and 29.
             </p>
@@ -3075,7 +3042,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Skip button always visible — respecting user autonomy per UX4G reactance
+              Skip button always visible - respecting user autonomy per UX4G reactance
               principle.
             </div>
           </div>
@@ -3154,7 +3121,7 @@ const Project3 = () => {
               }}
             >
               Marga works for users who are blind, deaf, unable to read Telugu, or who have
-              never used a smartphone. Voice input, voice output, bilingual toggle — accessibility
+              never used a smartphone. Voice input, voice output, bilingual toggle - accessibility
               is not a feature. It is the foundation.
             </p>
           </div>
@@ -3259,7 +3226,7 @@ const Project3 = () => {
                 Voice to Text
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Speak your query — no typing needed
+                Speak your query - no typing needed
               </div>
             </div>
             <div
@@ -3282,7 +3249,7 @@ const Project3 = () => {
                 Text to Voice
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Hear responses — no reading needed
+                Hear responses - no reading needed
               </div>
             </div>
             <div
@@ -3485,13 +3452,6 @@ const Project3 = () => {
       >
         {/* ACCESSIBILITY BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -3535,8 +3495,8 @@ const Project3 = () => {
           >
             <p style={{ margin: 0 }}>
               The easiest user to design for is someone like the designer. We deliberately
-              chose the hardest user — someone who is rural, low-literacy, possibly disabled,
-              and has never used a smartphone — and made sure Marga worked for them first.
+              chose the hardest user - someone who is rural, low-literacy, possibly disabled,
+              and has never used a smartphone - and made sure Marga worked for them first.
             </p>
           </div>
         </section>
@@ -3879,13 +3839,6 @@ const Project3 = () => {
 
         {/* ACCESSIBILITY BLOCK 3 - Accessibility features list */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -4058,7 +4011,7 @@ const Project3 = () => {
           }}
         >
           A person who speaks Telugu, cannot read, cannot type, and has never used a
-          smartphone — can open Marga, speak their business type, and receive a personalized
+          smartphone - can open Marga, speak their business type, and receive a personalized
           scheme recommendation. End to end. By voice.
         </div>
 
@@ -4097,7 +4050,7 @@ const Project3 = () => {
               "Skip Button Included",
               "Walkthrough ≤ 4 Screens",
               "Color Contrast Maintained",
-              "Noto Sans — Legible at All Sizes",
+              "Noto Sans - Legible at All Sizes",
             ].map((label, index) => (
               <div
                 key={label}
@@ -4145,13 +4098,6 @@ const Project3 = () => {
       >
         {/* IMPACT BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "100px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -4410,7 +4356,7 @@ const Project3 = () => {
                 }}
               >
                 Marga was showcased by Shri Pramod Sawant, Chief Minister of Goa, at a
-                national MSME event — validating our solution at the highest level.
+                national MSME event - validating our solution at the highest level.
               </div>
               <div
                 style={{
@@ -4510,13 +4456,6 @@ const Project3 = () => {
 
         {/* IMPACT BLOCK 4 - Projected impact */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "0",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -4554,7 +4493,7 @@ const Project3 = () => {
               {
                 number: "01",
                 impact: "Increased Scheme Awareness",
-                description: "MSMEs discover schemes they never knew existed — matched to their exact business profile.",
+                description: "MSMEs discover schemes they never knew existed - matched to their exact business profile.",
               },
               {
                 number: "02",
@@ -4564,7 +4503,7 @@ const Project3 = () => {
               {
                 number: "03",
                 impact: "Reduced Application Errors",
-                description: "Chatbot validates and formats every input — fewer rejections, faster approvals.",
+                description: "Chatbot validates and formats every input - fewer rejections, faster approvals.",
               },
               {
                 number: "04",
@@ -4574,7 +4513,7 @@ const Project3 = () => {
               {
                 number: "05",
                 impact: "Proactive Scheme Recommendations",
-                description: "Users don't need to search — Marga tells them what they qualify for before they even ask.",
+                description: "Users don't need to search - Marga tells them what they qualify for before they even ask.",
               },
             ].map((item, index) => (
               <div
@@ -4666,7 +4605,7 @@ const Project3 = () => {
               fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
             }}
           >
-            Seeing Marga presented by a Chief Minister at a national stage — that made two
+            Seeing Marga presented by a Chief Minister at a national stage - that made two
             weeks of weekends worth it.
           </h2>
 
@@ -4782,13 +4721,6 @@ const Project3 = () => {
       >
         {/* LEARNINGS BLOCK 1 - Opening */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "120px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -4873,12 +4805,12 @@ const Project3 = () => {
               {
                 number: "01",
                 heading: "Design for your hardest user first.",
-                body: "When you solve for someone who is rural, low-literacy, and possibly disabled — you automatically solve for everyone else. The easiest user is never the right starting point.",
+                body: "When you solve for someone who is rural, low-literacy, and possibly disabled - you automatically solve for everyone else. The easiest user is never the right starting point.",
               },
               {
                 number: "02",
                 heading: "Speed and quality are not opposites.",
-                body: "We designed, built, and shipped Marga in two weeks including weekends. Speed forced clarity — every decision had to be intentional because there was no time to be indecisive.",
+                body: "We designed, built, and shipped Marga in two weeks including weekends. Speed forced clarity - every decision had to be intentional because there was no time to be indecisive.",
               },
               {
                 number: "03",
@@ -4888,12 +4820,12 @@ const Project3 = () => {
               {
                 number: "04",
                 heading: "Leading without authority is a real skill.",
-                body: "With our CEO absent, I had to earn the team's direction — not demand it. Clear documentation, a shared vision, and daily communication kept six people moving as one.",
+                body: "With our CEO absent, I had to earn the team's direction - not demand it. Clear documentation, a shared vision, and daily communication kept six people moving as one.",
               },
               {
                 number: "05",
                 heading: "The name and the mascot are part of the UX.",
-                body: "Marga was not a branding decision. It was a trust decision. Rural users needed to feel guided by a person — not processed by a machine.",
+                body: "Marga was not a branding decision. It was a trust decision. Rural users needed to feel guided by a person - not processed by a machine.",
               },
             ].map((item, index) => (
               <div
@@ -4948,13 +4880,6 @@ const Project3 = () => {
 
         {/* LEARNINGS BLOCK 3 - What I would do differently */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "120px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -5001,7 +4926,7 @@ const Project3 = () => {
               },
               {
                 label: "Vernacular Expansion",
-                description: "Extend beyond Telugu — Hindi, Kannada, Marathi for national deployment",
+                description: "Extend beyond Telugu - Hindi, Kannada, Marathi for national deployment",
               },
             ].map((item, index) => (
               <div
@@ -5040,13 +4965,6 @@ const Project3 = () => {
 
         {/* LEARNINGS BLOCK 4 - Telangana to AP */}
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "48px",
-            marginBottom: "120px",
-            alignItems: "start",
-          }}
           className="two-column-section"
         >
           <div>
@@ -5088,7 +5006,7 @@ const Project3 = () => {
               }}
             >
               The AP MSME challenge followed Telangana with a near-identical problem
-              statement. Rather than start from scratch, we treated it as V2 — applying
+              statement. Rather than start from scratch, we treated it as V2 - applying
               everything we had learned from the first submission. Same core product.
               Sharper execution. More confident decisions.
             </p>
@@ -5279,17 +5197,6 @@ const Project3 = () => {
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;800&display=swap');
 
         @media (max-width: 900px) {
-          .two-column-section {
-            grid-template-columns: 1fr !important;
-            border-left: none !important;
-            padding-left: 0 !important;
-          }
-
-          .two-column-section > div:last-child {
-            border-left: none !important;
-            padding-left: 0 !important;
-          }
-
           .role-stats {
             grid-template-columns: repeat(2, 1fr) !important;
           }
@@ -5454,10 +5361,6 @@ const Project3 = () => {
         @media (max-width: 640px) {
           body {
             padding: 0 20px;
-          }
-
-          .two-column-section {
-            grid-template-columns: 1fr !important;
           }
 
           .role-stats {
