@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { project1Styles as styles } from "./project1/styles";
+import "./project1.mobile.css";
 import Carousel from "./project1/Carousel";
 import CarouselCard2 from "./project1/CarouselCard2";
 import CarouselCard3 from "./project1/CarouselCard3";
@@ -75,11 +76,6 @@ const Project1 = () => {
 
       {/* CSS for responsive layout */}
       <style>{`
-        @media (max-width: 768px) {
-          .impact-grid { grid-template-columns: 1fr !important; }
-          .details-grid { grid-template-columns: 1fr !important; }
-        }
-
         @keyframes shine-rotate {
           0% { background-position: 0% 0%; }
           50% { background-position: 100% 100%; }

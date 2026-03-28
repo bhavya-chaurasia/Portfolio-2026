@@ -438,7 +438,7 @@ const Project2 = () => {
         }
       `}</style>
       <div style={styles.container}>
-        <div style={styles.tags}>UX Design · AI · Product Design</div>
+        <div style={styles.tags}>Business Impact · AI · UX Design</div>
         <h1 style={styles.title}>Crafting Smart Servicing Experience for Maruti</h1>
         <p style={styles.subtitle}>
           {`Reimagining vehicle servicing through giving health insights, enabling cross-selling, and increasing in-app adoption for Maruti Suzuki's mobile app.`}

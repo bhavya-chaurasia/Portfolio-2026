@@ -1,0 +1,18 @@
+@media (max-width: 700px) {
+  .impact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .project1-carousel-container > div {
+    width: 432px !important;
+    min-width: 432px !important;
+    max-width: 700px !important;
+    height: 288px !important;
+    min-height: 288px !important;
+    max-height: 288px !important;
+  }
+}
