@@ -32,7 +32,8 @@ const App: FC = () => {
     content: ReactNode,
     backgroundColor?: string,
     showThemeToggle: boolean = false,
-    themeOverride?: "dark" | "light"
+    themeOverride?: "dark" | "light",
+    contentTopPadding: number = 60
   ) => {
     const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
     return (
@@ -43,7 +44,7 @@ const App: FC = () => {
         showThemeToggle={showThemeToggle}
         themeOverride={themeOverride}
       />
-      <div style={{ paddingTop: 60 }}>
+      <div style={{ paddingTop: contentTopPadding }}>
         {content}
       </div>
       <Footer dark={isDarkTheme} />
@@ -448,7 +449,9 @@ transparency, cross-selling, and service adoption.`,
 
         </div>,
         undefined,
-        true
+        true,
+        undefined,
+        0
       )}
     />
 
