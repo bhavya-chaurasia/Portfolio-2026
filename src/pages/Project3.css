@@ -6,6 +6,14 @@
   align-items: stretch;
 }
 
+.section-eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999999;
+  margin-bottom: 24px;
+}
+
 .two-column-section > div:last-child {
   height: 100%;
   box-sizing: border-box;

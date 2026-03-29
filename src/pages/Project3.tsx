@@ -1,5 +1,6 @@
-﻿import { useEffect } from "react";
+﻿import { useEffect, useState, type MouseEvent } from "react";
 import typographyImage from "../../public/Project3/typography.png";
+import graphLineImage from "../../public/Project3/graph-line.png";
 import colorPaletteImage from "../../public/Project3/color-pallete.png";
 import "./Project3.css";
 
@@ -136,7 +137,7 @@ const processStages = [
     name: "Define",
     position: "top-right",
     bullets: [
-      "4 User Personas",
+      "User Personas",
       "Pain Point Mapping",
       "HMW Statements",
     ],
@@ -156,7 +157,7 @@ const processStages = [
     name: "Prototype",
     position: "bottom",
     bullets: [
-      "Wireframes (3–4 days)",
+      "Wireframes",
       "Hi-Fi UI (UX4G compliant)",
       "Marga Mascot & Naming",
     ],
@@ -219,6 +220,8 @@ const Project3 = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const [isWhatIStudiedOpen, setIsWhatIStudiedOpen] = useState(false);
+  const [processParallax, setProcessParallax] = useState({ x: 0, y: 0 });
 
   const glassCardBaseStyle = {
     position: "absolute" as const,
@@ -241,6 +244,24 @@ const Project3 = () => {
   };
   const glassCardBulletTextStyle = {
     fontSize: "16px",
+  };
+  const handleProcessParallax = (event: MouseEvent<HTMLElement>) => {
+    if (window.innerWidth <= 900) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const normalizedX = (event.clientX - rect.left) / rect.width - 0.5;
+    const normalizedY = (event.clientY - rect.top) / rect.height - 0.5;
+    setProcessParallax({
+      x: normalizedX * 16,
+      y: normalizedY * 16,
+    });
+  };
+  const resetProcessParallax = () => {
+    setProcessParallax({ x: 0, y: 0 });
+  };
+  const getProcessCardTransform = (baseTransform: string, strength: number) => {
+    const parallaxX = processParallax.x * strength;
+    const parallaxY = processParallax.y * strength;
+    return `${baseTransform}${baseTransform ? " " : ""}translate(${parallaxX}px, ${parallaxY}px)`;
   };
 
   const renderRoleIcon = (icon: string) => {
@@ -324,50 +345,19 @@ const Project3 = () => {
       >
         {/* BLOCK 1 - What is Marga */}
         <section
-          className="two-column-section"
+          className="two-column-section two-column-section--hero"
+          style={{
+            display: "block",
+            maxWidth: "900px",
+            marginBottom: "100px",
+          }}
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
-              Project
-            </div>
-            <h1
-              style={{
-                fontSize: "40px",
-                fontWeight: "bold",
-                margin: 0,
-                lineHeight: 1.2,
-                color: "#131313",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-              }}
-            >
+            <div className="project-hero-tags">UX Design · AI · Product Design</div>
+            <h1 className="project-hero-title">
               Marga
-              <br />
-              Your guide to
-              <br />
-              every government
-              <br />
-              scheme.
             </h1>
-          </div>
-
-          <div
-            style={{
-              borderLeft: "1px solid #E5E5E5",
-              paddingLeft: "48px",
-              fontSize: "15px",
-              lineHeight: 1.8,
-              color: "#131313",
-            }}
-          >
-            <p style={{ margin: 0 }}>
+            <p className="project-hero-subtitle">
               Marga is a GenAI-powered chatbot built for MSME owners across Telangana and
               Andhra Pradesh. It helps them discover relevant government schemes, apply
               through a guided conversation, and track their application status - in Telugu
@@ -420,15 +410,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Challenge
             </div>
             <h2
@@ -510,15 +492,7 @@ const Project3 = () => {
 
         {/* BLOCK 5 - Contributions */}
         <section style={{ marginBottom: "100px" }}>
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-              marginBottom: "16px",
-            }}
-          >
+          <div className="section-eyebrow">
             My Contributions
           </div>
           <div
@@ -544,15 +518,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               The Problem
             </div>
             <h2
@@ -642,15 +608,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Pain Points
             </div>
             <h3
@@ -711,15 +669,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               How Might We
             </div>
             <h3
@@ -820,15 +770,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Research & Discovery
             </div>
             <h2
@@ -859,7 +801,7 @@ const Project3 = () => {
             }}
           >
             <p style={{ margin: 0 }}>
-              Before designing a single screen, we studied the MSME ecosystem through
+              Before designing a single screen, I studied the MSME ecosystem through
               published research, government challenge documents, and a deep understanding
               of who our users actually were - not who we assumed them to be.
             </p>
@@ -873,113 +815,155 @@ const Project3 = () => {
             position: "relative",
           }}
         >
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-              marginBottom: "32px",
-            }}
-          >
-            What We Studied
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              top: "80px",
-              left: "-40px",
-              fontSize: "200px",
-              fontWeight: "bold",
-              color: "#2B318F",
-              opacity: 0.04,
-              fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-              pointerEvents: "none",
-              whiteSpace: "nowrap",
-              zIndex: 0,
-            }}
-          >
-            RESEARCH
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "24px",
-              position: "relative",
-              zIndex: 1,
-            }}
-            className="research-cards"
-          >
-            {researchSources.map((source) => (
-              <div
-                key={source.title}
+          <div className="section-eyebrow">
+            <button
+              type="button"
+              onClick={() => setIsWhatIStudiedOpen((prev) => !prev)}
+              style={{
+                border: "none",
+                background: "transparent",
+                padding: 0,
+                margin: 0,
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                color: "inherit",
+                font: "inherit",
+                letterSpacing: "inherit",
+                textTransform: "inherit",
+              }}
+              aria-expanded={isWhatIStudiedOpen}
+              aria-controls="what-i-studied-cards"
+            >
+              <span>What I Studied</span>
+              <span
                 style={{
-                  background: "rgba(255,255,255,0.6)",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.8)",
-                  boxShadow: "0 4px 24px rgba(43,49,143,0.06)",
-                  borderRadius: "12px",
-                  padding: "24px",
-                  display: "grid",
-                  gap: "16px",
-                  gridTemplateRows: "auto 1fr auto",
+                  display: "inline-block",
+                  transform: isWhatIStudiedOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: "11px",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#999999",
-                    fontWeight: "bold",
-                  }}
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
                 >
-                  {source.type}
-                </div>
-                <div>
-                  <h3
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      margin: "0 0 12px 0",
-                      color: "#131313",
-                      fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                    }}
-                  >
-                    {source.title}
-                  </h3>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: "13px",
-                      lineHeight: 1.6,
-                      color: "#4a4a4a",
-                    }}
-                  >
-                    {source.description}
-                  </p>
-                </div>
-                <div>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      background: "#EEEFFA",
-                      color: "#2B318F",
-                      borderRadius: "999px",
-                      padding: "6px 12px",
-                      fontSize: "11px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {source.tag}
-                  </span>
-                </div>
-              </div>
-            ))}
+                  <path
+                    d="M2.5 4.5L6 8L9.5 4.5"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
           </div>
+
+          {isWhatIStudiedOpen && (
+            <>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "80px",
+                  left: "-40px",
+                  fontSize: "200px",
+                  fontWeight: "bold",
+                  color: "#2B318F",
+                  opacity: 0.04,
+                  fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  pointerEvents: "none",
+                  whiteSpace: "nowrap",
+                  zIndex: 0,
+                }}
+              >
+                RESEARCH
+              </div>
+
+              <div
+                id="what-i-studied-cards"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "24px",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+                className="research-cards"
+              >
+                {researchSources.map((source) => (
+                  <div
+                    key={source.title}
+                    style={{
+                      background: "rgba(255,255,255,0.6)",
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(255,255,255,0.8)",
+                      boxShadow: "0 4px 24px rgba(43,49,143,0.06)",
+                      borderRadius: "12px",
+                      padding: "24px",
+                      display: "grid",
+                      gap: "16px",
+                      gridTemplateRows: "auto 1fr auto",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#999999",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {source.type}
+                    </div>
+                    <div>
+                      <h3
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          margin: "0 0 12px 0",
+                          color: "#131313",
+                          fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                        }}
+                      >
+                        {source.title}
+                      </h3>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "13px",
+                          lineHeight: 1.6,
+                          color: "#4a4a4a",
+                        }}
+                      >
+                        {source.description}
+                      </p>
+                    </div>
+                    <div>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          background: "#EEEFFA",
+                          color: "#2B318F",
+                          borderRadius: "999px",
+                          padding: "6px 12px",
+                          fontSize: "11px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {source.tag}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </section>
 
         {/* RESEARCH BLOCK 3 - User Personas */}
@@ -987,15 +971,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               User Personas
             </div>
             <h3
@@ -1089,15 +1065,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Key Insights
             </div>
             <h3
@@ -1155,7 +1123,7 @@ const Project3 = () => {
         </section>
 
         {/* RESEARCH BLOCK 5 - Scoring Context */}
-        <section
+        {/* <section
           style={{
             borderTop: "1px solid #E5E5E5",
             borderBottom: "1px solid #E5E5E5",
@@ -1214,7 +1182,7 @@ const Project3 = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* UX PROCESS SECTION */}
 
@@ -1223,15 +1191,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               UX Process
             </div>
             <h2
@@ -1280,6 +1240,8 @@ const Project3 = () => {
             position: "relative",
           }}
           className="orbital-section"
+          onMouseMove={handleProcessParallax}
+          onMouseLeave={resetProcessParallax}
         >
           {/* SVG Orbital Rings */}
           <svg
@@ -1406,7 +1368,9 @@ const Project3 = () => {
                 ...glassCardBaseStyle,
                 top: "0%",
                 left: "50%",
-                transform: "translateX(-50%)",
+                transform: getProcessCardTransform("translateX(-50%)", 1.2),
+                transition: "transform 0.25s ease-out",
+                willChange: "transform",
               }}
             >
               <div style={{ top: "-16%", left: "-8%", fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1426,6 +1390,9 @@ const Project3 = () => {
                 ...glassCardBaseStyle,
                 top: "12%",
                 right: "-8%",
+                transform: getProcessCardTransform("", 0.9),
+                transition: "transform 0.25s ease-out",
+                willChange: "transform",
               }}
             >
               <div style={{fontWeight: "bold", marginBottom: "10px", color: "#131313"}}>
@@ -1445,6 +1412,9 @@ const Project3 = () => {
                 ...glassCardBaseStyle,
                 top: "46%",
                 right: "-14%",
+                transform: getProcessCardTransform("", 1.05),
+                transition: "transform 0.25s ease-out",
+                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1464,7 +1434,9 @@ const Project3 = () => {
                 ...glassCardBaseStyle,
                 bottom: "-12%",
                 left: "50%",
-                transform: "translateX(-50%)",
+                transform: getProcessCardTransform("translateX(-50%)", 1.15),
+                transition: "transform 0.25s ease-out",
+                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1484,6 +1456,9 @@ const Project3 = () => {
                 ...glassCardBaseStyle,
                 top: "44%",
                 left: "-12%",
+                transform: getProcessCardTransform("", 0.85),
+                transition: "transform 0.25s ease-out",
+                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1513,15 +1488,7 @@ const Project3 = () => {
           }}
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="section-eyebrow">
               Why This Process
             </div>
             <h3
@@ -1560,15 +1527,7 @@ const Project3 = () => {
 
         {/* PROCESS BLOCK 4 - Timeline */}
         <section style={{ marginBottom: "100px" }}>
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-              marginBottom: "48px",
-            }}
-          >
+          <div className="section-eyebrow">
             How 2 Weeks Actually Looked
           </div>
 
@@ -1585,6 +1544,23 @@ const Project3 = () => {
                 zIndex: 0,
               }}
             />
+
+            {/* Graph line overlay */}
+            <img
+              src={graphLineImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: "120px",
+                top: "-2px",
+                width: "959.5px",
+                height: "auto",
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            />
+
 
             {/* Milestone dots and labels */}
             <div
@@ -1648,15 +1624,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Design Decisions
             </div>
             <h2
@@ -1726,15 +1694,7 @@ const Project3 = () => {
           </div>
 
           <div style={{ position: "relative", zIndex: 1 }}>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="section-eyebrow">
               Decision 01
             </div>
             <h3
@@ -1796,15 +1756,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="section-eyebrow">
               Decision 02
             </div>
             <h3
@@ -1899,15 +1851,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="section-eyebrow">
               Decision 03
             </div>
             <h3
@@ -2013,15 +1957,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="section-eyebrow">
               Decision 04
             </div>
             <h3
@@ -2101,15 +2037,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Features
             </div>
             <h2
@@ -3455,15 +3383,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Accessibility & Inclusion
             </div>
             <h2
@@ -3842,15 +3762,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               What We Built
             </div>
             <h3
@@ -3949,15 +3861,7 @@ const Project3 = () => {
           }}
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Our Design Test
             </div>
             <h3
@@ -4026,14 +3930,7 @@ const Project3 = () => {
             gap: "32px",
           }}
         >
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-            }}
-          >
+          <div className="section-eyebrow">
             UX4G Accessibility Compliance
           </div>
 
@@ -4101,15 +3998,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Impact
             </div>
             <h2
@@ -4384,14 +4273,7 @@ const Project3 = () => {
             gap: "32px",
           }}
         >
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-            }}
-          >
+          <div className="section-eyebrow">
             We Were Evaluated On
           </div>
 
@@ -4459,15 +4341,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               If Deployed at Scale
             </div>
             <h3
@@ -4724,15 +4598,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Learnings & Reflection
             </div>
             <h2
@@ -4883,16 +4749,8 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
-              If I Had More Time
+            <div className="section-eyebrow">
+              If We Had More Time
             </div>
             <h3
               style={{
@@ -4968,15 +4826,7 @@ const Project3 = () => {
           className="two-column-section"
         >
           <div>
-            <div
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#999999",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="section-eyebrow">
               Iteration
             </div>
             <h3
@@ -5101,15 +4951,7 @@ const Project3 = () => {
             textAlign: "center",
           }}
         >
-          <div
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "#999999",
-              marginBottom: "24px",
-            }}
-          >
+          <div className="section-eyebrow">
             Final Thought
           </div>
 
@@ -5196,7 +5038,38 @@ const Project3 = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;800&display=swap');
 
+        .two-column-section--hero .project-hero-tags {
+          font-size: 13px;
+          color: #888888;
+          letter-spacing: 0.5px;
+          margin-bottom: 24px;
+          font-weight: 400;
+        }
+
+        .two-column-section--hero .project-hero-title {
+          font-size: clamp(42px, 6vw, 64px);
+          font-weight: 700;
+          margin: 0 0 24px 0;
+          line-height: 1.1;
+          letter-spacing: -1.5px;
+          color: #131313;
+          font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .two-column-section--hero .project-hero-subtitle {
+          font-size: 20px;
+          color: #444444;
+          font-weight: 400;
+          line-height: 1.6;
+          margin: 0;
+          max-width: 100%;
+        }
+
         @media (max-width: 900px) {
+          .two-column-section--hero .project-hero-subtitle {
+            font-size: 18px;
+          }
+
           .role-stats {
             grid-template-columns: repeat(2, 1fr) !important;
           }
@@ -5359,6 +5232,19 @@ const Project3 = () => {
         }
 
         @media (max-width: 640px) {
+          .two-column-section--hero .project-hero-tags {
+            font-size: 12px;
+          }
+
+          .two-column-section--hero .project-hero-title {
+            letter-spacing: -1px;
+          }
+
+          .two-column-section--hero .project-hero-subtitle {
+            font-size: 17px;
+            line-height: 1.65;
+          }
+
           body {
             padding: 0 20px;
           }
