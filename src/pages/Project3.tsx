@@ -113,13 +113,13 @@ const keyInsights = [
   "Application status silence is the biggest reason for distrust in government portals.",
 ];
 
-const scoringCriteria = [
-  { percentage: "30%", label: "Technical Execution" },
-  { percentage: "25%", label: "Solution Effectiveness" },
-  { percentage: "15%", label: "Innovation" },
-  { percentage: "15%", label: "User Experience" },
-  { percentage: "15%", label: "Scalability" },
-];
+// const scoringCriteria = [
+//   { percentage: "30%", label: "Technical Execution" },
+//   { percentage: "25%", label: "Solution Effectiveness" },
+//   { percentage: "15%", label: "Innovation" },
+//   { percentage: "15%", label: "User Experience" },
+//   { percentage: "15%", label: "Scalability" },
+// ];
 
 const processStages = [
   {
