@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-react";
 import project2MockupAnimation from "../components/Project2-mockup.json";
 import carImg from "../assets/Project2/image3.png";
@@ -47,6 +47,8 @@ import "./Project2.mobile.css";
 
 const Project2 = () => {
   const [mockupReplayKey, setMockupReplayKey] = useState(0);
+  const heroLottieWrapRef = useRef<HTMLDivElement | null>(null);
+  const hasReplayedOnViewRef = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -146,6 +148,36 @@ const Project2 = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const target = heroLottieWrapRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (hasReplayedOnViewRef.current || !entry.isIntersecting) return;
+
+          const rect = entry.target.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+          const elementCenter = rect.top + rect.height / 2;
+          const viewportCenter = viewportHeight / 2;
+          const isNearCenter = Math.abs(elementCenter - viewportCenter) <= Math.max(64, viewportHeight * 0.18);
+
+          if (isFullyVisible && isNearCenter) {
+            hasReplayedOnViewRef.current = true;
+            setMockupReplayKey((prev) => prev + 1);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: [0.95, 1] }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
   }, []);
 
   const glassCardStyle: React.CSSProperties = {
@@ -448,6 +480,7 @@ const Project2 = () => {
 
         <div
           className="project2-hero-lottie-wrap"
+          ref={heroLottieWrapRef}
           style={{ ...styles.imageContainer, cursor: "pointer" }}
           onClick={() => setMockupReplayKey((prev) => prev + 1)}
         >
