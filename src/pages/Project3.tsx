@@ -202,7 +202,7 @@ const chatbotDecisions = [
 ];
 
 const ux4gCompliance = [
-  { label: "Primary Color #2B318F", text: "Exact color from UX4G specification" },
+  { label: "Primary Color #3A2095", text: "Exact color from UX4G specification" },
   { label: "Noto Sans Typeface", text: "Official GoI typeface for citizen apps" },
   { label: "Walkthrough ≤ 4 screens", text: "UX4G handbook rule 29 - maintained" },
   { label: "Skip button included", text: "UX4G handbook rule 28 - implemented" },
@@ -1552,9 +1552,9 @@ const Project3 = () => {
               aria-hidden="true"
               style={{
                 position: "absolute",
-                left: "120px",
-                top: "-2px",
-                width: "959.5px",
+                left: "110px",
+                top: "0px",
+                width: "920.5px",
                 height: "auto",
                 zIndex: 1,
                 pointerEvents: "none",
@@ -1801,47 +1801,19 @@ const Project3 = () => {
           </div>
 
           <div style={{ display: "grid", gap: "20px" }}>
-            <div
-              style={{
-                background: "#F5F5F5",
-                border: "2px dashed #E5E5E5",
-                padding: "60px 20px",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ fontSize: "14px", color: "#999999" }}>
-                [ Marga Mascot Image ]
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "#999999",
-                  marginTop: "8px",
-                }}
-              >
-                Add mascot + app icon screenshot here
-              </div>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src="/Project3/marga.png"
+                alt="Marga Mascot"
+                style={{ maxWidth: "48%", height: "auto", display: "block", margin: "0 auto" }}
+              />
             </div>
-            <div
-              style={{
-                background: "#F5F5F5",
-                border: "2px dashed #E5E5E5",
-                padding: "60px 20px",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ fontSize: "14px", color: "#999999" }}>
-                [ Sign-in Screen with Marga ]
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: "#999999",
-                  marginTop: "8px",
-                }}
-              >
-                Add character welcome screen here
-              </div>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src="/Project3/onboarding.png"
+                alt="Sign-in Screen with Marga"
+                style={{ maxWidth: "48%", height: "auto", display: "block", margin: "0 auto" }}
+              />
             </div>
           </div>
         </section>
@@ -2177,8 +2149,8 @@ const Project3 = () => {
             <div
               style={{
                 width: "100%",
-                maxWidth: "360px",
-                aspectRatio: "9/16",
+                maxWidth: "400px",
+                aspectRatio: "3/4",
                 background: "#131313",
                 borderRadius: "16px",
                 border: "1px solid #E5E5E5",
@@ -2190,57 +2162,20 @@ const Project3 = () => {
                 position: "relative",
               }}
             >
-              {/* Play button */}
-              <div
+              <video
+                src="/Project3/Search.mp4"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #2B318F",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                  display: "block",
+                  objectFit: "cover",
                 }}
-              >
-                <div
-                  style={{
-                    width: "0",
-                    height: "0",
-                    borderLeft: "12px solid #2B318F",
-                    borderTop: "8px solid transparent",
-                    borderBottom: "8px solid transparent",
-                    marginLeft: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  color: "#666666",
-                  textAlign: "center",
-                }}
-              >
-                [ Scheme Discovery ]
-                <br />
-                Replace with demo video
-              </div>
-              {/* Video tag */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  background: "rgba(43,49,143,0.12)",
-                  color: "#2B318F",
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  borderRadius: "999px",
-                  padding: "4px 10px",
-                }}
-              >
-                Video Placeholder
-              </div>
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
             </div>
 
             {/* Annotation cards */}
@@ -2639,71 +2574,28 @@ const Project3 = () => {
           >
             <div
               style={{
-                width: "100%",
-                maxWidth: "360px",
-                aspectRatio: "9/16",
-                background: "#131313",
+                width: "280px",
+                height: "fit-content",
                 borderRadius: "16px",
+                overflow: "hidden",
                 border: "1px solid #E5E5E5",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
-                position: "relative",
+                background: "#131313",
+                lineHeight: 0,
               }}
             >
-              {/* Play button */}
-              <div
+              <video
+                src="/Project3/Status-Nots.mov"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #2B318F",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
                 }}
-              >
-                <div
-                  style={{
-                    width: "0",
-                    height: "0",
-                    borderLeft: "12px solid #2B318F",
-                    borderTop: "8px solid transparent",
-                    borderBottom: "8px solid transparent",
-                    marginLeft: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  color: "#666666",
-                  textAlign: "center",
-                }}
-              >
-                [ Application Status ]
-                <br />
-                Replace with demo video
-              </div>
-              {/* Video tag */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  background: "rgba(43,49,143,0.12)",
-                  color: "#2B318F",
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  borderRadius: "999px",
-                  padding: "4px 10px",
-                }}
-              >
-                Video Placeholder
-              </div>
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
             </div>
 
             {/* Annotation cards */}
@@ -2805,71 +2697,31 @@ const Project3 = () => {
           >
             <div
               style={{
-                width: "100%",
-                maxWidth: "360px",
-                aspectRatio: "9/16",
-                background: "#131313",
+                width: "280px",
+                height: "fit-content",
                 borderRadius: "16px",
+                overflow: "hidden",
                 border: "1px solid #E5E5E5",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
-                position: "relative",
+                background: "#131313",
+                lineHeight: 0,
               }}
             >
-              {/* Play button */}
-              <div
+              <video
+                src="/Project3/Onboarding.mp4"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #2B318F",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "360px",
+                  height: "auto",
+                  display: "block",
+                  position: "relative",
+                  left: "50%",
+                  transform: "translateX(-50%)",
                 }}
-              >
-                <div
-                  style={{
-                    width: "0",
-                    height: "0",
-                    borderLeft: "12px solid #2B318F",
-                    borderTop: "8px solid transparent",
-                    borderBottom: "8px solid transparent",
-                    marginLeft: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  color: "#666666",
-                  textAlign: "center",
-                }}
-              >
-                [ Onboarding Tour ]
-                <br />
-                Replace with demo video
-              </div>
-              {/* Video tag */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  background: "rgba(43,49,143,0.12)",
-                  color: "#2B318F",
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  borderRadius: "999px",
-                  padding: "4px 10px",
-                }}
-              >
-                Video Placeholder
-              </div>
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
             </div>
 
             {/* Annotation cards */}
