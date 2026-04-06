@@ -223,6 +223,56 @@ const Project3 = () => {
   const [isWhatIStudiedOpen, setIsWhatIStudiedOpen] = useState(false);
   const [processParallax, setProcessParallax] = useState({ x: 0, y: 0 });
 
+  useEffect(() => {
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>(".feature-annotation-parallax-card")
+    );
+
+    if (!cards.length) return;
+
+    let frame = 0;
+
+    const updateParallax = () => {
+      if (window.matchMedia("(max-width: 900px)").matches) {
+        cards.forEach((card) => {
+          card.style.transform = "translateY(0px)";
+        });
+        return;
+      }
+
+      const viewportCenter = window.innerHeight / 2;
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.top + rect.height / 2;
+        const distanceFromCenter = cardCenter - viewportCenter;
+        const speed = 0.1;
+        const maxShift = 66;
+        const shiftYRaw = -distanceFromCenter * speed;
+        const shiftY = Math.max(-maxShift, Math.min(maxShift, shiftYRaw));
+        card.style.transform = `translateY(${shiftY.toFixed(2)}px)`;
+      });
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        updateParallax();
+        frame = 0;
+      });
+    };
+
+    updateParallax();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   const glassCardBaseStyle = {
     position: "absolute" as const,
     background: "rgba(255,255,255,0.65)",
@@ -2046,7 +2096,7 @@ const Project3 = () => {
           </div>
         </section>
 
-        {/* FEATURE 01 - Scheme Discovery */}
+        {/* FEATURE 01 - Onboarding Walkthrough */}
         <section
           style={{
             borderTop: "1px solid #E5E5E5",
@@ -2080,7 +2130,7 @@ const Project3 = () => {
               whiteSpace: "nowrap",
             }}
           >
-            DISCOVER
+            GUIDE
           </div>
 
           {/* Left Text */}
@@ -2106,9 +2156,9 @@ const Project3 = () => {
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
-              Find the right scheme.
+              First time on Marga?
               <br />
-              Without knowing its name.
+              We walk you through everything.
             </h3>
             <p
               style={{
@@ -2118,9 +2168,9 @@ const Project3 = () => {
                 margin: "0 0 24px 0",
               }}
             >
-              Type anything - a category, a need, a single word like 'food' or 'loan' - and
-              Marga's vector database retrieves the closest matching schemes using semantic
-              search, not keyword matching.
+              A 4-step onboarding tour introduces every key feature - recommended queries,
+              the menu, notifications, and language toggle. Users can skip anytime. Built
+              exactly to UX4G handbook rule 28 and 29.
             </p>
             <div
               style={{
@@ -2132,7 +2182,8 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Powered by WaveflowDB - a next-gen vector database built by AgentAnalytics.AI
+              Skip button always visible - respecting user autonomy per UX4G reactance
+              principle.
             </div>
           </div>
 
@@ -2148,27 +2199,25 @@ const Project3 = () => {
           >
             <div
               style={{
-                width: "100%",
-                maxWidth: "400px",
-                aspectRatio: "3/4",
+                width: "280px",
+                height: "fit-content",
                 background: "#131313",
                 borderRadius: "16px",
                 border: "1px solid #E5E5E5",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
+                overflow: "hidden",
                 position: "relative",
+                lineHeight: 0,
               }}
             >
               <video
-                src="/Project3/Search.mp4"
+                src="/Project3/Onboarding.mp4"
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  width: "360px",
+                  height: "auto",
                   display: "block",
-                  objectFit: "cover",
+                  position: "relative",
+                  left: "50%",
+                  transform: "translateX(-50%)",
                 }}
                 autoPlay
                 loop
@@ -2180,49 +2229,33 @@ const Project3 = () => {
 
             {/* Annotation cards */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 top: "10%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
-                Semantic Search
+                Onboarding Steps
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Finds schemes by context, not exact name
+                UX4G rule - short, purposeful, skippable
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 bottom: "15%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
-                Ranked Results
+                Next + Skip
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Best match shown first, good match, close match below
+                Always both options visible to user
               </div>
             </div>
           </div>
@@ -2277,88 +2310,40 @@ const Project3 = () => {
           >
             <div
               style={{
-                width: "100%",
-                maxWidth: "360px",
-                aspectRatio: "9/16",
-                background: "#131313",
-                borderRadius: "16px",
+                width: "276px",
+                height: "fit-content",
+                borderRadius: "18px",
+                overflow: "hidden",
                 border: "1px solid #E5E5E5",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
-                position: "relative",
+                background: "#131313",
+                lineHeight: 0,
               }}
             >
-              {/* Play button */}
-              <div
+              <video
+                src="/Project3/form-filling.mp4"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #2B318F",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "280px",
+                  height: "auto",
+                  display: "block",
+                  position: "relative",
+                  left: "50%",
+                  transform: "translateX(-50%)",
                 }}
-              >
-                <div
-                  style={{
-                    width: "0",
-                    height: "0",
-                    borderLeft: "12px solid #2B318F",
-                    borderTop: "8px solid transparent",
-                    borderBottom: "8px solid transparent",
-                    marginLeft: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  color: "#666666",
-                  textAlign: "center",
-                }}
-              >
-                [ Form Filling ]
-                <br />
-                Replace with demo video
-              </div>
-              {/* Video tag */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  background: "rgba(43,49,143,0.12)",
-                  color: "#2B318F",
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  borderRadius: "999px",
-                  padding: "4px 10px",
-                }}
-              >
-                Video Placeholder
-              </div>
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
             </div>
 
             {/* Annotation cards */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                top: "5%",
+                top: "20%",
                 left: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -2369,19 +2354,11 @@ const Project3 = () => {
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                top: "40%",
+                top: "60%",
                 left: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -2392,19 +2369,11 @@ const Project3 = () => {
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                bottom: "10%",
+                bottom: "-9%",
                 left: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -2600,19 +2569,11 @@ const Project3 = () => {
 
             {/* Annotation cards */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 top: "15%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -2623,19 +2584,11 @@ const Project3 = () => {
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 bottom: "20%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -2648,7 +2601,7 @@ const Project3 = () => {
           </div>
         </section>
 
-        {/* FEATURE 04 - Onboarding Walkthrough (FLIPPED) */}
+        {/* FEATURE 04 - Scheme Discovery (FLIPPED) */}
         <section
           style={{
             borderTop: "1px solid #E5E5E5",
@@ -2682,7 +2635,7 @@ const Project3 = () => {
               whiteSpace: "nowrap",
             }}
           >
-            GUIDE
+            DISCOVER
           </div>
 
           {/* Left Video Card */}
@@ -2697,24 +2650,27 @@ const Project3 = () => {
           >
             <div
               style={{
-                width: "280px",
-                height: "fit-content",
+                width: "100%",
+                maxWidth: "400px",
+                aspectRatio: "3/4",
                 borderRadius: "16px",
-                overflow: "hidden",
                 border: "1px solid #E5E5E5",
                 background: "#131313",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "12px",
                 lineHeight: 0,
               }}
             >
               <video
-                src="/Project3/Onboarding.mp4"
+                src="/Project3/Search.mp4"
                 style={{
-                  width: "360px",
-                  height: "auto",
+                  width: "100%",
+                  height: "100%",
                   display: "block",
-                  position: "relative",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+                  objectFit: "cover",
                 }}
                 autoPlay
                 loop
@@ -2726,49 +2682,33 @@ const Project3 = () => {
 
             {/* Annotation cards */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 top: "20%",
                 left: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
-                ≤ 4 Steps
+                Semantic Search
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                UX4G rule - short, purposeful, skippable
+                Finds schemes by context, not exact name
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 bottom: "20%",
                 left: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
-                Next + Skip
+                Ranked Results
               </div>
               <div style={{ color: "#666666", lineHeight: 1.4 }}>
-                Always both options visible to user
+                Best match shown first, good match, close match below
               </div>
             </div>
           </div>
@@ -2796,9 +2736,9 @@ const Project3 = () => {
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
-              First time on Marga?
+              Find the right scheme.
               <br />
-              We walk you through everything.
+              Without knowing its name.
             </h3>
             <p
               style={{
@@ -2808,9 +2748,9 @@ const Project3 = () => {
                 margin: "0 0 24px 0",
               }}
             >
-              A 4-step onboarding tour introduces every key feature - recommended queries,
-              the menu, notifications, and language toggle. Users can skip anytime. Built
-              exactly to UX4G handbook rule 28 and 29.
+              Type anything - a category, a need, a single word like 'food' or 'loan' - and
+              Marga's vector database retrieves the closest matching schemes using semantic
+              search, not keyword matching.
             </p>
             <div
               style={{
@@ -2822,8 +2762,7 @@ const Project3 = () => {
                 color: "#4a4a4a",
               }}
             >
-              Skip button always visible - respecting user autonomy per UX4G reactance
-              principle.
+              Powered by WaveflowDB - a next-gen vector database built by AgentAnalytics.AI
             </div>
           </div>
         </section>
@@ -2987,19 +2926,11 @@ const Project3 = () => {
 
             {/* Annotation cards */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 top: "5%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -3010,19 +2941,11 @@ const Project3 = () => {
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 top: "40%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
@@ -3033,19 +2956,11 @@ const Project3 = () => {
               </div>
             </div>
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
                 bottom: "10%",
                 right: "10px",
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
-                borderRadius: "10px",
-                padding: "14px 18px",
-                maxWidth: "140px",
-                fontSize: "11px",
-                fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               <div style={{ fontWeight: "bold", color: "#2B318F", marginBottom: "4px" }}>
