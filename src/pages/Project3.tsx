@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, type MouseEvent } from "react";
+﻿import { useEffect, useState } from "react";
 import typographyImage from "../../public/Project3/typography.png";
 import graphLineImage from "../../public/Project3/graph-line.png";
 import colorPaletteImage from "../../public/Project3/color-pallete.png";
@@ -221,7 +221,6 @@ const Project3 = () => {
     window.scrollTo(0, 0);
   }, []);
   const [isWhatIStudiedOpen, setIsWhatIStudiedOpen] = useState(false);
-  const [processParallax, setProcessParallax] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const cards = Array.from(
@@ -235,7 +234,8 @@ const Project3 = () => {
     const updateParallax = () => {
       if (window.matchMedia("(max-width: 900px)").matches) {
         cards.forEach((card) => {
-          card.style.transform = "translateY(0px)";
+          const baseTransform = card.dataset.parallaxBaseTransform ?? "";
+          card.style.transform = baseTransform;
         });
         return;
       }
@@ -250,7 +250,8 @@ const Project3 = () => {
         const maxShift = 66;
         const shiftYRaw = -distanceFromCenter * speed;
         const shiftY = Math.max(-maxShift, Math.min(maxShift, shiftYRaw));
-        card.style.transform = `translateY(${shiftY.toFixed(2)}px)`;
+        const baseTransform = card.dataset.parallaxBaseTransform ?? "";
+        card.style.transform = `${baseTransform}${baseTransform ? " " : ""}translateY(${shiftY.toFixed(2)}px)`;
       });
     };
 
@@ -294,24 +295,6 @@ const Project3 = () => {
   };
   const glassCardBulletTextStyle = {
     fontSize: "16px",
-  };
-  const handleProcessParallax = (event: MouseEvent<HTMLElement>) => {
-    if (window.innerWidth <= 900) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const normalizedX = (event.clientX - rect.left) / rect.width - 0.5;
-    const normalizedY = (event.clientY - rect.top) / rect.height - 0.5;
-    setProcessParallax({
-      x: normalizedX * 16,
-      y: normalizedY * 16,
-    });
-  };
-  const resetProcessParallax = () => {
-    setProcessParallax({ x: 0, y: 0 });
-  };
-  const getProcessCardTransform = (baseTransform: string, strength: number) => {
-    const parallaxX = processParallax.x * strength;
-    const parallaxY = processParallax.y * strength;
-    return `${baseTransform}${baseTransform ? " " : ""}translate(${parallaxX}px, ${parallaxY}px)`;
   };
 
   const renderRoleIcon = (icon: string) => {
@@ -1290,8 +1273,6 @@ const Project3 = () => {
             position: "relative",
           }}
           className="orbital-section"
-          onMouseMove={handleProcessParallax}
-          onMouseLeave={resetProcessParallax}
         >
           {/* SVG Orbital Rings */}
           <svg
@@ -1414,13 +1395,12 @@ const Project3 = () => {
           <div style={{ position: "absolute", width: "100%", height: "100%", maxWidth: "800px", zIndex: 2 }}>
             {/* Card 1 - Empathize */}
             <div
+              className="feature-annotation-parallax-card"
+              data-parallax-base-transform="translateX(-50%)"
               style={{
                 ...glassCardBaseStyle,
                 top: "0%",
                 left: "50%",
-                transform: getProcessCardTransform("translateX(-50%)", 1.2),
-                transition: "transform 0.25s ease-out",
-                willChange: "transform",
               }}
             >
               <div style={{ top: "-16%", left: "-8%", fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1436,13 +1416,11 @@ const Project3 = () => {
 
             {/* Card 2 - Define */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 ...glassCardBaseStyle,
                 top: "12%",
                 right: "-8%",
-                transform: getProcessCardTransform("", 0.9),
-                transition: "transform 0.25s ease-out",
-                willChange: "transform",
               }}
             >
               <div style={{fontWeight: "bold", marginBottom: "10px", color: "#131313"}}>
@@ -1458,13 +1436,11 @@ const Project3 = () => {
 
             {/* Card 3 - Ideate */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 ...glassCardBaseStyle,
                 top: "46%",
                 right: "-14%",
-                transform: getProcessCardTransform("", 1.05),
-                transition: "transform 0.25s ease-out",
-                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1480,13 +1456,12 @@ const Project3 = () => {
 
             {/* Card 4 - Prototype */}
             <div
+              className="feature-annotation-parallax-card"
+              data-parallax-base-transform="translateX(-50%)"
               style={{
                 ...glassCardBaseStyle,
                 bottom: "-12%",
                 left: "50%",
-                transform: getProcessCardTransform("translateX(-50%)", 1.15),
-                transition: "transform 0.25s ease-out",
-                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
@@ -1502,13 +1477,11 @@ const Project3 = () => {
 
             {/* Card 5 - Test */}
             <div
+              className="feature-annotation-parallax-card"
               style={{
                 ...glassCardBaseStyle,
                 top: "44%",
                 left: "-12%",
-                transform: getProcessCardTransform("", 0.85),
-                transition: "transform 0.25s ease-out",
-                willChange: "transform",
               }}
             >
               <div style={{ fontWeight: "bold", marginBottom: "10px", color: "#131313" }}>
