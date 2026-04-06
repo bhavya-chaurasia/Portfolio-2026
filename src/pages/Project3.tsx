@@ -2858,70 +2858,33 @@ const Project3 = () => {
             <div
               style={{
                 width: "100%",
-                maxWidth: "360px",
-                aspectRatio: "9/16",
-                background: "#131313",
+                maxWidth: "400px",
+                aspectRatio: "3/4",
                 borderRadius: "16px",
                 border: "1px solid #E5E5E5",
+                background: "#131313",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "12px",
-                position: "relative",
+                lineHeight: 0,
               }}
             >
-              {/* Play button */}
-              <div
+              <video
+                src="/Project3/v2t.mp4"
                 style={{
-                  width: "48px",
-                  height: "48px",
-                  border: "2px solid #2B318F",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "340px",
+                  height: "100%",
+                  display: "block",
+                  objectFit: "cover",
                 }}
-              >
-                <div
-                  style={{
-                    width: "0",
-                    height: "0",
-                    borderLeft: "12px solid #2B318F",
-                    borderTop: "8px solid transparent",
-                    borderBottom: "8px solid transparent",
-                    marginLeft: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  color: "#666666",
-                  textAlign: "center",
-                }}
-              >
-                [ Voice & Accessibility ]
-                <br />
-                Replace with demo video
-              </div>
-              {/* Video tag */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  left: "12px",
-                  background: "rgba(43,49,143,0.12)",
-                  color: "#2B318F",
-                  fontSize: "20px",
-                  fontFamily: "'Courier New', monospace",
-                  borderRadius: "999px",
-                  padding: "4px 10px",
-                }}
-              >
-                Video Placeholder
-              </div>
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
             </div>
 
             {/* Annotation cards */}
