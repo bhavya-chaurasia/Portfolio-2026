@@ -2315,7 +2315,7 @@ const Project3 = () => {
               className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                top: "20%",
+                top: "16%",
                 left: "10px",
               }}
             >
@@ -2330,7 +2330,7 @@ const Project3 = () => {
               className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                top: "60%",
+                top: "52%",
                 left: "10px",
               }}
             >
@@ -2345,7 +2345,7 @@ const Project3 = () => {
               className="feature-annotation-parallax-card"
               style={{
                 position: "absolute",
-                bottom: "-9%",
+                bottom: "-1%",
                 left: "10px",
               }}
             >
