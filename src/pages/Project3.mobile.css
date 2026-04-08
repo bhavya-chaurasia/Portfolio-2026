@@ -1,0 +1,18 @@
+@media (max-width: 900px) {
+  .two-column-section {
+    grid-template-columns: 1fr !important;
+  }
+
+  .two-column-section > div:last-child {
+    border-left: none !important;
+    padding-left: 0 !important;
+    height: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .two-column-section {
+    grid-template-columns: 1fr !important;
+  }
+}
