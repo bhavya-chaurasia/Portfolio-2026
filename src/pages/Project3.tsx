@@ -72,7 +72,7 @@ const researchSources = [
   },
   {
     type: "Design System",
-    title: "UX4G Government Handbook + Figma Kit",
+    title: "UX4G Government Handbook + UX4G Figma Kit",
     description:
       "Official GoI UX guidelines for government apps. Defined color system, typography, walkthrough rules, accessibility standards, and navigation patterns.",
     tag: "Design Compliance",
