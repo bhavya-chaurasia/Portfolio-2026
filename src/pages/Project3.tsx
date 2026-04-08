@@ -3,6 +3,7 @@ import typographyImage from "../../public/Project3/typography.png";
 import graphLineImage from "../../public/Project3/graph-line.png";
 import colorPaletteImage from "../../public/Project3/color-pallete.png";
 import "./Project3.css";
+import "./Project3.mobile.css";
 
 const contributions = [
   "UX Research",
@@ -369,11 +370,12 @@ const Project3 = () => {
       }}
     >
       <style>{`[style*="Courier New"] { font-size: 18px !important; }`}</style>
+
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "48px 48px 0",
+          padding: "80px 24px 0",
         }}
       >
         {/* BLOCK 1 - What is Marga */}
@@ -440,6 +442,7 @@ const Project3 = () => {
 
         {/* BLOCK 3 - Challenge */}
         <section
+          id="challenge"
           className="two-column-section"
         >
           <div>
@@ -548,6 +551,7 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 1 - Opening */}
         <section
+          id="the-problem"
           className="two-column-section"
         >
           <div>
@@ -638,6 +642,7 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 3 - Pain Points */}
         <section
+          id="pain-points"
           className="two-column-section"
         >
           <div>
@@ -699,6 +704,7 @@ const Project3 = () => {
 
         {/* PROBLEM BLOCK 4 - HMW */}
         <section
+          id="hmw"
           className="two-column-section"
         >
           <div>
@@ -800,6 +806,7 @@ const Project3 = () => {
 
         {/* RESEARCH BLOCK 1 - Opening */}
         <section
+          id="research"
           className="two-column-section"
         >
           <div>
@@ -1001,6 +1008,7 @@ const Project3 = () => {
 
         {/* RESEARCH BLOCK 3 - User Personas */}
         <section
+          id="user-personas"
           className="two-column-section"
         >
           <div>
@@ -1221,6 +1229,7 @@ const Project3 = () => {
 
         {/* PROCESS BLOCK 1 - Opening */}
         <section
+          id="ux-process"
           className="two-column-section"
         >
           <div>
@@ -1575,9 +1584,9 @@ const Project3 = () => {
               aria-hidden="true"
               style={{
                 position: "absolute",
-                left: "110px",
-                top: "0px",
-                width: "920.5px",
+                left: "117px",
+                top: "-1px",
+                width: "960px",
                 height: "auto",
                 zIndex: 1,
                 pointerEvents: "none",
@@ -1644,6 +1653,7 @@ const Project3 = () => {
 
         {/* DECISIONS BLOCK 1 - Opening */}
         <section
+          id="design-decisions"
           className="two-column-section"
         >
           <div>
@@ -3078,7 +3088,7 @@ const Project3 = () => {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "0 24px",
         }}
       >
         {/* ACCESSIBILITY BLOCK 1 - Opening */}
@@ -3693,11 +3703,12 @@ const Project3 = () => {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "0 24px",
         }}
       >
         {/* IMPACT BLOCK 1 - Opening */}
         <section
+          id="impact"
           className="two-column-section"
         >
           <div>
@@ -3735,7 +3746,7 @@ const Project3 = () => {
               Out of 150+ teams competing in the Telangana AI Rising Grand Challenge,
               Marga reached the final round of 20. We earned $5,000 in AWS credits. And
               our platform was presented by the Chief Minister of Goa at a national MSME
-              event. In two weeks.
+              event
             </p>
           </div>
         </section>
@@ -4224,10 +4235,11 @@ const Project3 = () => {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "0 24px",
         }}
       >
         <section
+          id="if-deployed"
           style={{
             borderTop: "1px solid #E5E5E5",
             borderBottom: "1px solid #E5E5E5",
@@ -4293,7 +4305,7 @@ const Project3 = () => {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 48px",
+          padding: "0 24px",
         }}
       >
         {/* LEARNINGS BLOCK 1 - Opening */}
@@ -4948,10 +4960,6 @@ const Project3 = () => {
             line-height: 1.65;
           }
 
-          body {
-            padding: 0 20px;
-          }
-
           .role-stats {
             grid-template-columns: 1fr !important;
           }
@@ -5102,6 +5110,38 @@ const Project3 = () => {
           .cta-buttons {
             grid-template-columns: 1fr !important;
           }
+
+          .table-of-contents {
+            display: none !important;
+          }
+        }
+
+        @media (max-width: 1400px) {
+          .table-of-contents {
+            width: 240px !important;
+            padding: 24px 16px !important;
+          }
+
+          .table-of-contents a {
+            font-size: 12px !important;
+          }
+        }
+
+        .table-of-contents::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .table-of-contents::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .table-of-contents::-webkit-scrollbar-thumb {
+          background: #D0D0D0;
+          border-radius: 3px;
+        }
+
+        .table-of-contents::-webkit-scrollbar-thumb:hover {
+          background: #999999;
         }
       `}</style>
     </div>
