@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/components/Header.css';
 
 interface HeaderProps {
@@ -7,6 +8,8 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ onThemeToggle, theme }) => {
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <div className="header-content">
@@ -18,6 +21,21 @@ const Header: FC<HeaderProps> = ({ onThemeToggle, theme }) => {
         </div>
 
         <nav className="nav">
+          <button
+            onClick={() => navigate('/work')}
+            className="nav-link"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 'inherit',
+              color: 'inherit',
+              padding: '8px 16px',
+              fontFamily: 'inherit',
+            }}
+          >
+            Work
+          </button>
           <button
             className="theme-toggle"
             onClick={onThemeToggle}

@@ -15,4 +15,35 @@
   .two-column-section {
     grid-template-columns: 1fr !important;
   }
+
+  .metadata-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    padding: 16px 0 !important;
+    max-width: 360px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .metadata-bar > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+
+  .metadata-bar > div > div:first-child {
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+    white-space: nowrap;
+  }
+
+  .metadata-bar > div > div:last-child {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap;
+  }
 }

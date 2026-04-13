@@ -407,7 +407,7 @@ const Project3 = () => {
             borderTop: "1px solid #E5E5E5",
             borderBottom: "1px solid #E5E5E5",
             padding: "24px 0",
-            marginBottom: "100px",
+            marginBottom: "24px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
             gap: "24px",
@@ -4972,7 +4972,34 @@ const Project3 = () => {
           }
 
           .metadata-bar {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 14px !important;
+            padding: 16px 0 !important;
+            max-width: 360px;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+
+          .metadata-bar > div {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 4px;
+          }
+
+          .metadata-bar > div > div:first-child {
+            font-size: 11px !important;
+            line-height: 1.25 !important;
+            white-space: nowrap;
+          }
+
+          .metadata-bar > div > div:last-child {
+            font-size: 9px !important;
+            line-height: 1.2 !important;
+            letter-spacing: 0.04em !important;
+            white-space: nowrap;
           }
 
           .scale-stats {
