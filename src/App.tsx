@@ -12,6 +12,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Project1 from "./pages/project1";
 import Project2 from "./pages/Project2";
 import Project3 from "./pages/Project3";
+import Work from "./pages/Work";
 import { Link } from "react-router-dom";
 import { project1Video } from "./constants/project1Images";
 
@@ -459,6 +460,7 @@ transparency, cross-selling, and service adoption.`,
     <Route path="/project-2" element={withSiteChrome(<Project2 />, undefined, false, "dark")} />
     <Route path="/project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
     <Route path="/Project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
+    <Route path="/work" element={withSiteChrome(<Work />, undefined, false)} />
   </Routes>
 );
 };

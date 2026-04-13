@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import '../styles/components/Header.css';
 import { LinkedInIcon, MailIcon, PhoneIcon, MoonIcon, SunIcon } from "./icons/icons";
 import { THEMES } from "../constants/themes";
@@ -16,6 +17,7 @@ const Navbar: FC<NavbarProps> = ({
   showThemeToggle = true,
   themeOverride,
 }) => {
+  const navigate = useNavigate();
   const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
   const t = isDarkTheme ? THEMES.dark : THEMES.light;
 
@@ -78,7 +80,28 @@ const Navbar: FC<NavbarProps> = ({
         <a href="tel:+919109502001" className="nav-icon-link" style={iconLinkStyle}><PhoneIcon /></a>
       </div>
       <div className="nav-links" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
-        {['Work', 'About', 'Resume'].map(l => (
+        <button
+          onClick={() => navigate('/work')}
+          className="nav-link"
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 13,
+            fontWeight: 400,
+            letterSpacing: '0.04em',
+            color: t.ink2,
+            textDecoration: 'none',
+            padding: '6px 12px',
+            borderRadius: 20,
+            transition: 'color 0.2s, background 0.2s',
+            whiteSpace: 'nowrap',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Work
+        </button>
+        {['About', 'Resume'].map(l => (
           <a key={l} href="#" className="nav-link" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400, letterSpacing: '0.04em', color: t.ink2, textDecoration: 'none', padding: '6px 12px', borderRadius: 20, transition: 'color 0.2s, background 0.2s', whiteSpace: 'nowrap' }}>
             {l}
           </a>
