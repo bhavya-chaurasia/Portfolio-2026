@@ -71,9 +71,25 @@ const Navbar: FC<NavbarProps> = ({
         transition: 'background 0.3s, border-color 0.3s',
         columnGap: 16,
       }}>
-      <a className="nav-brand" href="#" style={{ fontFamily: "'Argine', serif", fontSize: 22, fontWeight: 700, fontStyle: 'italic', color: t.ink, letterSpacing: '0.01em', textDecoration: 'none' }}>
+      <button
+        onClick={() => navigate('/')}
+        className="nav-brand"
+        style={{
+          fontFamily: "'Argine', serif",
+          fontSize: 22,
+          fontWeight: 700,
+          fontStyle: 'italic',
+          color: t.ink,
+          letterSpacing: '0.01em',
+          textDecoration: 'none',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+        }}
+      >
         Bhavya
-      </a>
+      </button>
       <div className="nav-social" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
         <a href="https://in.linkedin.com/in/bhavya-chaurasia" className="nav-icon-link" style={iconLinkStyle}><LinkedInIcon /></a>
         <a href="mailto:contact@bhavyachaurasia.in" className="nav-icon-link" style={iconLinkStyle}><MailIcon /></a>
@@ -101,8 +117,29 @@ const Navbar: FC<NavbarProps> = ({
         >
           Work
         </button>
-        {['About', 'Resume'].map(l => (
-          <a key={l} href="#" className="nav-link" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400, letterSpacing: '0.04em', color: t.ink2, textDecoration: 'none', padding: '6px 12px', borderRadius: 20, transition: 'color 0.2s, background 0.2s', whiteSpace: 'nowrap' }}>
+        <button
+          onClick={() => navigate('/about')}
+          className="nav-link"
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 13,
+            fontWeight: 400,
+            letterSpacing: '0.04em',
+            color: t.ink2,
+            textDecoration: 'none',
+            padding: '6px 12px',
+            borderRadius: 20,
+            transition: 'color 0.2s, background 0.2s',
+            whiteSpace: 'nowrap',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          About
+        </button>
+        {['Resume'].map(l => (
+          <a key={l} href="https://www.dropbox.com/scl/fi/eokdeulwwln2745kcw189/bhavya_resume.pdf?rlkey=qwpxztop47vxg5ug3tsb9e952&st=pmwulk6g&dl=0" className="nav-link" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400, letterSpacing: '0.04em', color: t.ink2, textDecoration: 'none', padding: '6px 12px', borderRadius: 20, transition: 'color 0.2s, background 0.2s', whiteSpace: 'nowrap' }} target="_blank" rel="noopener noreferrer">
             {l}
           </a>
         ))}

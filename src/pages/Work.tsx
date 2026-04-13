@@ -1,392 +1,388 @@
-import { useEffect } from "react";
+import { useEffect, useState, FC } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Work.css";
+import Lottie from "lottie-react";
+import marutiAnimation from "../components/Mobile-app-showcase2.json";
+import msmeChatbotAnimation from "../components/Mobile-app-showcase3.json";
+import { THEMES } from "../constants/themes";
+import { project1Video } from "../constants/project1Images";
 
-const workProjects = [
-  {
-    id: "project3",
-    title: "Marga",
-    subtitle: "GenAI Chatbot for MSME Government Schemes",
-    tags: ["UX Design", "AI", "Product Design"],
-    description: "A voice-first chatbot built in 2 weeks for rural MSME owners across Telangana & AP to discover and apply for government schemes - in Telugu or English.",
-    stats: [
-      { label: "Top 20 of 150+", value: "Teams" },
-      { label: "$5K", value: "AWS Credits" },
-      { label: "2 Weeks", value: "Build Time" },
-    ],
-    image: "/Project3/marga-thumb.png",
-    link: "#/project3",
-  },
-  {
-    id: "project2",
-    title: "Project 2",
-    subtitle: "Coming Soon",
-    tags: ["Design", "Research"],
-    description: "A detailed case study coming soon.",
-    stats: [
-      { label: "TBD", value: "" },
-    ],
-    image: "/project-placeholder.png",
-    link: "#/project2",
-    disabled: true,
-  },
-  {
-    id: "project1",
-    title: "Project 1",
-    subtitle: "Coming Soon",
-    tags: ["Design"],
-    description: "A detailed case study coming soon.",
-    stats: [
-      { label: "TBD", value: "" },
-    ],
-    image: "/project-placeholder.png",
-    link: "#/project1",
-    disabled: true,
-  },
-];
+interface WorkPageProps {
+  dark?: boolean;
+}
 
-const Work = () => {
+const Work: FC<WorkPageProps> = ({ dark = false }) => {
   const navigate = useNavigate();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [isMobileView, setIsMobileView] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth <= 900 : false
+  );
+
+  const t = dark ? THEMES.dark : THEMES.light;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleProjectClick = (projectId: string, disabled?: boolean) => {
-    if (!disabled) {
-      navigate(`/project3`);
-    }
-  };
+  useEffect(() => {
+    const onResize = () => setIsMobileView(window.innerWidth <= 900);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const projectCards = [
+    {
+      num: "01",
+      tags: "UX DESIGN, AI, PRODUCT DESIGN",
+      title: "Workflow Studio",
+      desc: "Designing AI experiences that enable anyone to automate workflows.",
+      link: "/project-1",
+      img: project1Video,
+      isVideo: true,
+    },
+    {
+      num: "02",
+      tags: "BUSINESS IMPACT, AI, UX DESIGN",
+      title: "Maruti –⁠ Service Experience",
+      desc: `Reimagining servicing through improving
+transparency, cross-selling, and service adoption.`,
+      link: "/project-2",
+      img: "/src/assets/Frame1-maruti.svg",
+      isVideo: false,
+    },
+    {
+      num: "03",
+      tags: "UX Design, AI, Government",
+      title: "Marga - AI Conversational Chatbot for MSMEs",
+      desc: "Dummy subtitle for now.",
+      link: "/project-3",
+      img: "/src/assets/Frame1-maruti.svg",
+      isVideo: false,
+    },
+  ];
 
   return (
     <div
       style={{
-        backgroundColor: "#FFFFFF",
-        color: "#131313",
-        fontFamily: "'Courier New', monospace",
-        lineHeight: 1.8,
+        background: t.bg,
+        color: t.ink,
+        fontFamily: "'DM Sans', sans-serif",
+        fontWeight: 300,
+        transition: "background 0.3s, color 0.3s",
         minHeight: "100vh",
+        width: "100vw",
+        maxWidth: "100vw",
+        overflowX: "hidden",
+        boxSizing: "border-box",
       }}
     >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "120px 24px 80px",
-        }}
+      <style>{`
+        .card-wrap .view-link {
+          position: relative;
+          padding-bottom: 4px;
+        }
+        .card-wrap .view-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background: ${t.ink};
+          transition: width 0.35s ease;
+        }
+        .card-wrap:hover .view-link::after {
+          width: 100%;
+        }
+        @media (max-width: 900px) {
+          .works-section {
+            padding: 72px 24px !important;
+          }
+          .works-heading {
+            margin-bottom: 40px !important;
+          }
+          .project-card {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+            margin-bottom: 72px !important;
+          }
+          .project-card .card-media {
+            order: 1;
+          }
+          .project-card .card-content {
+            order: 2;
+            align-items: flex-start !important;
+            text-align: left !important;
+          }
+          .project-card .card-desc {
+            max-width: 100% !important;
+            font-size: 16px !important;
+          }
+        }
+      `}</style>
+
+      <section
+        id="works"
+        className="works-section"
+        style={{ padding: "120px 10vw", position: "relative", zIndex: 2 }}
       >
-        {/* Hero Section */}
-        <section
-          style={{
-            marginBottom: "120px",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "13px",
-              color: "#888888",
-              letterSpacing: "0.5px",
-              marginBottom: "24px",
-              fontWeight: 400,
-            }}
-          >
-            Work
-          </div>
+        {/* NEW: Hero heading with subtext */}
+        <div style={{ marginBottom: "100px" }}>
           <h1
             style={{
-              fontSize: "clamp(42px, 6vw, 64px)",
-              fontWeight: 700,
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: "clamp(48px, 6vw, 72px)",
+              fontWeight: 400,
+              fontStyle: "italic",
+              color: t.ink,
               margin: "0 0 24px 0",
               lineHeight: 1.1,
-              letterSpacing: "-1.5px",
-              color: "#131313",
-              fontFamily:
-                "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
             }}
           >
             Latest Shenanigans
           </h1>
           <p
             style={{
-              fontSize: "20px",
-              color: "#444444",
-              fontWeight: 400,
-              lineHeight: 1.6,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "clamp(16px, 2vw, 20px)",
+              fontWeight: 300,
+              color: t.ink2,
               margin: 0,
               maxWidth: "700px",
+              lineHeight: 1.6,
             }}
           >
-            A collection of design problems solved. From research to impact, here is how I approach product design and user experience.
+            A selection of design problems solved. From research to real-world impact, here's how I approach product design, accessibility, and user experience.
           </p>
-        </section>
+        </div>
 
-        {/* Projects Grid */}
-        <section>
+        {/* Project cards */}
+        {projectCards.map((card, i) => (
           <div
+            key={i}
+            className="card-wrap project-card"
+            onMouseEnter={() => setHoveredCard(i)}
+            onMouseLeave={() => setHoveredCard(null)}
+            onClick={() => navigate(card.link)}
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
-              gap: "40px",
+              gridTemplateColumns: i % 2 === 0 ? "1.1fr 0.9fr" : "0.9fr 1.1fr",
+              gap: 100,
+              alignItems: "center",
+              marginBottom: 140,
+              cursor: "pointer",
             }}
-            className="work-projects-grid"
           >
-            {workProjects.map((project) => (
+            {/* Image */}
+            {i % 2 === 0 && (
               <div
-                key={project.id}
-                onClick={() => handleProjectClick(project.id, project.disabled)}
+                className="card-media"
                 style={{
-                  cursor: project.disabled ? "not-allowed" : "pointer",
-                  opacity: project.disabled ? 0.6 : 1,
-                  transition: "all 0.3s ease",
-                }}
-                className="work-project-card"
-                onMouseEnter={(e) => {
-                  if (!project.disabled) {
-                    e.currentTarget.style.transform = "translateY(-8px)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  background: i === 0 ? "#f5ede4" : t.btn,
+                  aspectRatio: "4/3",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
                 }}
               >
-                {/* Project Image */}
-                <div
-                  style={{
-                    width: "100%",
-                    aspectRatio: "16/9",
-                    backgroundColor: "#F5F5F5",
-                    borderRadius: "12px",
-                    marginBottom: "24px",
-                    overflow: "hidden",
-                    border: "1px solid #E5E5E5",
-                  }}
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
+                {i === 0 ? (
+                  <video
+                    src={card.img}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      display: "block",
                     }}
                   />
-                </div>
-
-                {/* Project Info */}
-                <div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#888888",
-                      letterSpacing: "0.5px",
-                      marginBottom: "12px",
-                      display: "flex",
-                      gap: "8px",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {project.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-
-                  <h2
-                    style={{
-                      fontSize: "28px",
-                      fontWeight: 700,
-                      margin: "0 0 8px 0",
-                      lineHeight: 1.2,
-                      color: "#131313",
-                      fontFamily:
-                        "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                    }}
-                  >
-                    {project.title}
-                  </h2>
-
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#666666",
-                      margin: "0 0 16px 0",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {project.subtitle}
-                  </p>
-
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#999999",
-                      margin: "0 0 24px 0",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* Stats */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: project.stats.length > 1 ? "repeat(auto-fit, minmax(100px, 1fr))" : "1fr",
-                      gap: "16px",
-                      borderTop: "1px solid #E5E5E5",
-                      paddingTop: "16px",
-                    }}
-                  >
-                    {project.stats.map((stat) => (
-                      <div key={stat.label}>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: "bold",
-                            color: "#2B318F",
-                            fontFamily:
-                              "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                          }}
-                        >
-                          {stat.value}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "11px",
-                            color: "#999999",
-                            letterSpacing: "0.05em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {stat.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* CTA Arrow */}
-                {!project.disabled && (
-                  <div
-                    style={{
-                      marginTop: "24px",
-                      fontSize: "20px",
-                      color: "#2B318F",
-                      fontWeight: "bold",
-                      transition: "transform 0.3s ease",
-                    }}
-                    className="project-cta-arrow"
-                  >
-                    Read Case Study →
-                  </div>
-                )}
-
-                {project.disabled && (
-                  <div
-                    style={{
-                      marginTop: "24px",
-                      fontSize: "14px",
-                      color: "#999999",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    Coming soon
-                  </div>
+                ) : (
+                  isMobileView || hoveredCard === i ? (
+                    <Lottie
+                      animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
+                      loop
+                      autoplay
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  ) : (
+                    <img
+                      src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                      alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  )
                 )}
               </div>
-            ))}
-          </div>
-        </section>
+            )}
 
-        {/* Divider */}
-        <div
-          style={{
-            borderTop: "1px solid #E5E5E5",
-            margin: "120px 0 80px 0",
-          }}
-        />
+            {/* Text */}
+            <div className="card-content" style={{ display: "flex", flexDirection: "column", justifyContent: "center" , ...(i % 2 !== 0 ? { alignItems: "flex-end", textAlign: "right" as const } : {}) }}>
+              <span
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontStyle: "italic",
+                  fontSize: "clamp(42px, 5vw, 64px)",
+                  color: t.ink3,
+                  fontWeight: 400,
+                  lineHeight: 1,
+                  marginBottom: 20,
+                }}
+              >
+                {card.num}
+              </span>
+              <p
+                style={{
+                  fontSize: 12,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: t.ink3,
+                  marginBottom: 12,
+                  fontWeight: 500,
+                }}
+              >
+                {card.tags}
+              </p>
+              <h3
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontStyle: "italic",
+                  fontSize: "clamp(26px, 3vw, 38px)",
+                  fontWeight: 400,
+                  color: t.ink,
+                  marginBottom: 14,
+                  lineHeight: 1.3,
+                }}
+              >
+                {card.title}
+              </h3>
+              <p
+                className="card-desc"
+                style={{
+                  fontSize: 17,
+                  color: t.ink2,
+                  lineHeight: 1.6,
+                  marginBottom: 28,
+                  maxWidth: 380,
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {card.desc}
+              </p>
+              <a
+                href={card.link}
+                className="view-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(card.link);
+                }}
+                style={{
+                  fontSize: 14,
+                  color: t.ink,
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  width: "fit-content",
+                }}
+              >
+                View project <span style={{ fontSize: 16 }}>&rarr;</span>
+              </a>
+            </div>
+
+            {/* Image for odd rows (right side) */}
+            {i % 2 !== 0 && (
+              <div
+                className="card-media"
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  background: t.btn,
+                  aspectRatio: "4/3",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {isMobileView || hoveredCard === i ? (
+                  <Lottie
+                    animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  <img
+                    src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                    alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        ))}
 
         {/* CTA Section */}
-        <section
+        <div
           style={{
+            marginTop: 12,
+            padding: "56px 0 48px",
             textAlign: "center",
-            maxWidth: "600px",
-            margin: "0 auto",
           }}
         >
-          <div
+          <h3
             style={{
-              fontSize: "13px",
-              color: "#888888",
-              letterSpacing: "0.5px",
-              marginBottom: "24px",
-              textTransform: "uppercase",
-            }}
-          >
-            Interested?
-          </div>
-          <h2
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              margin: "0 0 24px 0",
+              fontFamily: "'Libre Baskerville', serif",
+              fontStyle: "italic",
+              fontSize: "clamp(26px, 3vw, 38px)",
+              fontWeight: 400,
+              color: t.ink,
+              marginBottom: 14,
               lineHeight: 1.3,
-              color: "#131313",
-              fontFamily:
-                "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
             }}
           >
-            Let's work together on your next problem.
-          </h2>
-          <button
+            Lets talk
+          </h3>
+          <p
             style={{
-              backgroundColor: "#2B318F",
-              color: "#FFFFFF",
-              border: "none",
-              borderRadius: "8px",
-              padding: "14px 40px",
-              fontSize: "14px",
-              fontWeight: 600,
-              fontFamily:
-                "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              marginTop: "24px",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#1F2364";
-              e.currentTarget.style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#2B318F";
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-            onClick={() => {
-              // Navigate to contact or scroll to contact section
-              window.location.href = "#/contact";
+              fontSize: 17,
+              color: t.ink2,
+              lineHeight: 1.6,
+              maxWidth: 680,
+              margin: "0 auto 28px",
             }}
           >
-            Get in Touch
-          </button>
-        </section>
-      </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .work-projects-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .work-project-card {
-            transform: none !important;
-          }
-
-          .work-projects-grid {
-            gap: 32px !important;
-          }
-        }
-      `}</style>
+            Open to conversations about AI, design systems, and the intersection
+            of design and code.
+          </p>
+          <a
+            href="mailto:contact@bhavyachaurasia.in"
+            style={{
+              background: t.ink,
+              color: t.bg,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              padding: "12px 28px",
+              borderRadius: 40,
+              border: "none",
+              textDecoration: "none",
+              display: "inline-block",
+              transition: "background 0.2s, transform 0.2s",
+              cursor: "pointer",
+            }}
+          >
+            Get in touch
+          </a>
+        </div>
+      </section>
     </div>
   );
 };
