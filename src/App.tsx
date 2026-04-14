@@ -5,6 +5,7 @@ import msmeChatbotAnimation from "./components/Mobile-app-showcase3.json";
 import { THEMES } from "./constants/themes";
 import FontLoader from "./styles/FontLoader";
 import Cursor from "./components/Cursor";
+import GuidedCursor from "./components/GuidedCursor";
 import Navbar from "./components/navbar";
 import Hero from "./components/Hero.tsx";
 import Footer from "./components/Footer";
@@ -176,6 +177,7 @@ const App: FC = () => {
           `}</style>
 
           <Cursor dark={dark} />
+          <GuidedCursor />
 
           <Hero dark={dark} t={t} />
 
@@ -462,7 +464,7 @@ transparency, cross-selling, and service adoption.`,
     <Route path="/project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
     <Route path="/Project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
     <Route path="/about" element={withSiteChrome(<About dark={dark} t={t} />, undefined, true)} />
-    <Route path="/work" element={withSiteChrome(<Work dark={dark} setDark={setDark} />, undefined, true)} />
+    <Route path="/work" element={withSiteChrome(<Work dark={dark} />, undefined, true)} />
   </Routes>
 );
 };
