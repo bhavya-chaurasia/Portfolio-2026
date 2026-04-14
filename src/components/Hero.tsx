@@ -1,4 +1,4 @@
-import { FC, useState, useRef, ReactNode } from "react";
+import { FC, useState, useRef, ReactNode, useEffect } from "react";
 import { ArrowIcon } from "./icons/icons";
 import HoverGallery from "./HoverGallery";
 import GridCanvas from "./GridCanvas";
@@ -17,19 +17,39 @@ const Hi: FC<HiProps> = ({ dataKey, children, accent, ink, onEnter, onLeave }) =
   const ref = useRef<HTMLSpanElement>(null);
   const [hovered, setHovered] = useState(false);
 
+  const handleEnter = () => {
+    setHovered(true);
+    if (ref.current) onEnter(dataKey, ref.current);
+  };
+
+  const handleLeave = () => {
+    setHovered(false);
+    onLeave();
+  };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const onGuidedEnter = () => handleEnter();
+    const onGuidedLeave = () => handleLeave();
+
+    el.addEventListener("guidedcursorenter", onGuidedEnter);
+    el.addEventListener("guidedcursorleave", onGuidedLeave);
+
+    return () => {
+      el.removeEventListener("guidedcursorenter", onGuidedEnter);
+      el.removeEventListener("guidedcursorleave", onGuidedLeave);
+    };
+  }, [dataKey, onEnter, onLeave]);
+
   return (
     <span
       ref={ref}
       className="hi-word"
       style={{ color: hovered ? accent : ink }}
-      onMouseEnter={() => {
-        setHovered(true);
-        if (ref.current) onEnter(dataKey, ref.current);
-      }}
-      onMouseLeave={() => {
-        setHovered(false);
-        onLeave();
-      }}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
     >
       {children}
     </span>
