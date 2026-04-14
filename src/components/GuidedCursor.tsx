@@ -20,6 +20,7 @@ const GuidedCursor: FC = () => {
     let lastFrameTime = 0;
     let activeTimelineMs = 0;
     let lastHoveredEl: Element | null = null;
+    let useAutoHeroActivation = false;
 
     const CYCLE_MS = 20000;
 
@@ -189,6 +190,9 @@ const GuidedCursor: FC = () => {
     rafId = requestAnimationFrame(frame);
 
     const heroEl = findHero();
+    const mediaQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+    useAutoHeroActivation = mediaQuery.matches;
+
     const onHeroEnter = () => {
       activeTimelineMs = 0;
       isHeroActive.current = true;
@@ -198,13 +202,69 @@ const GuidedCursor: FC = () => {
       hideCursor();
       clearGuidedInteraction(pointerPos.current.x, pointerPos.current.y);
     };
+    const onHeroVisibilityChange = (entries: IntersectionObserverEntry[]) => {
+      const heroEntry = entries[0];
+      if (!heroEntry) return;
+      if (heroEntry.isIntersecting && heroEntry.intersectionRatio >= 0.35) {
+        if (!isHeroActive.current) {
+          activeTimelineMs = 0;
+        }
+        isHeroActive.current = true;
+        return;
+      }
+      isHeroActive.current = false;
+      hideCursor();
+      clearGuidedInteraction(pointerPos.current.x, pointerPos.current.y);
+    };
+    const heroObserver = new IntersectionObserver(onHeroVisibilityChange, {
+      threshold: [0, 0.35, 0.6],
+    });
+    const onMediaQueryChange = (event: MediaQueryListEvent) => {
+      useAutoHeroActivation = event.matches;
+      if (!event.matches) {
+        isHeroActive.current = false;
+        hideCursor();
+        clearGuidedInteraction(pointerPos.current.x, pointerPos.current.y);
+      } else if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(viewportHeight, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const ratio = rect.height > 0 ? visibleHeight / rect.height : 0;
+        if (ratio >= 0.35) {
+          activeTimelineMs = 0;
+          isHeroActive.current = true;
+        }
+      }
+    };
 
-    heroEl?.addEventListener("mouseenter", onHeroEnter);
-    heroEl?.addEventListener("mouseleave", onHeroLeave);
+    if (useAutoHeroActivation) {
+      if (heroEl) heroObserver.observe(heroEl);
+      // Start immediately on mobile if hero is already visible on load.
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(viewportHeight, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const ratio = rect.height > 0 ? visibleHeight / rect.height : 0;
+        if (ratio >= 0.35) {
+          activeTimelineMs = 0;
+          isHeroActive.current = true;
+        }
+      }
+    } else {
+      heroEl?.addEventListener("mouseenter", onHeroEnter);
+      heroEl?.addEventListener("mouseleave", onHeroLeave);
+    }
+    mediaQuery.addEventListener("change", onMediaQueryChange);
 
     return () => {
       cancelAnimationFrame(rafId);
       clearGuidedInteraction(pointerPos.current.x, pointerPos.current.y);
+      mediaQuery.removeEventListener("change", onMediaQueryChange);
+      heroObserver.disconnect();
       heroEl?.removeEventListener("mouseenter", onHeroEnter);
       heroEl?.removeEventListener("mouseleave", onHeroLeave);
     };
