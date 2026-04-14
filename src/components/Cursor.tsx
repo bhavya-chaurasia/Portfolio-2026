@@ -8,6 +8,10 @@ const Cursor: FC<{ dark: boolean }> = () => {
   const tagTarget = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Hide default cursor globally
+    document.documentElement.style.cursor = 'none';
+    document.body.style.cursor = 'none';
+
     const pointer = pointerRef.current;
     const tag = tagRef.current;
     if (!pointer || !tag) return;
@@ -46,6 +50,8 @@ const Cursor: FC<{ dark: boolean }> = () => {
 
     return () => {
       cancelAnimationFrame(rafId);
+      document.documentElement.style.cursor = 'auto';
+      document.body.style.cursor = 'auto';
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseleave', onLeave);
     };
@@ -53,7 +59,6 @@ const Cursor: FC<{ dark: boolean }> = () => {
 
   return (
     <>
-      <style>{`* { cursor: none !important; }`}</style>
       <div
         ref={pointerRef}
         style={{
