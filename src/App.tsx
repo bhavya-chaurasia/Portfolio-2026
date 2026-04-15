@@ -212,7 +212,7 @@ const App: FC = () => {
                 img: project1Video,
               },
               {
-                num: "02",
+                num: "04",
                 tags: "BUSINESS IMPACT, AI, UX DESIGN",
                 title: "Maruti –⁠ Service Experience",
                 desc: `Reimagining servicing through improving
@@ -221,7 +221,7 @@ transparency, cross-selling, and service adoption.`,
                 img: "/src/assets/Frame1-maruti.svg",
               },
               {
-                num: "03",
+                num: "05",
                 tags: "UX Design, AI, Government",
                 title: "Marga - AI Conversational Chatbot for MSMEs",
                 desc: "Dummy subtitle for now.",
