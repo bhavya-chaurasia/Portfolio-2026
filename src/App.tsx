@@ -463,7 +463,10 @@ transparency, cross-selling, and service adoption.`,
     <Route path="/project-2" element={withSiteChrome(<Project2 />, undefined, false, "dark")} />
     <Route path="/project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
     <Route path="/Project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
-    <Route path="/about" element={withSiteChrome(<About dark={dark} t={t} />, undefined, true)} />
+    <Route
+      path="/about"
+      element={withSiteChrome(<About dark={dark} t={t} />, undefined, true, "dark", 0)}
+    />
     <Route path="/work" element={withSiteChrome(<Work dark={dark} />, undefined, true)} />
   </Routes>
 );

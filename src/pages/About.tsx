@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { THEMES } from "../constants/themes";
+import DeepDiveSection from "../sections/about/DeepDiveSection";
 
 interface AboutProps {
   dark?: boolean;
@@ -16,61 +17,12 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
         fontWeight: 300,
         transition: "background 0.3s, color 0.3s",
         minHeight: "100vh",
-        padding: "60px 10vw",
+        padding: "0 10vw 60px",
         boxSizing: "border-box",
       }}
     >
       <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <h1
-          style={{
-            fontFamily: "'Libre Baskerville', serif",
-            fontSize: "clamp(32px, 4vw, 48px)",
-            fontStyle: "italic",
-            fontWeight: 400,
-            marginBottom: 40,
-            color: t.ink,
-          }}
-        >
-          About Me
-        </h1>
-
-        <p
-          style={{
-            fontSize: 18,
-            lineHeight: 1.8,
-            color: t.ink2,
-            marginBottom: 32,
-          }}
-        >
-          Welcome to my portfolio. I'm a designer and developer passionate about
-          creating beautiful and functional digital experiences.
-        </p>
-
-        <h2
-          style={{
-            fontFamily: "'Libre Baskerville', serif",
-            fontSize: "clamp(24px, 3vw, 32px)",
-            fontStyle: "italic",
-            fontWeight: 400,
-            marginBottom: 20,
-            color: t.ink,
-          }}
-        >
-          What I Do
-        </h2>
-
-        <p
-          style={{
-            fontSize: 20,
-            lineHeight: 1.8,
-            color: t.ink2,
-            marginBottom: 32,
-          }}
-        >
-          I specialize in UX design, AI product design, and design systems.
-          I love working on projects that solve real problems and create
-          meaningful impact.
-        </p>
+        <DeepDiveSection t={t} />
 
         <h2
           style={{
