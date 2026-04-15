@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --font-instrument-serif: "Instrument Serif", serif;
+}
+
