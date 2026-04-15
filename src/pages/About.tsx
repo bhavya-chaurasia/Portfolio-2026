@@ -5,8 +5,8 @@ interface AboutProps {
   dark?: boolean;
   t?: typeof THEMES.light;
 }
-
-const About: FC<AboutProps> = ({ dark = false, t = THEMES.light }) => {
+// const About: FC<AboutProps> = ({ dark = false, t = THEMES.light }) => {
+const About: FC<AboutProps> = ({ t = THEMES.light }) => {
   return (
     <div
       style={{
