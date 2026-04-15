@@ -61,7 +61,7 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
 
         <p
           style={{
-            fontSize: 17,
+            fontSize: 20,
             lineHeight: 1.8,
             color: t.ink2,
             marginBottom: 32,
