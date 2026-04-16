@@ -46,7 +46,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
 
   return (
     <section
-      className="about-deepdive w-full h-screen bg-black relative"
+      className="about-deepdive w-full h-screen bg-black relative "
       style={
         {
           // Make this section full-bleed even inside centered/padded layouts.
