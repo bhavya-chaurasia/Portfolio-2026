@@ -1,8 +1,9 @@
 ﻿import { useEffect, useState } from "react";
-import typographyImage from "../../public/Project3/typography.png";
-import graphLineImage from "../../public/Project3/graph-line.png";
-import colorPaletteImage from "../../public/Project3/color-pallete.png";
 import "./Project3.css";
+
+const typographyImage = "/Project3/typography.png?url";
+const graphLineImage = "/Project3/graph-line.png?url";
+const colorPaletteImage = "/Project3/color-pallete.png?url";
 import "./Project3.mobile.css";
 
 const contributions = [
