@@ -3,7 +3,6 @@ import { THEMES } from "../constants/themes";
 import DeepDiveSection from "../sections/about/DeepDiveSection";
 
 interface AboutProps {
-  dark?: boolean;
   t?: typeof THEMES.light;
 }
 // const About: FC<AboutProps> = ({ dark = false, t = THEMES.light }) => {
