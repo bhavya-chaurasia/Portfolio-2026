@@ -224,7 +224,7 @@ transparency, cross-selling, and service adoption.`,
                 num: "03",
                 tags: "UX Design, AI, Government",
                 title: "Marga - AI Conversational Chatbot for MSMEs",
-                desc: "Bridging citizens and systems with a seamless, intuitive digital journey",
+                desc: "Bridging the gap between citizens and systems with a seamless, intuitive digital journey",
                 link: "/project-3",
                 img: "/src/assets/Frame1-maruti.svg",
               },
@@ -465,7 +465,7 @@ transparency, cross-selling, and service adoption.`,
     <Route path="/Project-3" element={withSiteChrome(<Project3 />, undefined, false)} />
     <Route
       path="/about"
-      element={withSiteChrome(<About dark={dark} t={t} />, undefined, true, "dark", 0)}
+      element={withSiteChrome(<About/>, undefined, true, "dark", 0)}
     />
     <Route path="/work" element={withSiteChrome(<Work dark={dark} />, undefined, true)} />
   </Routes>
