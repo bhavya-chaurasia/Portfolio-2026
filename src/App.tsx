@@ -213,7 +213,7 @@ const App: FC = () => {
               },
               {
                 num: "02",
-                tags: "BUSINESS IMPACT, AI, UX DESIGN",
+                tags: "BUSINESS IMPACT, Agentic AI, UX DESIGN",
                 title: "Maruti –⁠ Service Experience",
                 desc: `Reimagining servicing through improving
 transparency, cross-selling, and service adoption.`,
