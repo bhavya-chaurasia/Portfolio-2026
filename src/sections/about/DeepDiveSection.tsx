@@ -26,10 +26,25 @@ type BgParticle = {
 };
 
 const FRAME_COUNT = 91;
+type FrameSlot = HTMLImageElement | null;
 
 const getFrameSrc = (index: number) => {
   const padded = String(index).padStart(3, "0");
   return `/about-me/ezgif-frame-${padded} 2.png`;
+};
+
+const isDrawableFrame = (frame: FrameSlot): frame is HTMLImageElement =>
+  !!frame && frame.naturalWidth > 0 && frame.naturalHeight > 0;
+
+const getNearestDrawableFrame = (frames: FrameSlot[], index: number) => {
+  if (isDrawableFrame(frames[index])) return frames[index];
+  for (let offset = 1; offset < FRAME_COUNT; offset++) {
+    const prev = index - offset;
+    const next = index + offset;
+    if (prev >= 0 && isDrawableFrame(frames[prev])) return frames[prev];
+    if (next < FRAME_COUNT && isDrawableFrame(frames[next])) return frames[next];
+  }
+  return null;
 };
 
 const drawCover = (
@@ -39,32 +54,23 @@ const drawCover = (
 ) => {
   const canvasW = canvas.width;
   const canvasH = canvas.height;
-  const imageRatio = image.width / image.height;
-  const canvasRatio = canvasW / canvasH;
-
-  let drawW = canvasW;
-  let drawH = canvasH;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  if (imageRatio > canvasRatio) {
-    drawH = canvasH;
-    drawW = drawH * imageRatio;
-    offsetX = (canvasW - drawW) / 2;
-  } else {
-    drawW = canvasW;
-    drawH = drawW / imageRatio;
-    offsetY = (canvasH - drawH) / 2;
-  }
+  if (!canvasW || !canvasH || image.naturalWidth <= 0 || image.naturalHeight <= 0) return;
+  const scale = Math.min(canvasW / image.width, canvasH / image.height);
+  const drawW = image.width * scale;
+  const drawH = image.height * scale;
+  const offsetX = (canvasW - drawW) / 2;
+  const offsetY = (canvasH - drawH) / 2;
 
   ctx.clearRect(0, 0, canvasW, canvasH);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.drawImage(image, offsetX, offsetY, drawW, drawH);
 };
 
 const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const framesRef = useRef<HTMLImageElement[]>([]);
+  const framesRef = useRef<FrameSlot[]>([]);
   const loadedRef = useRef(false);
   const activeFrameRef = useRef(-1);
   const rafRef = useRef<number | null>(null);
@@ -146,7 +152,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
       c.width = Math.max(1, Math.floor(rect.width * dpr));
       c.height = Math.max(1, Math.floor(rect.height * dpr));
       if (loadedRef.current && activeFrameRef.current >= 0) {
-        const img = framesRef.current[activeFrameRef.current];
+        const img = getNearestDrawableFrame(framesRef.current, activeFrameRef.current);
         if (img) drawCover(c, ctx, img);
       }
     };
@@ -168,7 +174,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
 
         if (nextFrame === activeFrameRef.current) return;
         activeFrameRef.current = nextFrame;
-        const img = framesRef.current[nextFrame];
+        const img = getNearestDrawableFrame(framesRef.current, nextFrame);
         if (!img) return;
         drawCover(canvasRef.current, ctx, img);
       });
@@ -178,17 +184,23 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
       const frames = await Promise.all(
         Array.from({ length: FRAME_COUNT }, (_, i) => {
           const frameNumber = i + 1;
-          return new Promise<HTMLImageElement>((resolve) => {
+          return new Promise<FrameSlot>((resolve) => {
             const image = new Image();
+            image.onload = () => resolve(isDrawableFrame(image) ? image : null);
+            image.onerror = () => resolve(null);
             image.src = getFrameSrc(frameNumber);
-            image.onload = () => resolve(image);
-            image.onerror = () => resolve(image);
           });
         })
       );
 
       if (cancelled) return;
       framesRef.current = frames;
+      const firstValidFrameIndex = frames.findIndex((frame) => isDrawableFrame(frame));
+      if (firstValidFrameIndex === -1) {
+        loadedRef.current = false;
+        return;
+      }
+      activeFrameRef.current = firstValidFrameIndex;
       loadedRef.current = true;
       resizeCanvas();
       updateFrameFromScroll();
@@ -259,7 +271,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
         }}
         style={{ width: "100%", height: "72%" }}
       >
-        <Canvas camera={{ position: [-10, 1.5, 10], fov: 50 }}>
+        <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} />
           <Suspense
