@@ -2,11 +2,13 @@
 "use client";
 
 import { FC, Suspense, useEffect, useMemo, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ParticleSphere } from "@/components/ui/cosmos-3d-orbit-gallery";
 import { THEMES } from "../../constants/themes";
 import "./DeepDiveSection.css";
+import * as THREE from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 type Theme = typeof THEMES.light;
 
@@ -25,55 +27,58 @@ type BgParticle = {
   driftY: number;
 };
 
-const FRAME_COUNT = 91;
-type FrameSlot = HTMLImageElement | null;
+const DEFAULT_ORBIT_GROUP_SCALE = 0.25;
+const MIN_ORBIT_GROUP_SCALE = 0.05;
+const DEFAULT_CAMERA_DISTANCE = Math.sqrt(10 ** 2 + 1.5 ** 2 + 10 ** 2);
+const MAX_DISTANCE_FOR_MIN_SCALE =
+  DEFAULT_CAMERA_DISTANCE * (DEFAULT_ORBIT_GROUP_SCALE / MIN_ORBIT_GROUP_SCALE);
 
-const getFrameSrc = (index: number) => {
-  const padded = String(index).padStart(3, "0");
-  return `/about-me/ezgif-frame-${padded} 2.png`;
-};
+const ClampedOrbitControls: FC = () => {
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const { camera, gl } = useThree();
 
-const isDrawableFrame = (frame: FrameSlot): frame is HTMLImageElement =>
-  !!frame && frame.naturalWidth > 0 && frame.naturalHeight > 0;
+  useEffect(() => {
+    const controls = controlsRef.current;
+    if (!controls) return;
 
-const getNearestDrawableFrame = (frames: FrameSlot[], index: number) => {
-  if (isDrawableFrame(frames[index])) return frames[index];
-  for (let offset = 1; offset < FRAME_COUNT; offset++) {
-    const prev = index - offset;
-    const next = index + offset;
-    if (prev >= 0 && isDrawableFrame(frames[prev])) return frames[prev];
-    if (next < FRAME_COUNT && isDrawableFrame(frames[next])) return frames[next];
-  }
-  return null;
-};
+    const onWheel = (event: WheelEvent) => {
+      if (!controls.enabled) return;
 
-const drawCover = (
-  canvas: HTMLCanvasElement,
-  ctx: CanvasRenderingContext2D,
-  image: HTMLImageElement
-) => {
-  const canvasW = canvas.width;
-  const canvasH = canvas.height;
-  if (!canvasW || !canvasH || image.naturalWidth <= 0 || image.naturalHeight <= 0) return;
-  const scale = Math.min(canvasW / image.width, canvasH / image.height);
-  const drawW = image.width * scale;
-  const drawH = image.height * scale;
-  const offsetX = (canvasW - drawW) / 2;
-  const offsetY = (canvasH - drawH) / 2;
+      // Keep page scroll behavior (handled by parent), but take over zoom to ensure consistent direction + clamp.
+      event.preventDefault();
 
-  ctx.clearRect(0, 0, canvasW, canvasH);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(image, offsetX, offsetY, drawW, drawH);
+      const direction = new THREE.Vector3().subVectors(camera.position, controls.target);
+      const distance = direction.length();
+
+      // deltaY > 0 is typically "scroll down"
+      const abs = Math.min(250, Math.abs(event.deltaY));
+      const zoomFactor = 1 + abs / 600; // gentle exponential-ish zoom
+
+      // Browser behavior:
+      // - normal scroll wheel: deltaY > 0 is typically "scroll down"
+      // - trackpad pinch-to-zoom often comes through as a wheel event with ctrlKey=true,
+      //   and the deltaY sign is commonly opposite of "zoom intent".
+      const zoomIn = event.ctrlKey ? event.deltaY < 0 : event.deltaY > 0;
+      const nextDistance = zoomIn ? distance / zoomFactor : distance * zoomFactor;
+      const clampedDistance = THREE.MathUtils.clamp(nextDistance, 0.5, MAX_DISTANCE_FOR_MIN_SCALE);
+
+      direction.setLength(clampedDistance);
+      camera.position.copy(controls.target).add(direction);
+      camera.updateMatrixWorld();
+      controls.update();
+    };
+
+    gl.domElement.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      gl.domElement.removeEventListener("wheel", onWheel as any);
+    };
+  }, [camera, gl]);
+
+  return <OrbitControls ref={controlsRef} enablePan={true} enableZoom={false} enableRotate={true} />;
 };
 
 const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const framesRef = useRef<FrameSlot[]>([]);
-  const loadedRef = useRef(false);
-  const activeFrameRef = useRef(-1);
-  const rafRef = useRef<number | null>(null);
 
   const unsplashImages = useMemo(
     () => [
@@ -135,94 +140,6 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
     return points;
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    const resizeCanvas = () => {
-      const c = canvasRef.current;
-      if (!c) return;
-      const rect = c.getBoundingClientRect();
-      c.width = Math.max(1, Math.floor(rect.width * dpr));
-      c.height = Math.max(1, Math.floor(rect.height * dpr));
-      if (loadedRef.current && activeFrameRef.current >= 0) {
-        const img = getNearestDrawableFrame(framesRef.current, activeFrameRef.current);
-        if (img) drawCover(c, ctx, img);
-      }
-    };
-
-    const updateFrameFromScroll = () => {
-      if (rafRef.current != null) return;
-      rafRef.current = window.requestAnimationFrame(() => {
-        rafRef.current = null;
-        if (!loadedRef.current || !sectionRef.current || !canvasRef.current) return;
-
-        const rect = sectionRef.current.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const progressRaw = (vh - rect.top) / (vh + rect.height);
-        const progress = Math.min(1, Math.max(0, progressRaw));
-        const nextFrame = Math.min(
-          FRAME_COUNT - 1,
-          Math.max(0, Math.floor(progress * (FRAME_COUNT - 1)))
-        );
-
-        if (nextFrame === activeFrameRef.current) return;
-        activeFrameRef.current = nextFrame;
-        const img = getNearestDrawableFrame(framesRef.current, nextFrame);
-        if (!img) return;
-        drawCover(canvasRef.current, ctx, img);
-      });
-    };
-
-    const preloadFrames = async () => {
-      const frames = await Promise.all(
-        Array.from({ length: FRAME_COUNT }, (_, i) => {
-          const frameNumber = i + 1;
-          return new Promise<FrameSlot>((resolve) => {
-            const image = new Image();
-            image.onload = () => resolve(isDrawableFrame(image) ? image : null);
-            image.onerror = () => resolve(null);
-            image.src = getFrameSrc(frameNumber);
-          });
-        })
-      );
-
-      if (cancelled) return;
-      framesRef.current = frames;
-      const firstValidFrameIndex = frames.findIndex((frame) => isDrawableFrame(frame));
-      if (firstValidFrameIndex === -1) {
-        loadedRef.current = false;
-        return;
-      }
-      activeFrameRef.current = firstValidFrameIndex;
-      loadedRef.current = true;
-      resizeCanvas();
-      updateFrameFromScroll();
-    };
-
-    preloadFrames();
-    resizeCanvas();
-    updateFrameFromScroll();
-
-    window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("scroll", updateFrameFromScroll, { passive: true });
-
-    return () => {
-      cancelled = true;
-      if (rafRef.current != null) {
-        window.cancelAnimationFrame(rafRef.current);
-      }
-      window.removeEventListener("resize", resizeCanvas);
-      window.removeEventListener("scroll", updateFrameFromScroll);
-    };
-  }, []);
-
   return (
     <section
       ref={sectionRef}
@@ -265,11 +182,11 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
       </div>
 
       <div
+        className="about-deepdive__orbitWrap"
         onWheelCapture={(e) => {
           // Keep orbit zoom, but also allow normal page scroll progression.
           window.scrollBy({ top: e.deltaY, left: 0, behavior: "auto" });
         }}
-        style={{ width: "100%", height: "72%" }}
       >
         <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
           <ambientLight intensity={0.5} />
@@ -282,17 +199,14 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
               </mesh>
             }
           >
-            <group scale={[0.25, 0.25, 0.25]}>
+            <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
               <ParticleSphere images={unsplashImages} />
             </group>
           </Suspense>
-          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+          <ClampedOrbitControls />
         </Canvas>
       </div>
 
-      <div className="about-deepdive__frameWrap" aria-label="Scroll-driven girl animation">
-        <canvas ref={canvasRef} className="about-deepdive__frameCanvas" />
-      </div>
     </section>
   );
 };
