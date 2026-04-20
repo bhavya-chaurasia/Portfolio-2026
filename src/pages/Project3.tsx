@@ -102,7 +102,7 @@ const userPersonas = [
   {
     number: "04",
     name: "Priya",
-    descriptor: "Urban · English + Telugu · Tech comfortable",
+    descriptor: "Urban · Telugish · Tech comfortable",
     need: "Needs speed, personalization, efficiency",
   },
 ];
