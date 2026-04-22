@@ -24,10 +24,6 @@ body {
   line-height: 1.6;
 }
 
-* {
-  cursor: none !important;
-}
-
 /*Fonts*/
 @font-face {
   font-family: "Argine";

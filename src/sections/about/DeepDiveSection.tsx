@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 "use client";
 
-import { FC, Suspense, useEffect, useMemo, useRef } from "react";
+import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ParticleSphere } from "@/components/ui/cosmos-3d-orbit-gallery";
@@ -49,6 +49,7 @@ const ClampedOrbitControls: FC = () => {
 
       const direction = new THREE.Vector3().subVectors(camera.position, controls.target);
       const distance = direction.length();
+      const isNearMaxZoom = distance < 1.5; // When very close to max zoom
 
       // deltaY > 0 is typically "scroll down"
       const abs = Math.min(250, Math.abs(event.deltaY));
@@ -66,6 +67,10 @@ const ClampedOrbitControls: FC = () => {
       camera.position.copy(controls.target).add(direction);
       camera.updateMatrixWorld();
       controls.update();
+
+      // Slow down page scroll while zooming in, resume normal speed at max zoom
+      const scrollMultiplier = isNearMaxZoom ? 1 : 0.35; // 65% scroll reduction until max zoom
+      window.scrollBy({ top: event.deltaY * scrollMultiplier, left: 0, behavior: "auto" });
     };
 
     gl.domElement.addEventListener("wheel", onWheel, { passive: false });
@@ -79,6 +84,24 @@ const ClampedOrbitControls: FC = () => {
 
 const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [showArrow, setShowArrow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowArrow(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleScrollDown = () => {
+    if (sectionRef.current) {
+      const sectionBottom = sectionRef.current.offsetTop + sectionRef.current.offsetHeight;
+      window.scrollTo({
+        top: sectionBottom,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const unsplashImages = useMemo(
     () => [
@@ -206,6 +229,42 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
           <ClampedOrbitControls />
         </Canvas>
       </div>
+
+      <button
+        className={`about-deepdive__scrollButton ${showArrow ? "about-deepdive__scrollButton--visible" : ""}`}
+        onClick={handleScrollDown}
+        aria-label="Scroll down to next section"
+      >
+        <div className="about-deepdive__scrollButton__content">
+          <svg
+            className="about-deepdive__scrollButton__icon"
+            width="24"
+            height="40"
+            viewBox="0 0 24 40"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <defs>
+              <pattern id="deepdive-scroll-mouse-fill" patternUnits="userSpaceOnUse" x="4" y="2" width="16" height="28">
+                <image
+                  href="/Space/image%20106.png"
+                  x="0.8"
+                  y="-3.6"
+                  width="22.4"
+                  height="39.2"
+                  preserveAspectRatio="xMidYMid slice"
+                />
+              </pattern>
+            </defs>
+            {/* Mouse/scroll wheel shape - rounded rectangle */}
+            <rect x="4" y="2" width="16" height="28" rx="8" ry="8" fill="url(#deepdive-scroll-mouse-fill)" />
+            {/* Scroll indicator line */}
+            <line className="about-deepdive__scrollButton__line" x1="12" y1="8" x2="12" y2="14" strokeLinecap="round" />
+          </svg>
+          <span className="about-deepdive__scrollButton__text">Scroll</span>
+        </div>
+      </button>
 
     </section>
   );
