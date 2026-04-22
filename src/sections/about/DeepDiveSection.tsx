@@ -5,6 +5,7 @@ import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ParticleSphere } from "@/components/ui/cosmos-3d-orbit-gallery";
+import { useScrollSequence } from "../../hooks/useScrollSequence";
 import { THEMES } from "../../constants/themes";
 import "./DeepDiveSection.css";
 import * as THREE from "three";
@@ -84,7 +85,16 @@ const ClampedOrbitControls: FC = () => {
 
 const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
   const sectionRef = useRef<HTMLElement>(null);
+  const sequenceCanvasRef = useRef<HTMLCanvasElement>(null);
   const [showArrow, setShowArrow] = useState(false);
+
+  // Initialize scroll sequence animation
+  useScrollSequence(sequenceCanvasRef, {
+    totalFrames: 91,
+    framePath: (n) =>
+      `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
+    sectionSelector: ".about-deepdive",
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -132,10 +142,12 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
     []
   );
 
+  const isDarkTheme = t === THEMES.dark;
+
   const bgParticles = useMemo<BgParticle[]>(() => {
     const count = 170;
-    const centerX = 50;
-    const centerY = 50;
+    const centerX = 100;
+    const centerY = 100;
     const exclusionRadius = 31; // Keep center clear (globe area)
     const points: BgParticle[] = [];
 
@@ -166,7 +178,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
   return (
     <section
       ref={sectionRef}
-      className="about-deepdive w-full h-screen bg-black relative "
+      className="about-deepdive w-full h-screen relative "
       style={
         {
           // Make this section full-bleed even inside centered/padded layouts.
@@ -179,9 +191,20 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
           ["--ad-btn" as any]: t.btn,
           ["--ad-border" as any]: t.border,
           ["--ad-accent" as any]: t.accent,
+          ["--ad-particle" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(100, 116, 139, 0.7)",
+          ["--ad-particle-glow" as any]: isDarkTheme
+            ? "0 0 6px rgba(255, 255, 255, 0.22)"
+            : "0 0 6px rgba(100, 116, 139, 0.24)",
         } as React.CSSProperties
       }
     >
+      {/* Scroll-driven image sequence canvas */}
+      <canvas
+        ref={sequenceCanvasRef}
+        className="about-deepdive__sequenceCanvas"
+        aria-hidden="true"
+      />
+
       <div className="about-deepdive__bgParticles" aria-hidden="true">
         {bgParticles.map((p, idx) => (
           <span
@@ -223,7 +246,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
             }
           >
             <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
-              <ParticleSphere images={unsplashImages} />
+              <ParticleSphere images={unsplashImages} particlePalette={isDarkTheme ? "warm" : "slate"} />
             </group>
           </Suspense>
           <ClampedOrbitControls />

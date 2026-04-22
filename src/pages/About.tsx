@@ -1,16 +1,18 @@
 import { FC } from "react";
 import { THEMES } from "../constants/themes";
 import DeepDiveSection from "../sections/about/DeepDiveSection";
+import PageParticlesBackground from "../components/ui/page-particles-background";
 
 interface AboutProps {
   t?: typeof THEMES.light;
 }
-// const About: FC<AboutProps> = ({ dark = false, t = THEMES.light }) => {
 const About: FC<AboutProps> = ({ t = THEMES.light }) => {
+  const isDarkTheme = t === THEMES.dark;
+
   return (
     <div
       style={{
-        background: t.bg,
+        background: isDarkTheme ? "#000000" : t.bg,
         color: t.ink,
         fontFamily: "'DM Sans', sans-serif",
         fontWeight: 300,
@@ -18,9 +20,13 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
         minHeight: "100vh",
         padding: "0 10vw 60px",
         boxSizing: "border-box",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <PageParticlesBackground dark={isDarkTheme} />
+
+      <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <DeepDiveSection t={t} />
 
         <h2
