@@ -11,9 +11,9 @@ export const THEMES = {
     border: 'rgba(0,0,0,0.06)',
   },
   dark: {
-    bg: '#141824',
-    bg2: '#1E2230',
-    navBg: 'rgba(20,24,36,0.85)',
+    bg: '#000000',
+    bg2: '#050505',
+    navBg: 'rgba(0,0,0,0.85)',
     ink: '#E8E4DE',
     ink2: '#9D9A94',
     ink3: '#565450',

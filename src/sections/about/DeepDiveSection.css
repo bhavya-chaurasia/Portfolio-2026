@@ -1,6 +1,6 @@
 .about-deepdive {
   overflow: hidden;
-  background-color: #000000;
+  background-color: var(--ad-bg, #000000);
   /* Background image removed - now using scroll sequence canvas */
   position: relative;
   min-height: 100vh;
@@ -42,8 +42,8 @@
   position: absolute;
   display: block;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.22);
+  background: var(--ad-particle, rgba(255, 255, 255, 0.72));
+  box-shadow: var(--ad-particle-glow, 0 0 6px rgba(255, 255, 255, 0.22));
   animation-name: deepdive-particle-drift;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -95,7 +95,7 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--ad-scroll-fg, rgba(255, 255, 255, 0.8));
   transition: all 0.3s ease;
   z-index: 10;
   opacity: 0;
@@ -114,7 +114,7 @@
   width: 28px;
   height: 48px;
   stroke-width: 1.5;
-  stroke: rgba(255, 255, 255, 0.8);
+  stroke: var(--ad-scroll-fg, rgba(255, 255, 255, 0.8));
 }
 
 .about-deepdive__scrollButton__line {
@@ -127,7 +127,7 @@
   font-weight: 400;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--ad-scroll-fg, rgba(255, 255, 255, 0.8));
 }
 
 .about-deepdive__scrollButton--visible {
@@ -137,11 +137,11 @@
 }
 
 .about-deepdive__scrollButton:hover .about-deepdive__scrollButton__icon {
-  stroke: rgba(255, 255, 255, 1);
+  stroke: var(--ad-scroll-fg-hover, #ffffff);
 }
 
 .about-deepdive__scrollButton:hover .about-deepdive__scrollButton__text {
-  color: rgba(255, 255, 255, 1);
+  color: var(--ad-scroll-fg-hover, #ffffff);
 }
 
 @keyframes deepdive-scroll-line {

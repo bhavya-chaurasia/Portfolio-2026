@@ -43,12 +43,16 @@ import uiPage6 from "../assets/Project2/page6.png";
 import uiPage7 from "../assets/Project2/page7.png";
 import chart3 from "../assets/Project2/chart3.svg";
 import chart4 from "../assets/Project2/chart4.svg";
+import PageParticlesBackground from "../components/ui/page-particles-background";
 import "./Project2.mobile.css";
+import { usePageReady } from "@/hooks/use-page-ready";
 
 const Project2 = () => {
   const [mockupReplayKey, setMockupReplayKey] = useState(0);
   const heroLottieWrapRef = useRef<HTMLDivElement | null>(null);
   const hasReplayedOnViewRef = useRef(false);
+
+  usePageReady({ delayMs: 320 });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -293,6 +297,7 @@ const Project2 = () => {
 
   return (
       <div className="project2-page" style={styles.page}>
+      <PageParticlesBackground dark />
       <style>{`
         .ui-blue-card-image {
           opacity: 0;

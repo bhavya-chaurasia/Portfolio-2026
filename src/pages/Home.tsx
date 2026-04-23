@@ -1,68 +1,36 @@
-import { useEffect, useState, FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import marutiAnimation from "../components/Mobile-app-showcase2.json";
-import msmeChatbotAnimation from "../components/Mobile-app-showcase3.json";
-import { THEMES } from "../constants/themes";
-import { project1Video } from "../constants/project1Images";
+import marutiAnimation from "@/components/Mobile-app-showcase2.json";
+import msmeChatbotAnimation from "@/components/Mobile-app-showcase3.json";
+import Cursor from "@/components/Cursor";
+import GuidedCursor from "@/components/GuidedCursor";
+import Hero from "@/components/Hero";
+import FontLoader from "@/styles/FontLoader";
+import { THEMES } from "@/constants/themes";
+import { project1Video } from "@/constants/project1Images";
 import { useLoaderNavigate } from "@/hooks/use-loader-navigate";
 import { usePageReady } from "@/hooks/use-page-ready";
 import { getRouteLoaderConfig } from "@/lib/route-loader-config";
 
-interface WorkPageProps {
-  dark?: boolean;
+interface HomeProps {
+  dark: boolean;
 }
 
-const Work: FC<WorkPageProps> = ({ dark = false }) => {
+const Home: FC<HomeProps> = ({ dark }) => {
+  const t = dark ? THEMES.dark : THEMES.light;
+  const navigate = useLoaderNavigate((to) => getRouteLoaderConfig(to, dark));
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isMobileView, setIsMobileView] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth <= 900 : false
   );
 
-  const t = dark ? THEMES.dark : THEMES.light;
-  const navigate = useLoaderNavigate((to) => getRouteLoaderConfig(to, dark));
-
-  usePageReady({ delayMs: 140 });
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  usePageReady({ delayMs: 120 });
 
   useEffect(() => {
     const onResize = () => setIsMobileView(window.innerWidth <= 900);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-
-  const projectCards = [
-    {
-      num: "01",
-      tags: "UX DESIGN, AI, PRODUCT DESIGN",
-      title: "Workflow Studio",
-      desc: "Designing AI experiences that enable anyone to automate workflows.",
-      link: "/project-1",
-      img: project1Video,
-      isVideo: true,
-    },
-    {
-      num: "02",
-      tags: "BUSINESS IMPACT, AI, UX DESIGN",
-      title: "Maruti –⁠ Service Experience",
-      desc: `Reimagining servicing through improving
-transparency, cross-selling, and service adoption.`,
-      link: "/project-2",
-      img: "/src/assets/Frame1-maruti.svg",
-      isVideo: false,
-    },
-    {
-      num: "03",
-      tags: "UX Design, AI, Government",
-      title: "Marga - AI Conversational Chatbot for MSMEs",
-      desc: "Dummy subtitle for now.",
-      link: "/project-3",
-      img: "/src/assets/Frame1-maruti.svg",
-      isVideo: false,
-    },
-  ];
 
   return (
     <div
@@ -79,7 +47,18 @@ transparency, cross-selling, and service adoption.`,
         boxSizing: "border-box",
       }}
     >
+      <FontLoader />
+
       <style>{`
+        :root {
+          --c-accent: ${t.accent};
+          --c-ink: ${t.ink};
+          --c-ink2: ${t.ink2};
+          --c-ink3: ${t.ink3};
+          --c-bg2: ${t.bg2};
+          --c-btn: ${t.btn};
+          --c-border: ${t.border};
+        }
         .card-wrap .view-link {
           position: relative;
           padding-bottom: 4px;
@@ -124,66 +103,79 @@ transparency, cross-selling, and service adoption.`,
         }
       `}</style>
 
+      <Cursor dark={dark} />
+      <GuidedCursor />
+
+      <Hero dark={dark} t={t} />
+
       <section
         id="works"
         className="works-section"
         style={{ padding: "120px 10vw", position: "relative", zIndex: 2 }}
       >
-        {/* NEW: Hero heading with subtext */}
-        <div style={{ marginBottom: "100px" }}>
-          <h1
-            style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(48px, 6vw, 72px)",
-              fontWeight: 400,
-              fontStyle: "italic",
-              color: t.ink,
-              margin: "0 0 24px 0",
-              lineHeight: 1.1,
-            }}
-          >
-            Latest Shenanigans
-          </h1>
-          <p
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "clamp(16px, 2vw, 20px)",
-              fontWeight: 300,
-              color: t.ink2,
-              margin: 0,
-              maxWidth: "700px",
-              lineHeight: 1.6,
-            }}
-          >
-            A selection of design problems solved. From research to real-world impact, here's how I approach product design, accessibility, and user experience.
-          </p>
-        </div>
+        <h2
+          className="works-heading"
+          style={{
+            fontFamily: "'Libre Baskerville', serif",
+            fontSize: "clamp(28px, 3.5vw, 44px)",
+            fontWeight: 400,
+            fontStyle: "italic",
+            color: t.ink,
+            marginBottom: 72,
+          }}
+        >
+          Latest Shenanigans
+        </h2>
 
-        {/* Project cards */}
-        {projectCards.map((card, i) => (
+        {[
+          {
+            num: "01",
+            tags: "UX DESIGN, AI, PRODUCT DESIGN",
+            title: "Workflow Studio",
+            desc: "Designing AI experiences that enable anyone to automate workflows",
+            link: "/project-1",
+            img: project1Video,
+          },
+          {
+            num: "02",
+            tags: "BUSINESS IMPACT, Agentic AI, UX DESIGN",
+            title: "Maruti –⁠ Service Experience",
+            desc: `Reimagining servicing through improving
+transparency, cross-selling, and service adoption.`,
+            link: "/project-2",
+            img: "/src/assets/Frame1-maruti.svg",
+          },
+          {
+            num: "03",
+            tags: "UX Design, AI, Government",
+            title: "Marga - AI Conversational Chatbot for MSMEs",
+            desc: "Bridging the gap between citizens and systems with a seamless, intuitive digital journey",
+            link: "/project-3",
+            img: "/src/assets/Frame1-maruti.svg",
+          },
+        ].map((card, index) => (
           <div
-            key={i}
+            key={card.num}
             className="card-wrap project-card"
-            onMouseEnter={() => setHoveredCard(i)}
+            onMouseEnter={() => setHoveredCard(index)}
             onMouseLeave={() => setHoveredCard(null)}
             onClick={() => navigate(card.link)}
             style={{
               display: "grid",
-              gridTemplateColumns: i % 2 === 0 ? "1.1fr 0.9fr" : "0.9fr 1.1fr",
+              gridTemplateColumns: index % 2 === 0 ? "1.1fr 0.9fr" : "0.9fr 1.1fr",
               gap: 100,
               alignItems: "center",
               marginBottom: 140,
               cursor: "pointer",
             }}
           >
-            {/* Image */}
-            {i % 2 === 0 && (
+            {index % 2 === 0 && (
               <div
                 className="card-media"
                 style={{
                   borderRadius: 12,
                   overflow: "hidden",
-                  background: i === 0 ? "#f5ede4" : t.btn,
+                  background: index === 0 ? "#f5ede4" : t.btn,
                   aspectRatio: "4/3",
                   display: "flex",
                   alignItems: "center",
@@ -191,7 +183,7 @@ transparency, cross-selling, and service adoption.`,
                   position: "relative",
                 }}
               >
-                {i === 0 ? (
+                {index === 0 ? (
                   <video
                     src={card.img}
                     autoPlay
@@ -205,27 +197,43 @@ transparency, cross-selling, and service adoption.`,
                       display: "block",
                     }}
                   />
+                ) : isMobileView || hoveredCard === index ? (
+                  <Lottie
+                    animationData={index === 2 ? msmeChatbotAnimation : marutiAnimation}
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "100%" }}
+                  />
                 ) : (
-                  isMobileView || hoveredCard === i ? (
-                    <Lottie
-                      animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
-                      loop
-                      autoplay
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  ) : (
-                    <img
-                      src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
-                      alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                    />
-                  )
+                  <img
+                    src={index === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                    alt={
+                      index === 2
+                        ? "Marga chatbot thumbnail"
+                        : "Maruti service thumbnail"
+                    }
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
                 )}
               </div>
             )}
 
-            {/* Text */}
-            <div className="card-content" style={{ display: "flex", flexDirection: "column", justifyContent: "center" , ...(i % 2 !== 0 ? { alignItems: "flex-end", textAlign: "right" as const } : {}) }}>
+            <div
+              className="card-content"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                ...(index % 2 !== 0
+                  ? { alignItems: "flex-end", textAlign: "right" as const }
+                  : {}),
+              }}
+            >
               <span
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
@@ -277,12 +285,11 @@ transparency, cross-selling, and service adoption.`,
               >
                 {card.desc}
               </p>
-              <a
-                href={card.link}
+              <button
+                type="button"
                 className="view-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onClick={(event) => {
+                  event.stopPropagation();
                   navigate(card.link);
                 }}
                 style={{
@@ -293,14 +300,17 @@ transparency, cross-selling, and service adoption.`,
                   alignItems: "center",
                   gap: 6,
                   width: "fit-content",
+                  background: "transparent",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
                 }}
               >
                 View project <span style={{ fontSize: 16 }}>&rarr;</span>
-              </a>
+              </button>
             </div>
 
-            {/* Image for odd rows (right side) */}
-            {i % 2 !== 0 && (
+            {index % 2 !== 0 && (
               <div
                 className="card-media"
                 style={{
@@ -313,18 +323,27 @@ transparency, cross-selling, and service adoption.`,
                   justifyContent: "center",
                 }}
               >
-                {isMobileView || hoveredCard === i ? (
+                {isMobileView || hoveredCard === index ? (
                   <Lottie
-                    animationData={i === 2 ? msmeChatbotAnimation : marutiAnimation}
+                    animationData={index === 2 ? msmeChatbotAnimation : marutiAnimation}
                     loop
                     autoplay
                     style={{ width: "100%", height: "100%" }}
                   />
                 ) : (
                   <img
-                    src={i === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
-                    alt={i === 2 ? "Marga chatbot thumbnail" : "Maruti service thumbnail"}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    src={index === 2 ? "/Project3/thumbnail.png" : "/Project2/thumbnail.png"}
+                    alt={
+                      index === 2
+                        ? "Marga chatbot thumbnail"
+                        : "Maruti service thumbnail"
+                    }
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
                   />
                 )}
               </div>
@@ -332,7 +351,6 @@ transparency, cross-selling, and service adoption.`,
           </div>
         ))}
 
-        {/* CTA Section */}
         <div
           style={{
             marginTop: 12,
@@ -392,4 +410,4 @@ transparency, cross-selling, and service adoption.`,
   );
 };
 
-export default Work;
+export default Home;

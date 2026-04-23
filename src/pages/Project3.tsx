@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import "./Project3.css";
+import { usePageReady } from "@/hooks/use-page-ready";
 
 const typographyImage = "/Project3/typography.png?url";
 const graphLineImage = "/Project3/graph-line.png?url";
@@ -219,6 +220,8 @@ const accessibilityFeatures = [
 ];
 
 const Project3 = () => {
+  usePageReady({ delayMs: 220 });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

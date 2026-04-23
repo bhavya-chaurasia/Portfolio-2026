@@ -2,12 +2,14 @@ import { FC } from "react";
 import { THEMES } from "../constants/themes";
 import DeepDiveSection from "../sections/about/DeepDiveSection";
 import PageParticlesBackground from "../components/ui/page-particles-background";
+import { usePageReady } from "@/hooks/use-page-ready";
 
 interface AboutProps {
   t?: typeof THEMES.light;
 }
 const About: FC<AboutProps> = ({ t = THEMES.light }) => {
   const isDarkTheme = t === THEMES.dark;
+  usePageReady({ delayMs: 180 });
 
   return (
     <div
