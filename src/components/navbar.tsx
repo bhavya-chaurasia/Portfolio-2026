@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
 import '../styles/components/Header.css';
 import { LinkedInIcon, MailIcon, PhoneIcon, MoonIcon, SunIcon } from "./icons/icons";
 import { THEMES } from "../constants/themes";
+import { useLoaderNavigate } from "@/hooks/use-loader-navigate";
+import { getRouteLoaderConfig } from "@/lib/route-loader-config";
 
 interface NavbarProps {
   dark: boolean;
@@ -17,9 +18,9 @@ const Navbar: FC<NavbarProps> = ({
   showThemeToggle = true,
   themeOverride,
 }) => {
-  const navigate = useNavigate();
   const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
   const t = isDarkTheme ? THEMES.dark : THEMES.light;
+  const navigate = useLoaderNavigate((to) => getRouteLoaderConfig(to, isDarkTheme));
 
   const iconLinkStyle: React.CSSProperties = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',

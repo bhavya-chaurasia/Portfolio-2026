@@ -17,8 +17,11 @@ import {
   dragShade,
   arrow,
 } from "../constants/project1Images";
+import { usePageReady } from "@/hooks/use-page-ready";
 
 const Project1 = () => {
+  usePageReady({ delayMs: 160 });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

@@ -184,6 +184,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
           // Make this section full-bleed even inside centered/padded layouts.
           width: "100vw",
           marginLeft: "calc(50% - 50vw)",
+          ["--ad-bg" as any]: isDarkTheme ? "#000000" : t.bg,
           ["--ad-ink" as any]: t.ink,
           ["--ad-ink2" as any]: t.ink2,
           ["--ad-ink3" as any]: t.ink3,
@@ -195,6 +196,8 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
           ["--ad-particle-glow" as any]: isDarkTheme
             ? "0 0 6px rgba(255, 255, 255, 0.22)"
             : "0 0 6px rgba(100, 116, 139, 0.24)",
+          ["--ad-scroll-fg" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(28, 24, 16, 0.78)",
+          ["--ad-scroll-fg-hover" as any]: isDarkTheme ? "#ffffff" : t.ink,
         } as React.CSSProperties
       }
     >
