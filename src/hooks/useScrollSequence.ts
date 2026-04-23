@@ -19,10 +19,7 @@ export const useScrollSequence = (
     framePath = (n) =>
       `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
     sectionSelector = ".about-deepdive",
-    sectionHeight = 500, // vh units equivalent
-    clampWidth = "clamp(520px, 84vw, 952px)",
     pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio : 1,
-    lerpFactor = 0.08,
   } = options;
 
   const imagesRef = useRef<(HTMLImageElement | null)[]>(
@@ -185,24 +182,10 @@ export const useScrollSequence = (
     const sectionHeightPx = sectionElement.offsetHeight;
 
     // Calculate progress: 0 at section top, 1 at end
-    let scrollProgress = Math.max(
+    const scrollProgress = Math.max(
       0,
       Math.min(1, -sectionTop / sectionHeightPx)
     );
-
-    // Zoom-aware progression: frames advance faster while zooming (scroll is reduced to 0.35x)
-    // When scrollProgress is in early phase (zooming in): progress frames more
-    // This matches the visual zoom progression shown by the orbit
-    // The zoom phase is approximately the first 50% of scroll where scroll multiplier is 0.35
-    
-    if (scrollProgress < 0.5) {
-      // During zoom phase: accelerate frame progression
-      // Use power curve to progress frames faster initially
-      scrollProgress = Math.pow(scrollProgress * 2, 0.85) / 2;
-    } else {
-      // After zoom phase: normal progression
-      scrollProgress = 0.5 + (scrollProgress - 0.5) * 0.8;
-    }
 
     // Map to frame index
     targetFrameRef.current = scrollProgress * (totalFrames - 1);
