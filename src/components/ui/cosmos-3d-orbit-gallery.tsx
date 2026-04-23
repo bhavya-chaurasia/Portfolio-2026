@@ -7,9 +7,10 @@ import * as THREE from "three";
 
 interface ParticleSphereProps {
   images: string[];
+  particlePalette?: "warm" | "slate";
 }
 
-export function ParticleSphere({ images }: ParticleSphereProps) {
+export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSphereProps) {
   const PARTICLE_COUNT = 1500; // Reduced particle count to make images more visible
   const PARTICLE_SIZE_MIN = 0.005;
   const PARTICLE_SIZE_MAX = 0.01;
@@ -50,11 +51,18 @@ export function ParticleSphere({ images }: ParticleSphereProps) {
         scale:
           Math.random() * (PARTICLE_SIZE_MAX - PARTICLE_SIZE_MIN) +
           PARTICLE_SIZE_MIN,
-        color: new THREE.Color().setHSL(
-          Math.random() * 0.1 + 0.05, // Yellow-orange hues
-          0.8,
-          0.6 + Math.random() * 0.3
-        ),
+        color:
+          particlePalette === "slate"
+            ? new THREE.Color().setHSL(
+                0,
+                0,
+                0.03 + Math.random() * 0.06 // black to charcoal variation
+              )
+            : new THREE.Color().setHSL(
+                Math.random() * 0.1 + 0.05, // Yellow-orange hues
+                0.8,
+                0.6 + Math.random() * 0.3
+              ),
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       });
     }
@@ -66,6 +74,7 @@ export function ParticleSphere({ images }: ParticleSphereProps) {
     POSITION_RANDOMNESS,
     PARTICLE_SIZE_MIN,
     PARTICLE_SIZE_MAX,
+    particlePalette,
   ]);
 
   const orbitingImages = useMemo(() => {
@@ -140,4 +149,3 @@ export function ParticleSphere({ images }: ParticleSphereProps) {
     </group>
   );
 }
-

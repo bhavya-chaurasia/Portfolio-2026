@@ -1,14 +1,23 @@
 .about-deepdive {
   overflow: hidden;
-  background-image: url("/about-me/ezgif-frame-062 2.png");
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  /* Keep consistent across OS + browser zoom */
-  background-size: clamp(520px, 84vw, 952px) auto;
+  background-color: #000000;
+  /* Background image removed - now using scroll sequence canvas */
   position: relative;
   min-height: 100vh;
   height: 100vh;
   cursor: grab;
+}
+
+.about-deepdive__sequenceCanvas {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(520px, 84vw, 952px);
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
 }
 
 .about-deepdive__orbitWrap {
@@ -176,5 +185,9 @@
 
   .about-deepdive {
     background-size: clamp(520px, 115vw, 784px) auto;
+  }
+
+  .about-deepdive__sequenceCanvas {
+    width: clamp(520px, 115vw, 784px);
   }
 }
