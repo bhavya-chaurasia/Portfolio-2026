@@ -1169,7 +1169,7 @@ const Project2 = () => {
               {
                 top: 521, height: 90,
                 gradient: "linear-gradient(69.71deg, rgba(129,154,255,0.19) 0%, rgba(153,153,153,0.19) 100%)",
-                cells: ["Exploration", "Opens Health Insights â†’ Reviews vehicle health score â†’ Views system status", '"Is this serious? What exactly needs fixing?"', "Curious but cautious", "Health report screen, system diagnostics, previous service history", "Use clear categorization (Must-Fix / PMS / Recommended)"],
+                cells: ["Exploration", "Opens Health Insights  Reviews vehicle health score â†’ Views system status", '"Is this serious? What exactly needs fixing?"', "Curious but cautious", "Health report screen, system diagnostics, previous service history", "Use clear categorization (Must-Fix / PMS / Recommended)"],
               },
               {
                 top: 631, height: 92,
