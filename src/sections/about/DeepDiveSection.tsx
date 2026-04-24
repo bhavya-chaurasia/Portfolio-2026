@@ -11,6 +11,25 @@ import "./DeepDiveSection.css";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
+import image1 from "../../../public/orbit/DSC_1111 4.jpg";
+import image2 from "../../../public/orbit/Hyderabad marathon.jpeg";
+import image3 from "../../../public/orbit/IMG_0298.jpg";
+import image4 from "../../../public/orbit/IMG_0705 3.jpg";
+import image5 from "../../../public/orbit/IMG_0843.jpg";
+import image6 from "../../../public/orbit/IMG_0884 3.jpg";
+import image7 from "../../../public/orbit/IMG_1342 4.jpg";
+import image8 from "../../../public/orbit/IMG_1819.jpg";
+import image9 from "../../../public/orbit/IMG_1838 2.jpg";
+import image10 from "../../../public/orbit/IMG_4354.jpg";
+import image11 from "../../../public/orbit/IMG_4400.jpg";
+import image12 from "../../../public/orbit/IMG_4751.jpg";
+import image13 from "../../../public/orbit/IMG_4958 3.jpg";
+import image14 from "../../../public/orbit/IMG_5392 2.jpg";
+import image15 from "../../../public/orbit/IMG_8576.jpg";
+import image16 from "../../../public/orbit/IMG_8584.jpg";
+import image17 from "../../../public/orbit/IMG_9309.jpg";
+import image18 from "../../../public/orbit/IMG_9360 2.jpg";
+
 type Theme = typeof THEMES.light;
 
 interface DeepDiveSectionProps {
@@ -28,8 +47,8 @@ type BgParticle = {
   driftY: number;
 };
 
-const DEFAULT_ORBIT_GROUP_SCALE = 0.25;
-const MIN_ORBIT_GROUP_SCALE = 0.05;
+const DEFAULT_ORBIT_GROUP_SCALE = 0.15;
+const MIN_ORBIT_GROUP_SCALE = 0.15;
 const DEFAULT_CAMERA_DISTANCE = Math.sqrt(10 ** 2 + 1.5 ** 2 + 10 ** 2);
 const MAX_DISTANCE_FOR_MIN_SCALE =
   DEFAULT_CAMERA_DISTANCE * (DEFAULT_ORBIT_GROUP_SCALE / MIN_ORBIT_GROUP_SCALE);
@@ -70,7 +89,7 @@ const ClampedOrbitControls: FC = () => {
       controls.update();
 
       // Slow down page scroll while zooming in, resume normal speed at max zoom
-      const scrollMultiplier = isNearMaxZoom ? 1 : 0.35; // 65% scroll reduction until max zoom
+      const scrollMultiplier = isNearMaxZoom ? 1 : 0.05; // 65% scroll reduction until max zoom
       window.scrollBy({ top: event.deltaY * scrollMultiplier, left: 0, behavior: "auto" });
     };
 
@@ -115,29 +134,24 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
 
   const unsplashImages = useMemo(
     () => [
-      // From src/constants/gallery.ts (17-22)
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/Frame%208.png?updatedAt=1773071656240",
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/deliotte-image.png?updatedAt=1773071657340",
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/Screenshot%202026-03-08%20at%202.15.07%E2%80%AFPM.png?updatedAt=1773071655009",
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/maruti-win-cheque.png?updatedAt=1773071655136",
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/Screenshot%202026-03-08%20at%202.28.55%E2%80%AFPM.png?updatedAt=1773071655025",
-      "https://ik.imagekit.io/jlzzapai2/Founding%20Designer/5c46de55-2f5f-4e41-b1cf-dae702de0f9d.JPG?updatedAt=1773071654529",
-
-      // From src/constants/gallery.ts (35-40)
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_8633%201.png?updatedAt=1773068033829",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_0928%201.png?updatedAt=1773068029849",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_5055%201.png?updatedAt=1773068034947",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_5030%201.png?updatedAt=1773068034430",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_4013%201.png?updatedAt=1773068032629",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_0927%201.png?updatedAt=1773068031449",
-
-      //Duplicates
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_8633%201.png?updatedAt=1773068033829",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_0928%201.png?updatedAt=1773068029849",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_5055%201.png?updatedAt=1773068034947",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_5030%201.png?updatedAt=1773068034430",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_4013%201.png?updatedAt=1773068032629",
-      "https://ik.imagekit.io/jlzzapai2/Hyderabad/IMG_0927%201.png?updatedAt=1773068031449",
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      image6,
+      image7,
+      image8,
+      image9,
+      image10,
+      image11,
+      image12,
+      image13,
+      image14,
+      image15,
+      image16,
+      image17,
+      image18,
     ],
     []
   );
