@@ -41,7 +41,7 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
             color: t.ink,
           }}
         >
-          Experience
+          {/* Experience */}
         </h2>
 
         <p
