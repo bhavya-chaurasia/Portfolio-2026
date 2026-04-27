@@ -118,7 +118,7 @@ function AppRoutes() {
           path="/project-1"
           element={
             <Suspense fallback={null}>
-              {withSiteChrome(<Project1 />, undefined, false)}
+              {withSiteChrome(<Project1 dark={dark} />, undefined, true)}
             </Suspense>
           }
         />

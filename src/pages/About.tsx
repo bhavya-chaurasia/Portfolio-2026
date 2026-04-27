@@ -52,7 +52,7 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
             marginBottom: 32,
           }}
         >
-          [Add your experience here]
+          {/* [Add your experience here] */}
         </p>
       </div>
     </div>

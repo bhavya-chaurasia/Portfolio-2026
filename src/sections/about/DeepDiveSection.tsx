@@ -246,6 +246,10 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
 
       <div
         className="about-deepdive__orbitWrap"
+        style={{
+          transform: "translateY(-15vh)",
+          height: "calc(100% + 15vh)"
+        }}
         onWheelCapture={(e) => {
           // Keep orbit zoom, but also allow normal page scroll progression.
           window.scrollBy({ top: e.deltaY, left: 0, behavior: "auto" });

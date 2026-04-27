@@ -167,7 +167,7 @@ const Carousel = ({ slots, cycleDurations = [] }: CarouselProps) => {
                   minHeight: `${CAROUSEL_CARD_HEIGHT}px`,
                   maxHeight: `${CAROUSEL_CARD_HEIGHT}px`,
                   display: hasCustomContent ? "block" : "flex",
-                  backgroundColor: hasCustomContent ? "transparent" : "#f5f5f5",
+                  backgroundColor: hasCustomContent ? "transparent" : "var(--p1-surface, #f5f5f5)",
                   overflow: "hidden",
                 }}
                 onMouseEnter={() => setHoveredImage(i + 1)}
