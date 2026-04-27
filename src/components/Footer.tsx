@@ -10,14 +10,8 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
   const t = dark ? THEMES.dark : THEMES.light;
   const peerEmbedSrc = "https://tenor.com/embed/16493107";
   const [isPyaarHovered, setIsPyaarHovered] = useState(false);
-  const [isPyaarPinned, setIsPyaarPinned] = useState(false);
-  const showPyaarEmbed = isPyaarHovered || isPyaarPinned;
   const [isPanicHovered, setIsPanicHovered] = useState(false);
-  const [isPanicPinned, setIsPanicPinned] = useState(false);
-  const showPanicEmbed = isPanicHovered || isPanicPinned;
   const [isPeerHovered, setIsPeerHovered] = useState(false);
-  const [isPeerPinned, setIsPeerPinned] = useState(false);
-  const showPeerEmbed = isPeerHovered || isPeerPinned;
 
   return (
     <>
@@ -48,9 +42,9 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
           ["--c-bg2" as string]: t.bg2,
           width: "100%",
           boxSizing: "border-box",
-          borderTop: "1px solid var(--c-border)",
+          borderTop: `1px solid ${t.border}`,
           padding: "72px 10vw 28px",
-          background: "transparent",
+          background: t.bg,
         }}
       >
         <div
@@ -238,16 +232,17 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
                 <span
                   onMouseEnter={() => setIsPyaarHovered(true)}
                   onMouseLeave={() => setIsPyaarHovered(false)}
-                  onClick={() => setIsPyaarPinned((prev) => !prev)}
                   style={{
-                    cursor: "pointer",
+                    cursor: "default",
+                    color: t.ink,
+                    fontWeight: 500,
                     textDecoration: "underline",
                     textUnderlineOffset: 2,
                   }}
                 >
                   Pyaar
                 </span>
-                {showPyaarEmbed && (
+                {isPyaarHovered && (
                   <div
                     style={{
                       position: "absolute",
@@ -286,16 +281,17 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
                 <span
                   onMouseEnter={() => setIsPanicHovered(true)}
                   onMouseLeave={() => setIsPanicHovered(false)}
-                  onClick={() => setIsPanicPinned((prev) => !prev)}
                   style={{
-                    cursor: "pointer",
+                    cursor: "default",
+                    color: t.ink,
+                    fontWeight: 500,
                     textDecoration: "underline",
                     textUnderlineOffset: 2,
                   }}
                 >
                   Panic
                 </span>
-                {showPanicEmbed && (
+                {isPanicHovered && (
                   <div
                     style={{
                       position: "absolute",
@@ -332,9 +328,10 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
                 <span
                   onMouseEnter={() => setIsPeerHovered(true)}
                   onMouseLeave={() => setIsPeerHovered(false)}
-                  onClick={() => setIsPeerPinned((prev) => !prev)}
                   style={{
-                    cursor: "pointer",
+                    cursor: "default",
+                    color: t.ink,
+                    fontWeight: 500,
                     textDecoration: "underline",
                     textUnderlineOffset: 2,
                   }}
@@ -351,12 +348,12 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
                     height: 124,
                     borderRadius: 10,
                     overflow: "hidden",
-                    background: "var(--c-bg2)",
-                    border: "1px solid var(--c-border)",
+                    background: t.bg2,
+                    border: `1px solid ${t.border}`,
                     zIndex: 50,
-                    opacity: showPeerEmbed ? 1 : 0,
-                    visibility: showPeerEmbed ? "visible" : "hidden",
-                    pointerEvents: showPeerEmbed ? "auto" : "none",
+                    opacity: isPeerHovered ? 1 : 0,
+                    visibility: isPeerHovered ? "visible" : "hidden",
+                    pointerEvents: isPeerHovered ? "auto" : "none",
                     transition: "opacity 120ms ease",
                   }}
                 >
@@ -383,8 +380,8 @@ const Footer: FC<FooterProps> = ({ year = new Date().getFullYear(), dark = false
         style={{
           width: "100%",
           boxSizing: "border-box",
-          background: "#0a0d12",
-          color: "rgba(255,255,255,0.72)",
+          background: dark ? "#ffffff" : "#0a0a0a",
+          color: dark ? "#0a0a0a" : "#ffffff",
           fontFamily: "'DM Sans', sans-serif",
           fontSize: "clamp(8px, 0.8vw, 20px)",
           letterSpacing: "0.01em",

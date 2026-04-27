@@ -19,15 +19,38 @@ import {
 } from "../constants/project1Images";
 import { usePageReady } from "@/hooks/use-page-ready";
 
-const Project1 = () => {
+const Project1 = ({ dark = false }: { dark?: boolean }) => {
   usePageReady({ delayMs: 160 });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const darkThemeVariables = dark ? {
+    "--p1-bg": "#0E0E0E",
+    "--p1-text-primary": "#ffffff",
+    "--p1-text-secondary": "#888888",
+    "--p1-text-tertiary": "#a0a0a0",
+    "--p1-text-quaternary": "#cccccc",
+    "--p1-text-quinary": "#aaaaaa",
+    "--p1-border": "#333333",
+    "--p1-surface": "#1a1a1a",
+    "--p1-border-light": "#333333",
+    "--p1-surface-alt": "#222222",
+    "--p1-text-muted": "#777777",
+    "--p1-text-muted-alt": "#888888",
+    "--p1-bullet": "#555555",
+    "--p1-fade-left": "linear-gradient(to right, rgba(14,14,14,1) 0%, rgba(14,14,14,0) 100%)",
+    "--p1-fade-right": "linear-gradient(to left, rgba(14,14,14,1) 0%, rgba(14,14,14,0) 100%)",
+    "--p1-shadow-hover": "0 20px 40px rgba(0,0,0,0.4)",
+    "--p1-shadow-base": "0 4px 20px rgba(0,0,0,0.2)",
+    "--p1-shadow-button": "0 4px 12px rgba(0,0,0,0.4)",
+    "--p1-shadow-img-hover": "0 20px 40px rgba(0,0,0,0.4)",
+    "--p1-shadow-img-base": "0 2px 8px rgba(0,0,0,0.2)",
+  } : {};
+
   return (
-    <div style={styles.page}>
+    <div style={{ ...styles.page, ...darkThemeVariables } as React.CSSProperties}>
       <div style={styles.container}>
         <HeroSection
           tags="UX Design · AI · Product Design"
@@ -46,7 +69,7 @@ const Project1 = () => {
           */
           /* Slot 2 - animated composition */
           <CarouselCard2>
-            <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden", backgroundColor: "#ffffff" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "0", overflow: "hidden", backgroundColor: "var(--p1-bg, #ffffff)" }}>
               <img src={p12} alt="UI Screen 2" style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", borderRadius: "0" }} />
               <img src={p122} alt="Popup" className="anim-popup" style={{ position: "absolute", bottom: "4%", right: "2%", width: "52%", pointerEvents: "none" }} />
               <img src={dragShade} alt="" className="anim-wand" style={{ position: "absolute", top: "12%", right: "6%", width: "38%", pointerEvents: "none", transformOrigin: "bottom center" }} />
