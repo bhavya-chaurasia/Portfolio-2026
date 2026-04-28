@@ -3747,10 +3747,10 @@ const Project3 = () => {
             }}
           >
             <p style={{ margin: 0 }}>
-              Out of 150+ teams competing in the Telangana AI Rising Grand Challenge,
-              Marga reached the final round of 20. We earned $5,000 in AWS credits. And
+              Out of 250+ teams competing in the Telangana AI Rising Grand Challenge,
+              Marga reached the final round of 10. We earned $5,000 in AWS credits. And
               our platform was presented by the Chief Minister of Goa at a national MSME
-              event
+              event. 
             </p>
           </div>
         </section>
