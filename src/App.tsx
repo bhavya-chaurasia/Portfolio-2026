@@ -53,9 +53,11 @@ function AppRoutes() {
     contentTopPadding = 60
   ) => {
     const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
+    const resolvedBackgroundColor =
+      backgroundColor ?? (isDarkTheme ? THEMES.dark.bg : THEMES.light.bg);
 
     return (
-      <div style={backgroundColor ? { backgroundColor, minHeight: "100vh" } : undefined}>
+      <div style={{ backgroundColor: resolvedBackgroundColor, minHeight: "100vh" }}>
         <Navbar
           dark={dark}
           setDark={setDark}
