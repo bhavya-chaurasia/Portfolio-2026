@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import marutiAnimation from "@/components/Mobile-app-showcase2.json";
 import msmeChatbotAnimation from "@/components/Mobile-app-showcase3.json";
-import Cursor from "@/components/Cursor";
 import GuidedCursor from "@/components/GuidedCursor";
 import Hero from "@/components/Hero";
 import FontLoader from "@/styles/FontLoader";
@@ -103,7 +102,6 @@ const Home: FC<HomeProps> = ({ dark }) => {
         }
       `}</style>
 
-      <Cursor dark={dark} />
       <GuidedCursor />
 
       <Hero dark={dark} t={t} />

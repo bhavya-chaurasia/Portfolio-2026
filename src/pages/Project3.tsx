@@ -219,7 +219,7 @@ const accessibilityFeatures = [
   { label: "Minimal UI", text: "Max 4–5 actions visible at any time" },
 ];
 
-const Project3 = () => {
+const Project3 = ({ dark = false }: { dark?: boolean }) => {
   usePageReady({ delayMs: 220 });
 
   useEffect(() => {
@@ -365,17 +365,48 @@ const Project3 = () => {
 
   return (
     <div
+      className="project3-page"
       style={{
-        backgroundColor: "#FFFFFF",
-        color: "#131313",
+        backgroundColor: dark ? "#0E0E0E" : "#FFFFFF",
+        color: dark ? "#F2F2F2" : "#131313",
         fontFamily: "'Courier New', monospace",
         lineHeight: 1.8,
         overflowX: "hidden",
       }}
     >
-      <style>{`[style*="Courier New"] { font-size: 18px !important; }`}</style>
+      <style>{`
+        [style*="Courier New"] { font-size: 18px !important; }
+
+        .project3-page {
+          transition: background-color 220ms ease, color 220ms ease, filter 220ms ease;
+        }
+
+        .project3-theme-layer--dark {
+          /* Invert content composition to map light-only inline styles to dark mode */
+          filter: invert(1) hue-rotate(180deg);
+        }
+
+        /* Keep all heading text white in dark mode */
+        .project3-theme-layer--dark h1,
+        .project3-theme-layer--dark h2,
+        .project3-theme-layer--dark h3,
+        .project3-theme-layer--dark h4,
+        .project3-theme-layer--dark h5,
+        .project3-theme-layer--dark h6 {
+          color: #ffffff !important;
+        }
+
+        /* Re-invert media so images/videos/icons keep original visual appearance */
+        .project3-theme-layer--dark img,
+        .project3-theme-layer--dark video,
+        .project3-theme-layer--dark svg,
+        .project3-theme-layer--dark canvas {
+          filter: invert(1) hue-rotate(180deg);
+        }
+      `}</style>
 
       <div
+        className={dark ? "project3-theme-layer project3-theme-layer--dark" : "project3-theme-layer"}
         style={{
           maxWidth: "1200px",
           margin: "0 auto",

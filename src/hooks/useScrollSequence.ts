@@ -8,6 +8,8 @@ interface ScrollSequenceOptions {
   clampWidth?: string;
   pixelRatio?: number;
   lerpFactor?: number;
+  enabled?: boolean;
+  manualProgress?: number;
 }
 
 export const useScrollSequence = (
@@ -20,6 +22,8 @@ export const useScrollSequence = (
       `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
     sectionSelector = ".about-deepdive",
     pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio : 1,
+    enabled = true,
+    manualProgress,
   } = options;
 
   const imagesRef = useRef<(HTMLImageElement | null)[]>(
@@ -118,7 +122,7 @@ export const useScrollSequence = (
       displayWidth: scaledWidth,
       displayHeight: scaledHeight,
     };
-  }, [pixelRatio]);
+  }, [canvasRef, pixelRatio]);
 
   // Render frame to canvas
   const renderFrame = useCallback(
@@ -174,6 +178,17 @@ export const useScrollSequence = (
 
   // Calculate scroll progress
   const updateFrame = useCallback(() => {
+    if (!enabled) {
+      targetFrameRef.current = 0;
+      return;
+    }
+
+    if (manualProgress !== undefined) {
+      targetFrameRef.current =
+        Math.max(0, Math.min(1, manualProgress)) * (totalFrames - 1);
+      return;
+    }
+
     sectionRef.current = document.querySelector(sectionSelector) as HTMLElement;
     if (!sectionRef.current) return;
 
@@ -189,7 +204,7 @@ export const useScrollSequence = (
 
     // Map to frame index
     targetFrameRef.current = scrollProgress * (totalFrames - 1);
-  }, [sectionSelector, totalFrames]);
+  }, [enabled, manualProgress, sectionSelector, totalFrames]);
 
   // Smooth interpolation loop
   const animate = useCallback(() => {
