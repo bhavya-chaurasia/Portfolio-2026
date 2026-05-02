@@ -1,8 +1,7 @@
-/* eslint-disable react/no-unknown-property */
 "use client";
 
-import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { FC, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ParticleSphere } from "@/components/ui/cosmos-3d-orbit-gallery";
 import { useScrollSequence } from "../../hooks/useScrollSequence";
@@ -34,7 +33,14 @@ type Theme = typeof THEMES.light;
 
 interface DeepDiveSectionProps {
   t?: Theme;
+  onZoomCompleteChange?: (isComplete: boolean) => void;
 }
+
+type DeepDiveStyle = React.CSSProperties &
+  Record<`--ad-${string}`, string>;
+
+type BgParticleStyle = React.CSSProperties &
+  Record<"--drift-x" | "--drift-y", string>;
 
 type BgParticle = {
   x: number;
@@ -47,65 +53,155 @@ type BgParticle = {
   driftY: number;
 };
 
+type OrbitViewState = {
+  position: THREE.Vector3;
+  target: THREE.Vector3;
+};
+
 const DEFAULT_ORBIT_GROUP_SCALE = 0.15;
 const MIN_ORBIT_GROUP_SCALE = 0.15;
+const MIN_CAMERA_DISTANCE = 0.5;
+const SYNCED_ZOOM_WHEEL_DISTANCE_PX = 2200;
 const DEFAULT_CAMERA_DISTANCE = Math.sqrt(10 ** 2 + 1.5 ** 2 + 10 ** 2);
 const MAX_DISTANCE_FOR_MIN_SCALE =
   DEFAULT_CAMERA_DISTANCE * (DEFAULT_ORBIT_GROUP_SCALE / MIN_ORBIT_GROUP_SCALE);
 
-const ClampedOrbitControls: FC = () => {
+const getWheelDeltaPixels = (event: Pick<WheelEvent, "deltaMode" | "deltaY">) => {
+  if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+    return event.deltaY * 40;
+  }
+
+  if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+    return event.deltaY * window.innerHeight;
+  }
+
+  return event.deltaY;
+};
+
+const applyZoomDistance = (
+  camera: THREE.Camera,
+  target: THREE.Vector3,
+  zoomProgress: number
+) => {
+  const direction = new THREE.Vector3().subVectors(camera.position, target);
+  if (direction.lengthSq() === 0) {
+    direction.set(-10, 1.5, 10);
+  }
+
+  const clampedProgress = THREE.MathUtils.clamp(zoomProgress, 0, 1);
+  const distance = THREE.MathUtils.lerp(
+    MAX_DISTANCE_FOR_MIN_SCALE,
+    MIN_CAMERA_DISTANCE,
+    clampedProgress
+  );
+
+  direction.setLength(distance);
+  camera.position.copy(target).add(direction);
+  camera.updateMatrixWorld();
+};
+
+interface SyncedOrbitControlsProps {
+  zoomProgress: number;
+  viewStateRef: React.MutableRefObject<OrbitViewState | null>;
+}
+
+const SyncedOrbitControls: FC<SyncedOrbitControlsProps> = ({
+  zoomProgress,
+  viewStateRef,
+}) => {
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
-  const { camera, gl } = useThree();
+  const { camera } = useThree();
 
   useEffect(() => {
     const controls = controlsRef.current;
     if (!controls) return;
 
-    const onWheel = (event: WheelEvent) => {
-      if (!controls.enabled) return;
+    applyZoomDistance(camera, controls.target, zoomProgress);
+    controls.update();
+  }, [camera, zoomProgress]);
 
-      // Keep page scroll behavior (handled by parent), but take over zoom to ensure consistent direction + clamp.
-      event.preventDefault();
+  useFrame(() => {
+    const controls = controlsRef.current;
+    if (!controls) return;
 
-      const direction = new THREE.Vector3().subVectors(camera.position, controls.target);
-      const distance = direction.length();
-      const isNearMaxZoom = distance < 1.5; // When very close to max zoom
+    if (!viewStateRef.current) {
+      viewStateRef.current = {
+        position: new THREE.Vector3(),
+        target: new THREE.Vector3(),
+      };
+    }
 
-      // deltaY > 0 is typically "scroll down"
-      const abs = Math.min(250, Math.abs(event.deltaY));
-      const zoomFactor = 1 + abs / 600; // gentle exponential-ish zoom
-
-      // Browser behavior:
-      // - normal scroll wheel: deltaY > 0 is typically "scroll down"
-      // - trackpad pinch-to-zoom often comes through as a wheel event with ctrlKey=true,
-      //   and the deltaY sign is commonly opposite of "zoom intent".
-      const zoomIn = event.ctrlKey ? event.deltaY < 0 : event.deltaY > 0;
-      const nextDistance = zoomIn ? distance / zoomFactor : distance * zoomFactor;
-      const clampedDistance = THREE.MathUtils.clamp(nextDistance, 0.5, MAX_DISTANCE_FOR_MIN_SCALE);
-
-      direction.setLength(clampedDistance);
-      camera.position.copy(controls.target).add(direction);
-      camera.updateMatrixWorld();
-      controls.update();
-
-      // Slow down page scroll while zooming in, resume normal speed at max zoom
-      const scrollMultiplier = isNearMaxZoom ? 1 : 0.05; // 65% scroll reduction until max zoom
-      window.scrollBy({ top: event.deltaY * scrollMultiplier, left: 0, behavior: "auto" });
-    };
-
-    gl.domElement.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      gl.domElement.removeEventListener("wheel", onWheel as any);
-    };
-  }, [camera, gl]);
+    viewStateRef.current.position.copy(camera.position);
+    viewStateRef.current.target.copy(controls.target);
+  });
 
   return <OrbitControls ref={controlsRef} enablePan={true} enableZoom={false} enableRotate={true} />;
 };
 
-const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+interface MirroredOrbitCameraProps {
+  zoomProgress: number;
+  viewStateRef: React.MutableRefObject<OrbitViewState | null>;
+}
+
+const MirroredOrbitCamera: FC<MirroredOrbitCameraProps> = ({
+  zoomProgress,
+  viewStateRef,
+}) => {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    const viewState = viewStateRef.current;
+
+    if (viewState) {
+      camera.position.copy(viewState.position);
+      camera.lookAt(viewState.target);
+      camera.updateMatrixWorld();
+      return;
+    }
+
+    applyZoomDistance(camera, new THREE.Vector3(0, 0, 0), zoomProgress);
+  });
+
+  return null;
+};
+
+const DeepDiveSection: FC<DeepDiveSectionProps> = ({
+  t = THEMES.light,
+  onZoomCompleteChange,
+}) => {
   const sectionRef = useRef<HTMLElement>(null);
   const sequenceCanvasRef = useRef<HTMLCanvasElement>(null);
+  const zoomProgressRef = useRef(0);
+  const orbitViewStateRef = useRef<OrbitViewState | null>(null);
   const [showArrow, setShowArrow] = useState(false);
+  const [zoomProgress, setZoomProgress] = useState(0);
+
+  const handleSyncedZoomWheel = useCallback((deltaPixels: number) => {
+    const nextProgress = THREE.MathUtils.clamp(
+      zoomProgressRef.current + deltaPixels / SYNCED_ZOOM_WHEEL_DISTANCE_PX,
+      0,
+      1
+    );
+
+    zoomProgressRef.current = nextProgress;
+    setZoomProgress(nextProgress);
+  }, []);
+
+  const handleSectionWheelCapture = (event: React.WheelEvent<HTMLElement>) => {
+    const deltaPixels = getWheelDeltaPixels(event.nativeEvent);
+
+    if (zoomProgressRef.current >= 1 && deltaPixels > 0) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    handleSyncedZoomWheel(deltaPixels);
+  };
+
+  useEffect(() => {
+    onZoomCompleteChange?.(zoomProgress >= 1);
+  }, [onZoomCompleteChange, zoomProgress]);
 
   // Initialize scroll sequence animation
   useScrollSequence(sequenceCanvasRef, {
@@ -113,6 +209,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
     framePath: (n) =>
       `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
     sectionSelector: ".about-deepdive",
+    manualProgress: zoomProgress,
   });
 
   useEffect(() => {
@@ -160,8 +257,8 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
 
   const bgParticles = useMemo<BgParticle[]>(() => {
     const count = 170;
-    const centerX = 100;
-    const centerY = 100;
+    const centerX = 50;
+    const centerY = 50;
     const exclusionRadius = 31; // Keep center clear (globe area)
     const points: BgParticle[] = [];
 
@@ -193,35 +290,29 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
     <section
       ref={sectionRef}
       className="about-deepdive w-full h-screen relative "
+      onWheelCapture={handleSectionWheelCapture}
       style={
         {
           // Make this section full-bleed even inside centered/padded layouts.
           width: "100vw",
           marginLeft: "calc(50% - 50vw)",
-          ["--ad-bg" as any]: isDarkTheme ? "#000000" : t.bg,
-          ["--ad-ink" as any]: t.ink,
-          ["--ad-ink2" as any]: t.ink2,
-          ["--ad-ink3" as any]: t.ink3,
-          ["--ad-bg2" as any]: t.bg2,
-          ["--ad-btn" as any]: t.btn,
-          ["--ad-border" as any]: t.border,
-          ["--ad-accent" as any]: t.accent,
-          ["--ad-particle" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(100, 116, 139, 0.7)",
-          ["--ad-particle-glow" as any]: isDarkTheme
+          "--ad-bg": isDarkTheme ? "#000000" : t.bg,
+          "--ad-ink": t.ink,
+          "--ad-ink2": t.ink2,
+          "--ad-ink3": t.ink3,
+          "--ad-bg2": t.bg2,
+          "--ad-btn": t.btn,
+          "--ad-border": t.border,
+          "--ad-accent": t.accent,
+          "--ad-particle": isDarkTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(100, 116, 139, 0.7)",
+          "--ad-particle-glow": isDarkTheme
             ? "0 0 6px rgba(255, 255, 255, 0.22)"
             : "0 0 6px rgba(100, 116, 139, 0.24)",
-          ["--ad-scroll-fg" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(28, 24, 16, 0.78)",
-          ["--ad-scroll-fg-hover" as any]: isDarkTheme ? "#ffffff" : t.ink,
-        } as React.CSSProperties
+          "--ad-scroll-fg": isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(28, 24, 16, 0.78)",
+          "--ad-scroll-fg-hover": isDarkTheme ? "#ffffff" : t.ink,
+        } as DeepDiveStyle
       }
     >
-      {/* Scroll-driven image sequence canvas */}
-      <canvas
-        ref={sequenceCanvasRef}
-        className="about-deepdive__sequenceCanvas"
-        aria-hidden="true"
-      />
-
       <div className="about-deepdive__bgParticles" aria-hidden="true">
         {bgParticles.map((p, idx) => (
           <span
@@ -236,23 +327,19 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
                 opacity: p.opacity,
                 animationDuration: `${p.duration}s`,
                 animationDelay: `${p.delay}s`,
-                ["--drift-x" as any]: `${p.driftX}px`,
-                ["--drift-y" as any]: `${p.driftY}px`,
-              } as React.CSSProperties
+                "--drift-x": `${p.driftX}px`,
+                "--drift-y": `${p.driftY}px`,
+              } as BgParticleStyle
             }
           />
         ))}
       </div>
 
       <div
-        className="about-deepdive__orbitWrap"
+        className="about-deepdive__orbitWrap about-deepdive__orbitWrap--back"
         style={{
           transform: "translateY(-15vh)",
           height: "calc(100% + 15vh)"
-        }}
-        onWheelCapture={(e) => {
-          // Keep orbit zoom, but also allow normal page scroll progression.
-          window.scrollBy({ top: e.deltaY, left: 0, behavior: "auto" });
         }}
       >
         <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
@@ -267,10 +354,51 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
             }
           >
             <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
-              <ParticleSphere images={unsplashImages} particlePalette={isDarkTheme ? "warm" : "slate"} />
+              <ParticleSphere
+                images={unsplashImages}
+                imageLayer="back"
+                particlePalette={isDarkTheme ? "warm" : "slate"}
+              />
             </group>
           </Suspense>
-          <ClampedOrbitControls />
+          <SyncedOrbitControls
+            zoomProgress={zoomProgress}
+            viewStateRef={orbitViewStateRef}
+          />
+        </Canvas>
+      </div>
+
+      {/* Scroll-driven image sequence canvas */}
+      <canvas
+        ref={sequenceCanvasRef}
+        className="about-deepdive__sequenceCanvas"
+        aria-hidden="true"
+      />
+
+      <div
+        className="about-deepdive__orbitWrap about-deepdive__orbitWrap--front"
+        style={{
+          transform: "translateY(-15vh)",
+          height: "calc(100% + 15vh)"
+        }}
+      >
+        <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
+          <Suspense fallback={null}>
+            <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
+              <ParticleSphere
+                images={unsplashImages}
+                imageLayer="front"
+                particlePalette={isDarkTheme ? "warm" : "slate"}
+                showParticles={false}
+              />
+            </group>
+          </Suspense>
+          <MirroredOrbitCamera
+            zoomProgress={zoomProgress}
+            viewStateRef={orbitViewStateRef}
+          />
         </Canvas>
       </div>
 

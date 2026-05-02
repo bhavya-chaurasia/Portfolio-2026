@@ -8,9 +8,16 @@ import * as THREE from "three";
 interface ParticleSphereProps {
   images: string[];
   particlePalette?: "warm" | "slate";
+  imageLayer?: "all" | "front" | "back";
+  showParticles?: boolean;
 }
 
-export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSphereProps) {
+export function ParticleSphere({
+  images,
+  particlePalette = "warm",
+  imageLayer = "all",
+  showParticles = true,
+}: ParticleSphereProps) {
   const PARTICLE_COUNT = 1500; // Reduced particle count to make images more visible
   const PARTICLE_SIZE_MIN = 0.005;
   const PARTICLE_SIZE_MAX = 0.01;
@@ -27,6 +34,10 @@ export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSph
   const IMAGE_HEIGHT = IMAGE_SIZE;
 
   const groupRef = useRef<THREE.Group>(null);
+  const imageMeshRefs = useRef<(THREE.Mesh | null)[]>([]);
+  const centerWorldRef = useRef(new THREE.Vector3());
+  const imageWorldRef = useRef(new THREE.Vector3());
+  const cameraDirectionRef = useRef(new THREE.Vector3());
 
   const textures = useTexture(images);
 
@@ -111,30 +122,53 @@ export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSph
     return images;
   }, [IMAGE_COUNT, SPHERE_RADIUS, textures.length]);
 
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += ROTATION_SPEED_Y;
-      groupRef.current.rotation.x += ROTATION_SPEED_X;
-    }
+  useFrame(({ camera }) => {
+    const group = groupRef.current;
+    if (!group) return;
+
+    // Sync duplicated front/back canvases to the same orbit phase.
+    group.rotation.y = performance.now() * ROTATION_SPEED_Y * 0.06;
+    group.rotation.x = performance.now() * ROTATION_SPEED_X * 0.06;
+
+    if (imageLayer === "all") return;
+
+    group.updateMatrixWorld(true);
+    group.getWorldPosition(centerWorldRef.current);
+    camera.getWorldDirection(cameraDirectionRef.current);
+
+    imageMeshRefs.current.forEach((mesh) => {
+      if (!mesh) return;
+
+      mesh.getWorldPosition(imageWorldRef.current);
+      const depthFromCenter = imageWorldRef.current
+        .sub(centerWorldRef.current)
+        .dot(cameraDirectionRef.current);
+
+      mesh.visible =
+        imageLayer === "front" ? depthFromCenter < 0 : depthFromCenter >= 0;
+    });
   });
 
   return (
     <group ref={groupRef}>
-      {/* Existing particles */}
-      {particles.map((particle, index) => (
-        <mesh key={index} position={particle.position} scale={particle.scale}>
-          <sphereGeometry args={[1, 8, 6]} />
-          <meshBasicMaterial
-            color={particle.color}
-            transparent
-            opacity={PARTICLE_OPACITY}
-          />
-        </mesh>
-      ))}
+      {showParticles &&
+        particles.map((particle, index) => (
+          <mesh key={index} position={particle.position} scale={particle.scale}>
+            <sphereGeometry args={[1, 8, 6]} />
+            <meshBasicMaterial
+              color={particle.color}
+              transparent
+              opacity={PARTICLE_OPACITY}
+            />
+          </mesh>
+        ))}
 
       {orbitingImages.map((image, index) => (
         <mesh
           key={`image-${index}`}
+          ref={(mesh) => {
+            imageMeshRefs.current[index] = mesh;
+          }}
           position={image.position}
           rotation={image.rotation}
         >

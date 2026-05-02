@@ -60,7 +60,7 @@ const Cursor: FC<{ dark: boolean }> = () => {
           top: 0, left: 0,
           width: 28, height: 28,
           pointerEvents: 'none',
-          zIndex: 999999,
+          zIndex: 2147483647,
           opacity: 0,
           transition: 'opacity 0.2s ease',
           transform: 'translate(-20%, -20%)'
@@ -83,7 +83,7 @@ const Cursor: FC<{ dark: boolean }> = () => {
           fontSize: '13px',
           fontWeight: 600,
           pointerEvents: 'none',
-          zIndex: 999998,
+          zIndex: 2147483646,
           opacity: 0,
           transition: 'opacity 0.2s ease',
           boxShadow: '0 4px 12px rgba(0,0,0,0.15)',

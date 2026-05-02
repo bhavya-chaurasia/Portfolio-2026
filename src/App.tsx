@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import Cursor from "@/components/Cursor";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar";
 import {
@@ -21,7 +22,7 @@ import Home from "@/pages/Home";
 
 const Project1 = lazy(() => import("@/pages/project1"));
 const Project2 = lazy(() => import("@/pages/Project2"));
-const Project3 = lazy(() => import("@/pages/Project3"));
+const Project3 = lazy<FC<{ dark?: boolean }>>(() => import("@/pages/Project3"));
 const Work = lazy(() => import("@/pages/Work"));
 const About = lazy(() => import("@/pages/About"));
 
@@ -50,7 +51,8 @@ function AppRoutes() {
     backgroundColor?: string,
     showThemeToggle = false,
     themeOverride?: "dark" | "light",
-    contentTopPadding = 60
+    contentTopPadding = 60,
+    showFooter = true
   ) => {
     const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
     const resolvedBackgroundColor =
@@ -65,7 +67,7 @@ function AppRoutes() {
           themeOverride={themeOverride}
         />
         <div style={{ paddingTop: contentTopPadding }}>{content}</div>
-        <Footer dark={isDarkTheme} />
+        {showFooter && <Footer dark={isDarkTheme} />}
       </div>
     );
   };
@@ -136,7 +138,7 @@ function AppRoutes() {
           path="/project-3"
           element={
             <Suspense fallback={null}>
-              {withSiteChrome(<Project3 />, undefined, false)}
+              {withSiteChrome(<Project3 dark={dark} />, undefined, true)}
             </Suspense>
           }
         />
@@ -144,7 +146,7 @@ function AppRoutes() {
           path="/Project-3"
           element={
             <Suspense fallback={null}>
-              {withSiteChrome(<Project3 />, undefined, false)}
+              {withSiteChrome(<Project3 dark={dark} />, undefined, true)}
             </Suspense>
           }
         />
@@ -157,7 +159,8 @@ function AppRoutes() {
                 undefined,
                 true,
                 undefined,
-                0
+                0,
+                false
               )}
             </Suspense>
           }
@@ -180,6 +183,7 @@ function AppRoutes() {
         ready={ready}
         onEnter={dismissIntro}
       />
+      <Cursor dark={dark} />
     </>
   );
 }

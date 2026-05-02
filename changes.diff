@@ -1,0 +1,838 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 7e2d97b..60418e2 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -8,6 +8,7 @@ import {
+   useState,
+ } from "react";
+ import { Route, Routes, useLocation } from "react-router-dom";
++import Cursor from "@/components/Cursor";
+ import Footer from "@/components/Footer";
+ import Navbar from "@/components/navbar";
+ import {
+@@ -50,7 +51,8 @@ function AppRoutes() {
+     backgroundColor?: string,
+     showThemeToggle = false,
+     themeOverride?: "dark" | "light",
+-    contentTopPadding = 60
++    contentTopPadding = 60,
++    showFooter = true
+   ) => {
+     const isDarkTheme = themeOverride ? themeOverride === "dark" : dark;
+     const resolvedBackgroundColor =
+@@ -65,7 +67,7 @@ function AppRoutes() {
+           themeOverride={themeOverride}
+         />
+         <div style={{ paddingTop: contentTopPadding }}>{content}</div>
+-        <Footer dark={isDarkTheme} />
++        {showFooter && <Footer dark={isDarkTheme} />}
+       </div>
+     );
+   };
+@@ -157,7 +159,8 @@ function AppRoutes() {
+                 undefined,
+                 true,
+                 undefined,
+-                0
++                0,
++                false
+               )}
+             </Suspense>
+           }
+@@ -180,6 +183,7 @@ function AppRoutes() {
+         ready={ready}
+         onEnter={dismissIntro}
+       />
++      <Cursor dark={dark} />
+     </>
+   );
+ }
+diff --git a/src/components/Cursor.tsx b/src/components/Cursor.tsx
+index 759d24d..b9325ac 100644
+--- a/src/components/Cursor.tsx
++++ b/src/components/Cursor.tsx
+@@ -60,7 +60,7 @@ const Cursor: FC<{ dark: boolean }> = () => {
+           top: 0, left: 0,
+           width: 28, height: 28,
+           pointerEvents: 'none',
+-          zIndex: 999999,
++          zIndex: 2147483647,
+           opacity: 0,
+           transition: 'opacity 0.2s ease',
+           transform: 'translate(-20%, -20%)'
+@@ -83,7 +83,7 @@ const Cursor: FC<{ dark: boolean }> = () => {
+           fontSize: '13px',
+           fontWeight: 600,
+           pointerEvents: 'none',
+-          zIndex: 999998,
++          zIndex: 2147483646,
+           opacity: 0,
+           transition: 'opacity 0.2s ease',
+           boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+diff --git a/src/components/ui/cosmos-3d-orbit-gallery.tsx b/src/components/ui/cosmos-3d-orbit-gallery.tsx
+index 4bd47b6..c047c79 100644
+--- a/src/components/ui/cosmos-3d-orbit-gallery.tsx
++++ b/src/components/ui/cosmos-3d-orbit-gallery.tsx
+@@ -8,9 +8,16 @@ import * as THREE from "three";
+ interface ParticleSphereProps {
+   images: string[];
+   particlePalette?: "warm" | "slate";
++  imageLayer?: "all" | "front" | "back";
++  showParticles?: boolean;
+ }
+ 
+-export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSphereProps) {
++export function ParticleSphere({
++  images,
++  particlePalette = "warm",
++  imageLayer = "all",
++  showParticles = true,
++}: ParticleSphereProps) {
+   const PARTICLE_COUNT = 1500; // Reduced particle count to make images more visible
+   const PARTICLE_SIZE_MIN = 0.005;
+   const PARTICLE_SIZE_MAX = 0.01;
+@@ -27,6 +34,10 @@ export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSph
+   const IMAGE_HEIGHT = IMAGE_SIZE;
+ 
+   const groupRef = useRef<THREE.Group>(null);
++  const imageMeshRefs = useRef<(THREE.Mesh | null)[]>([]);
++  const centerWorldRef = useRef(new THREE.Vector3());
++  const imageWorldRef = useRef(new THREE.Vector3());
++  const cameraDirectionRef = useRef(new THREE.Vector3());
+ 
+   const textures = useTexture(images);
+ 
+@@ -111,30 +122,53 @@ export function ParticleSphere({ images, particlePalette = "warm" }: ParticleSph
+     return images;
+   }, [IMAGE_COUNT, SPHERE_RADIUS, textures.length]);
+ 
+-  useFrame(() => {
+-    if (groupRef.current) {
+-      groupRef.current.rotation.y += ROTATION_SPEED_Y;
+-      groupRef.current.rotation.x += ROTATION_SPEED_X;
+-    }
++  useFrame(({ camera }) => {
++    const group = groupRef.current;
++    if (!group) return;
++
++    // Sync duplicated front/back canvases to the same orbit phase.
++    group.rotation.y = performance.now() * ROTATION_SPEED_Y * 0.06;
++    group.rotation.x = performance.now() * ROTATION_SPEED_X * 0.06;
++
++    if (imageLayer === "all") return;
++
++    group.updateMatrixWorld(true);
++    group.getWorldPosition(centerWorldRef.current);
++    camera.getWorldDirection(cameraDirectionRef.current);
++
++    imageMeshRefs.current.forEach((mesh) => {
++      if (!mesh) return;
++
++      mesh.getWorldPosition(imageWorldRef.current);
++      const depthFromCenter = imageWorldRef.current
++        .sub(centerWorldRef.current)
++        .dot(cameraDirectionRef.current);
++
++      mesh.visible =
++        imageLayer === "front" ? depthFromCenter < 0 : depthFromCenter >= 0;
++    });
+   });
+ 
+   return (
+     <group ref={groupRef}>
+-      {/* Existing particles */}
+-      {particles.map((particle, index) => (
+-        <mesh key={index} position={particle.position} scale={particle.scale}>
+-          <sphereGeometry args={[1, 8, 6]} />
+-          <meshBasicMaterial
+-            color={particle.color}
+-            transparent
+-            opacity={PARTICLE_OPACITY}
+-          />
+-        </mesh>
+-      ))}
++      {showParticles &&
++        particles.map((particle, index) => (
++          <mesh key={index} position={particle.position} scale={particle.scale}>
++            <sphereGeometry args={[1, 8, 6]} />
++            <meshBasicMaterial
++              color={particle.color}
++              transparent
++              opacity={PARTICLE_OPACITY}
++            />
++          </mesh>
++        ))}
+ 
+       {orbitingImages.map((image, index) => (
+         <mesh
+           key={`image-${index}`}
++          ref={(mesh) => {
++            imageMeshRefs.current[index] = mesh;
++          }}
+           position={image.position}
+           rotation={image.rotation}
+         >
+diff --git a/src/hooks/useScrollSequence.ts b/src/hooks/useScrollSequence.ts
+index 4f05fb6..dbf9498 100644
+--- a/src/hooks/useScrollSequence.ts
++++ b/src/hooks/useScrollSequence.ts
+@@ -8,6 +8,8 @@ interface ScrollSequenceOptions {
+   clampWidth?: string;
+   pixelRatio?: number;
+   lerpFactor?: number;
++  enabled?: boolean;
++  manualProgress?: number;
+ }
+ 
+ export const useScrollSequence = (
+@@ -20,6 +22,8 @@ export const useScrollSequence = (
+       `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
+     sectionSelector = ".about-deepdive",
+     pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio : 1,
++    enabled = true,
++    manualProgress,
+   } = options;
+ 
+   const imagesRef = useRef<(HTMLImageElement | null)[]>(
+@@ -118,7 +122,7 @@ export const useScrollSequence = (
+       displayWidth: scaledWidth,
+       displayHeight: scaledHeight,
+     };
+-  }, [pixelRatio]);
++  }, [canvasRef, pixelRatio]);
+ 
+   // Render frame to canvas
+   const renderFrame = useCallback(
+@@ -174,6 +178,17 @@ export const useScrollSequence = (
+ 
+   // Calculate scroll progress
+   const updateFrame = useCallback(() => {
++    if (!enabled) {
++      targetFrameRef.current = 0;
++      return;
++    }
++
++    if (manualProgress !== undefined) {
++      targetFrameRef.current =
++        Math.max(0, Math.min(1, manualProgress)) * (totalFrames - 1);
++      return;
++    }
++
+     sectionRef.current = document.querySelector(sectionSelector) as HTMLElement;
+     if (!sectionRef.current) return;
+ 
+@@ -189,7 +204,7 @@ export const useScrollSequence = (
+ 
+     // Map to frame index
+     targetFrameRef.current = scrollProgress * (totalFrames - 1);
+-  }, [sectionSelector, totalFrames]);
++  }, [enabled, manualProgress, sectionSelector, totalFrames]);
+ 
+   // Smooth interpolation loop
+   const animate = useCallback(() => {
+diff --git a/src/index.css b/src/index.css
+index a74bb4c..40e4448 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -121,6 +121,7 @@
+ @layer base {
+   * {
+     @apply border-border outline-ring/50;
++    cursor: none !important;
+   }
+   body {
+     @apply bg-background text-foreground;
+@@ -128,4 +129,9 @@
+   html {
+     @apply font-sans;
+   }
++  html,
++  body,
++  #root {
++    cursor: none !important;
++  }
+ }
+\ No newline at end of file
+diff --git a/src/main.tsx b/src/main.tsx
+index 3c30a69..2fd5b0e 100644
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -5,6 +5,8 @@ import App from './App.tsx'
+ import "./index.css";
+ import "./styles/globals.css";
+ 
++
++
+ ReactDOM.createRoot(document.getElementById('root')!).render(
+   <React.StrictMode>
+   <BrowserRouter>
+@@ -12,3 +14,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
+   </BrowserRouter>
+   </React.StrictMode>
+ )
++
+diff --git a/src/pages/About.tsx b/src/pages/About.tsx
+index 74d445d..6c51485 100644
+--- a/src/pages/About.tsx
++++ b/src/pages/About.tsx
+@@ -1,14 +1,16 @@
+-import { FC } from "react";
++import { FC, useState } from "react";
+ import { THEMES } from "../constants/themes";
+ import DeepDiveSection from "../sections/about/DeepDiveSection";
+ import PageParticlesBackground from "../components/ui/page-particles-background";
+ import { usePageReady } from "@/hooks/use-page-ready";
++import Footer from "../components/Footer";
+ 
+ interface AboutProps {
+   t?: typeof THEMES.light;
+ }
+ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
+   const isDarkTheme = t === THEMES.dark;
++  const [showFooter, setShowFooter] = useState(false);
+   usePageReady({ delayMs: 180 });
+ 
+   return (
+@@ -16,45 +18,34 @@ const About: FC<AboutProps> = ({ t = THEMES.light }) => {
+       style={{
+         background: isDarkTheme ? "#000000" : t.bg,
+         color: t.ink,
+-        fontFamily: "'DM Sans', sans-serif",
+-        fontWeight: 300,
+-        transition: "background 0.3s, color 0.3s",
+         minHeight: "100vh",
+-        padding: "0 10vw 60px",
+-        boxSizing: "border-box",
+-        position: "relative",
+-        overflow: "hidden",
+       }}
+     >
+-      <PageParticlesBackground dark={isDarkTheme} />
++      <div
++        style={{
++          background: isDarkTheme ? "#000000" : t.bg,
++          color: t.ink,
++          fontFamily: "'DM Sans', sans-serif",
++          fontWeight: 300,
++          transition: "background 0.3s, color 0.3s",
++          height: "100vh",
++          padding: "0 10vw",
++          boxSizing: "border-box",
++          position: "relative",
++          overflow: "hidden",
++        }}
++      >
++        <PageParticlesBackground dark={isDarkTheme} />
+ 
+-      <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+-        <DeepDiveSection t={t} />
+-
+-        <h2
+-          style={{
+-            fontFamily: "'Libre Baskerville', serif",
+-            fontSize: "clamp(24px, 3vw, 32px)",
+-            fontStyle: "italic",
+-            fontWeight: 400,
+-            marginBottom: 20,
+-            color: t.ink,
+-          }}
+-        >
+-          {/* Experience */}
+-        </h2>
+-
+-        <p
+-          style={{
+-            fontSize: 17,
+-            lineHeight: 1.8,
+-            color: t.ink2,
+-            marginBottom: 32,
+-          }}
+-        >
+-          {/* [Add your experience here] */}
+-        </p>
++        <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
++          <DeepDiveSection
++            t={t}
++            onZoomCompleteChange={setShowFooter}
++          />
++        </div>
+       </div>
++
++      {showFooter && <Footer dark={isDarkTheme} />}
+     </div>
+   );
+ };
+diff --git a/src/pages/Home.tsx b/src/pages/Home.tsx
+index 13e97a1..7f078d4 100644
+--- a/src/pages/Home.tsx
++++ b/src/pages/Home.tsx
+@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
+ import Lottie from "lottie-react";
+ import marutiAnimation from "@/components/Mobile-app-showcase2.json";
+ import msmeChatbotAnimation from "@/components/Mobile-app-showcase3.json";
+-import Cursor from "@/components/Cursor";
+ import GuidedCursor from "@/components/GuidedCursor";
+ import Hero from "@/components/Hero";
+ import FontLoader from "@/styles/FontLoader";
+@@ -103,7 +102,6 @@ const Home: FC<HomeProps> = ({ dark }) => {
+         }
+       `}</style>
+ 
+-      <Cursor dark={dark} />
+       <GuidedCursor />
+ 
+       <Hero dark={dark} t={t} />
+diff --git a/src/sections/about/DeepDiveSection.css b/src/sections/about/DeepDiveSection.css
+index 6aad4a5..29413c6 100644
+--- a/src/sections/about/DeepDiveSection.css
++++ b/src/sections/about/DeepDiveSection.css
+@@ -15,7 +15,7 @@
+   transform: translateX(-50%);
+   width: clamp(520px, 84vw, 952px);
+   height: auto;
+-  z-index: 1;
++  z-index: 2;
+   pointer-events: none;
+   display: block;
+ }
+@@ -24,13 +24,25 @@
+   /*transform: translateY(-175px);*/
+   position: absolute;
+   inset: 0;
+-  z-index: 2;
+   cursor: grab !important;
+   width: 100%;
+   height: calc(100% + 200px);
+   overflow: visible;
+ }
+ 
++.about-deepdive__orbitWrap--back {
++  z-index: 1;
++}
++
++.about-deepdive__orbitWrap--front {
++  z-index: 3;
++  pointer-events: none;
++}
++
++.about-deepdive__orbitWrap--front .about-deepdive__orbitCanvas {
++  pointer-events: none !important;
++}
++
+ .about-deepdive__bgParticles {
+   position: absolute;
+   inset: 0;
+@@ -54,7 +66,6 @@
+   inset: 0;
+   width: 100% !important;
+   height: 100% !important;
+-  z-index: 2;
+   cursor: grab !important;
+ }
+ 
+@@ -170,20 +181,6 @@
+   }
+ }
+ 
+-@keyframes deepdive-particle-drift {
+-  0% {
+-    transform: translate3d(0, 0, 0);
+-  }
+-
+-  50% {
+-    transform: translate3d(var(--drift-x, 6px), var(--drift-y, -6px), 0);
+-  }
+-
+-  100% {
+-    transform: translate3d(0, 0, 0);
+-  }
+-}
+-
+ @media (max-width: 900px) {
+   .about-deepdive__scrollButton {
+     bottom: calc(env(safe-area-inset-bottom) + clamp(0px, 0.6vh, 6px));
+diff --git a/src/sections/about/DeepDiveSection.tsx b/src/sections/about/DeepDiveSection.tsx
+index 5ca5c22..83a2196 100644
+--- a/src/sections/about/DeepDiveSection.tsx
++++ b/src/sections/about/DeepDiveSection.tsx
+@@ -1,8 +1,7 @@
+-/* eslint-disable react/no-unknown-property */
+ "use client";
+ 
+-import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react";
+-import { Canvas, useThree } from "@react-three/fiber";
++import { FC, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
++import { Canvas, useFrame, useThree } from "@react-three/fiber";
+ import { OrbitControls } from "@react-three/drei";
+ import { ParticleSphere } from "@/components/ui/cosmos-3d-orbit-gallery";
+ import { useScrollSequence } from "../../hooks/useScrollSequence";
+@@ -34,8 +33,15 @@ type Theme = typeof THEMES.light;
+ 
+ interface DeepDiveSectionProps {
+   t?: Theme;
++  onZoomCompleteChange?: (isComplete: boolean) => void;
+ }
+ 
++type DeepDiveStyle = React.CSSProperties &
++  Record<`--ad-${string}`, string>;
++
++type BgParticleStyle = React.CSSProperties &
++  Record<"--drift-x" | "--drift-y", string>;
++
+ type BgParticle = {
+   x: number;
+   y: number;
+@@ -47,65 +53,155 @@ type BgParticle = {
+   driftY: number;
+ };
+ 
++type OrbitViewState = {
++  position: THREE.Vector3;
++  target: THREE.Vector3;
++};
++
+ const DEFAULT_ORBIT_GROUP_SCALE = 0.15;
+ const MIN_ORBIT_GROUP_SCALE = 0.15;
++const MIN_CAMERA_DISTANCE = 0.5;
++const SYNCED_ZOOM_WHEEL_DISTANCE_PX = 2200;
+ const DEFAULT_CAMERA_DISTANCE = Math.sqrt(10 ** 2 + 1.5 ** 2 + 10 ** 2);
+ const MAX_DISTANCE_FOR_MIN_SCALE =
+   DEFAULT_CAMERA_DISTANCE * (DEFAULT_ORBIT_GROUP_SCALE / MIN_ORBIT_GROUP_SCALE);
+ 
+-const ClampedOrbitControls: FC = () => {
++const getWheelDeltaPixels = (event: Pick<WheelEvent, "deltaMode" | "deltaY">) => {
++  if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
++    return event.deltaY * 40;
++  }
++
++  if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
++    return event.deltaY * window.innerHeight;
++  }
++
++  return event.deltaY;
++};
++
++const applyZoomDistance = (
++  camera: THREE.Camera,
++  target: THREE.Vector3,
++  zoomProgress: number
++) => {
++  const direction = new THREE.Vector3().subVectors(camera.position, target);
++  if (direction.lengthSq() === 0) {
++    direction.set(-10, 1.5, 10);
++  }
++
++  const clampedProgress = THREE.MathUtils.clamp(zoomProgress, 0, 1);
++  const distance = THREE.MathUtils.lerp(
++    MAX_DISTANCE_FOR_MIN_SCALE,
++    MIN_CAMERA_DISTANCE,
++    clampedProgress
++  );
++
++  direction.setLength(distance);
++  camera.position.copy(target).add(direction);
++  camera.updateMatrixWorld();
++};
++
++interface SyncedOrbitControlsProps {
++  zoomProgress: number;
++  viewStateRef: React.MutableRefObject<OrbitViewState | null>;
++}
++
++const SyncedOrbitControls: FC<SyncedOrbitControlsProps> = ({
++  zoomProgress,
++  viewStateRef,
++}) => {
+   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+-  const { camera, gl } = useThree();
++  const { camera } = useThree();
+ 
+   useEffect(() => {
+     const controls = controlsRef.current;
+     if (!controls) return;
+ 
+-    const onWheel = (event: WheelEvent) => {
+-      if (!controls.enabled) return;
++    applyZoomDistance(camera, controls.target, zoomProgress);
++    controls.update();
++  }, [camera, zoomProgress]);
+ 
+-      // Keep page scroll behavior (handled by parent), but take over zoom to ensure consistent direction + clamp.
+-      event.preventDefault();
++  useFrame(() => {
++    const controls = controlsRef.current;
++    if (!controls) return;
+ 
+-      const direction = new THREE.Vector3().subVectors(camera.position, controls.target);
+-      const distance = direction.length();
+-      const isNearMaxZoom = distance < 1.5; // When very close to max zoom
++    if (!viewStateRef.current) {
++      viewStateRef.current = {
++        position: new THREE.Vector3(),
++        target: new THREE.Vector3(),
++      };
++    }
+ 
+-      // deltaY > 0 is typically "scroll down"
+-      const abs = Math.min(250, Math.abs(event.deltaY));
+-      const zoomFactor = 1 + abs / 600; // gentle exponential-ish zoom
++    viewStateRef.current.position.copy(camera.position);
++    viewStateRef.current.target.copy(controls.target);
++  });
+ 
+-      // Browser behavior:
+-      // - normal scroll wheel: deltaY > 0 is typically "scroll down"
+-      // - trackpad pinch-to-zoom often comes through as a wheel event with ctrlKey=true,
+-      //   and the deltaY sign is commonly opposite of "zoom intent".
+-      const zoomIn = event.ctrlKey ? event.deltaY < 0 : event.deltaY > 0;
+-      const nextDistance = zoomIn ? distance / zoomFactor : distance * zoomFactor;
+-      const clampedDistance = THREE.MathUtils.clamp(nextDistance, 0.5, MAX_DISTANCE_FOR_MIN_SCALE);
++  return <OrbitControls ref={controlsRef} enablePan={true} enableZoom={false} enableRotate={true} />;
++};
+ 
+-      direction.setLength(clampedDistance);
+-      camera.position.copy(controls.target).add(direction);
+-      camera.updateMatrixWorld();
+-      controls.update();
++interface MirroredOrbitCameraProps {
++  zoomProgress: number;
++  viewStateRef: React.MutableRefObject<OrbitViewState | null>;
++}
+ 
+-      // Slow down page scroll while zooming in, resume normal speed at max zoom
+-      const scrollMultiplier = isNearMaxZoom ? 1 : 0.05; // 65% scroll reduction until max zoom
+-      window.scrollBy({ top: event.deltaY * scrollMultiplier, left: 0, behavior: "auto" });
+-    };
++const MirroredOrbitCamera: FC<MirroredOrbitCameraProps> = ({
++  zoomProgress,
++  viewStateRef,
++}) => {
++  const { camera } = useThree();
+ 
+-    gl.domElement.addEventListener("wheel", onWheel, { passive: false });
+-    return () => {
+-      gl.domElement.removeEventListener("wheel", onWheel as any);
+-    };
+-  }, [camera, gl]);
++  useFrame(() => {
++    const viewState = viewStateRef.current;
+ 
+-  return <OrbitControls ref={controlsRef} enablePan={true} enableZoom={false} enableRotate={true} />;
++    if (viewState) {
++      camera.position.copy(viewState.position);
++      camera.lookAt(viewState.target);
++      camera.updateMatrixWorld();
++      return;
++    }
++
++    applyZoomDistance(camera, new THREE.Vector3(0, 0, 0), zoomProgress);
++  });
++
++  return null;
+ };
+ 
+-const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
++const DeepDiveSection: FC<DeepDiveSectionProps> = ({
++  t = THEMES.light,
++  onZoomCompleteChange,
++}) => {
+   const sectionRef = useRef<HTMLElement>(null);
+   const sequenceCanvasRef = useRef<HTMLCanvasElement>(null);
++  const zoomProgressRef = useRef(0);
++  const orbitViewStateRef = useRef<OrbitViewState | null>(null);
+   const [showArrow, setShowArrow] = useState(false);
++  const [zoomProgress, setZoomProgress] = useState(0);
++
++  const handleSyncedZoomWheel = useCallback((deltaPixels: number) => {
++    const nextProgress = THREE.MathUtils.clamp(
++      zoomProgressRef.current + deltaPixels / SYNCED_ZOOM_WHEEL_DISTANCE_PX,
++      0,
++      1
++    );
++
++    zoomProgressRef.current = nextProgress;
++    setZoomProgress(nextProgress);
++  }, []);
++
++  const handleSectionWheelCapture = (event: React.WheelEvent<HTMLElement>) => {
++    const deltaPixels = getWheelDeltaPixels(event.nativeEvent);
++
++    if (zoomProgressRef.current >= 1 && deltaPixels > 0) {
++      return;
++    }
++
++    event.preventDefault();
++    event.stopPropagation();
++    handleSyncedZoomWheel(deltaPixels);
++  };
++
++  useEffect(() => {
++    onZoomCompleteChange?.(zoomProgress >= 1);
++  }, [onZoomCompleteChange, zoomProgress]);
+ 
+   // Initialize scroll sequence animation
+   useScrollSequence(sequenceCanvasRef, {
+@@ -113,6 +209,7 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+     framePath: (n) =>
+       `/about-me/ezgif-frame-${String(n).padStart(3, "0")} 2.png`,
+     sectionSelector: ".about-deepdive",
++    manualProgress: zoomProgress,
+   });
+ 
+   useEffect(() => {
+@@ -160,8 +257,8 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+ 
+   const bgParticles = useMemo<BgParticle[]>(() => {
+     const count = 170;
+-    const centerX = 100;
+-    const centerY = 100;
++    const centerX = 50;
++    const centerY = 50;
+     const exclusionRadius = 31; // Keep center clear (globe area)
+     const points: BgParticle[] = [];
+ 
+@@ -193,35 +290,29 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+     <section
+       ref={sectionRef}
+       className="about-deepdive w-full h-screen relative "
++      onWheelCapture={handleSectionWheelCapture}
+       style={
+         {
+           // Make this section full-bleed even inside centered/padded layouts.
+           width: "100vw",
+           marginLeft: "calc(50% - 50vw)",
+-          ["--ad-bg" as any]: isDarkTheme ? "#000000" : t.bg,
+-          ["--ad-ink" as any]: t.ink,
+-          ["--ad-ink2" as any]: t.ink2,
+-          ["--ad-ink3" as any]: t.ink3,
+-          ["--ad-bg2" as any]: t.bg2,
+-          ["--ad-btn" as any]: t.btn,
+-          ["--ad-border" as any]: t.border,
+-          ["--ad-accent" as any]: t.accent,
+-          ["--ad-particle" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(100, 116, 139, 0.7)",
+-          ["--ad-particle-glow" as any]: isDarkTheme
++          "--ad-bg": isDarkTheme ? "#000000" : t.bg,
++          "--ad-ink": t.ink,
++          "--ad-ink2": t.ink2,
++          "--ad-ink3": t.ink3,
++          "--ad-bg2": t.bg2,
++          "--ad-btn": t.btn,
++          "--ad-border": t.border,
++          "--ad-accent": t.accent,
++          "--ad-particle": isDarkTheme ? "rgba(255, 255, 255, 0.72)" : "rgba(100, 116, 139, 0.7)",
++          "--ad-particle-glow": isDarkTheme
+             ? "0 0 6px rgba(255, 255, 255, 0.22)"
+             : "0 0 6px rgba(100, 116, 139, 0.24)",
+-          ["--ad-scroll-fg" as any]: isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(28, 24, 16, 0.78)",
+-          ["--ad-scroll-fg-hover" as any]: isDarkTheme ? "#ffffff" : t.ink,
+-        } as React.CSSProperties
++          "--ad-scroll-fg": isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(28, 24, 16, 0.78)",
++          "--ad-scroll-fg-hover": isDarkTheme ? "#ffffff" : t.ink,
++        } as DeepDiveStyle
+       }
+     >
+-      {/* Scroll-driven image sequence canvas */}
+-      <canvas
+-        ref={sequenceCanvasRef}
+-        className="about-deepdive__sequenceCanvas"
+-        aria-hidden="true"
+-      />
+-
+       <div className="about-deepdive__bgParticles" aria-hidden="true">
+         {bgParticles.map((p, idx) => (
+           <span
+@@ -236,24 +327,20 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+                 opacity: p.opacity,
+                 animationDuration: `${p.duration}s`,
+                 animationDelay: `${p.delay}s`,
+-                ["--drift-x" as any]: `${p.driftX}px`,
+-                ["--drift-y" as any]: `${p.driftY}px`,
+-              } as React.CSSProperties
++                "--drift-x": `${p.driftX}px`,
++                "--drift-y": `${p.driftY}px`,
++              } as BgParticleStyle
+             }
+           />
+         ))}
+       </div>
+ 
+       <div
+-        className="about-deepdive__orbitWrap"
++        className="about-deepdive__orbitWrap about-deepdive__orbitWrap--back"
+         style={{
+           transform: "translateY(-15vh)",
+           height: "calc(100% + 15vh)"
+         }}
+-        onWheelCapture={(e) => {
+-          // Keep orbit zoom, but also allow normal page scroll progression.
+-          window.scrollBy({ top: e.deltaY, left: 0, behavior: "auto" });
+-        }}
+       >
+         <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
+           <ambientLight intensity={0.5} />
+@@ -267,10 +354,51 @@ const DeepDiveSection: FC<DeepDiveSectionProps> = ({ t = THEMES.light }) => {
+             }
+           >
+             <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
+-              <ParticleSphere images={unsplashImages} particlePalette={isDarkTheme ? "warm" : "slate"} />
++              <ParticleSphere
++                images={unsplashImages}
++                imageLayer="back"
++                particlePalette={isDarkTheme ? "warm" : "slate"}
++              />
+             </group>
+           </Suspense>
+-          <ClampedOrbitControls />
++          <SyncedOrbitControls
++            zoomProgress={zoomProgress}
++            viewStateRef={orbitViewStateRef}
++          />
++        </Canvas>
++      </div>
++
++      {/* Scroll-driven image sequence canvas */}
++      <canvas
++        ref={sequenceCanvasRef}
++        className="about-deepdive__sequenceCanvas"
++        aria-hidden="true"
++      />
++
++      <div
++        className="about-deepdive__orbitWrap about-deepdive__orbitWrap--front"
++        style={{
++          transform: "translateY(-15vh)",
++          height: "calc(100% + 15vh)"
++        }}
++      >
++        <Canvas className="about-deepdive__orbitCanvas" camera={{ position: [-10, 1.5, 10], fov: 50 }}>
++          <ambientLight intensity={0.5} />
++          <pointLight position={[10, 10, 10]} intensity={1} />
++          <Suspense fallback={null}>
++            <group scale={[DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE, DEFAULT_ORBIT_GROUP_SCALE]}>
++              <ParticleSphere
++                images={unsplashImages}
++                imageLayer="front"
++                particlePalette={isDarkTheme ? "warm" : "slate"}
++                showParticles={false}
++              />
++            </group>
++          </Suspense>
++          <MirroredOrbitCamera
++            zoomProgress={zoomProgress}
++            viewStateRef={orbitViewStateRef}
++          />
+         </Canvas>
+       </div>
+ 
+diff --git a/src/styles/globals.css b/src/styles/globals.css
+index 422b3c3..65aba44 100644
+--- a/src/styles/globals.css
++++ b/src/styles/globals.css
+@@ -5,6 +5,7 @@
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
++  cursor: none !important;
+ }
+ 
+ html, body {
