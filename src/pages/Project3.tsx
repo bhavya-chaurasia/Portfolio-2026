@@ -365,7 +365,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
 
   return (
     <div
-      className="project3-page"
+      className={dark ? "project3-page project3-page--dark" : "project3-page"}
       style={{
         backgroundColor: dark ? "#0E0E0E" : "#FFFFFF",
         color: dark ? "#F2F2F2" : "#131313",
@@ -381,32 +381,51 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           transition: background-color 220ms ease, color 220ms ease, filter 220ms ease;
         }
 
-        .project3-theme-layer--dark {
-          /* Invert content composition to map light-only inline styles to dark mode */
-          filter: invert(1) hue-rotate(180deg);
-        }
-
         /* Keep all heading text white in dark mode */
-        .project3-theme-layer--dark h1,
-        .project3-theme-layer--dark h2,
-        .project3-theme-layer--dark h3,
-        .project3-theme-layer--dark h4,
-        .project3-theme-layer--dark h5,
-        .project3-theme-layer--dark h6 {
+        .project3-page--dark h1,
+        .project3-page--dark h2,
+        .project3-page--dark h3,
+        .project3-page--dark h4,
+        .project3-page--dark h5,
+        .project3-page--dark h6 {
           color: #ffffff !important;
         }
 
-        /* Re-invert media so images/videos/icons keep original visual appearance */
-        .project3-theme-layer--dark img,
-        .project3-theme-layer--dark video,
-        .project3-theme-layer--dark svg,
-        .project3-theme-layer--dark canvas {
-          filter: invert(1) hue-rotate(180deg);
+        /* Re-map hardcoded inline text colors used throughout Project3 */
+        .project3-page--dark [style*="color: rgb(19, 19, 19)"],
+        .project3-page--dark [style*="color:#131313"],
+        .project3-page--dark [style*="color: #131313"] {
+          color: #f2f2f2 !important;
+        }
+
+        .project3-page--dark [style*="color: rgb(102, 102, 102)"],
+        .project3-page--dark [style*="color:#666666"],
+        .project3-page--dark [style*="color: #666666"] {
+          color: #b3b3b3 !important;
+        }
+
+        .project3-page--dark [style*="color: rgb(136, 136, 136)"],
+        .project3-page--dark [style*="color:#888888"],
+        .project3-page--dark [style*="color: #888888"] {
+          color: #9c9c9c !important;
+        }
+
+        .project3-page--dark [style*="color: rgb(43, 49, 143)"],
+        .project3-page--dark [style*="color:#2B318F"],
+        .project3-page--dark [style*="color: #2B318F"] {
+          color: #aab6ff !important;
+        }
+
+        /* Soften hardcoded light borders in dark mode */
+        .project3-page--dark [style*="rgb(229, 229, 229)"],
+        .project3-page--dark [style*="#E5E5E5"],
+        .project3-page--dark [style*="#e5e5e5"] {
+          border-color: rgba(255, 255, 255, 0.2) !important;
         }
       `}</style>
 
       <div
-        className={dark ? "project3-theme-layer project3-theme-layer--dark" : "project3-theme-layer"}
+        className="project3-theme-layer"
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
