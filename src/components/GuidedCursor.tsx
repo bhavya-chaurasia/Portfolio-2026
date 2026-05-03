@@ -314,17 +314,17 @@ const GuidedCursor: FC = () => {
           left: 0,
           background: "#FF7A00",
           color: "#ffffff",
-          padding: "6px 14px",
-          borderRadius: "20px",
+          padding: "calc(6px * 0.8) calc(14px * 0.8)",
+          borderRadius: "calc(20px * 0.8)",
           fontFamily: "'DM Sans', sans-serif",
-          fontSize: "13px",
+          fontSize: "calc(13px * 0.8)",
           fontWeight: 600,
           pointerEvents: "none",
           zIndex: 1000000,
           opacity: 0,
           transition: "opacity 0.2s ease",
           boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-          border: "1.5px solid rgba(255,255,255,0.1)",
+          border: "calc(1.5px * 0.8) solid rgba(255,255,255,0.1)",
         }}
       >
         Bhavya
