@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   type LoaderMode,
@@ -47,6 +47,23 @@ export default function SiteLoader({
   className,
 }: SiteLoaderProps) {
   const palette = THEMES[theme];
+  const [enterScaleUp, setEnterScaleUp] = useState(false);
+
+  useEffect(() => {
+    if (mode !== "intro" || !showEnter || !visible) {
+      setEnterScaleUp(false);
+      return;
+    }
+
+    setEnterScaleUp(false);
+    const frame = window.requestAnimationFrame(() => {
+      setEnterScaleUp(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [mode, showEnter, visible]);
 
   return (
     <div
@@ -83,12 +100,6 @@ export default function SiteLoader({
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6">
         <div className="mb-8 text-center">
-          <p
-            className="mb-3 text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: palette.muted }}
-          >
-            Bhavya Chaurasia
-          </p>
           <div
             className={cn(
               "transition-all duration-[1600ms] ease-out",
@@ -99,14 +110,13 @@ export default function SiteLoader({
               <button
                 onClick={onEnter}
                 className={cn(
-                  "rounded-full px-8 py-3 text-xl uppercase tracking-[0.34em] transition-all duration-700",
+                  "mt-10 rounded-full px-8 py-3 uppercase tracking-[0.34em] transition-all duration-700",
                   showEnter
                     ? "pointer-events-auto opacity-100"
                     : "pointer-events-none opacity-0"
                 )}
                 style={{
                   color: palette.text,
-                  border: `1px solid ${palette.border}`,
                   background:
                     theme === "dark"
                       ? "rgba(255,255,255,0.04)"
@@ -117,16 +127,20 @@ export default function SiteLoader({
                       : "0 20px 60px rgba(28,24,16,0.08)",
                 }}
               >
-                Enter
+                <span
+                  className={cn(
+                    "inline-block origin-center text-3xl font-thin transition-transform duration-[12000ms] ease-out",
+                    enterScaleUp ? "scale-150" : "scale-[0.2]"
+                  )}
+                  style={{
+                    fontWeight: 200,
+                    color: palette.muted,
+                  }}
+                >
+                  Enter
+                </span>
               </button>
-            ) : (
-              <p
-                className="text-sm uppercase tracking-[0.3em]"
-                style={{ color: palette.text }}
-              >
-                Loading
-              </p>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
