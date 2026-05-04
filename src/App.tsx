@@ -19,6 +19,7 @@ import SiteLoader from "@/components/ui/site-loader";
 import { THEMES } from "@/constants/themes";
 import { getRouteLoaderConfig } from "@/lib/route-loader-config";
 import Home from "@/pages/Home";
+import FontLoader from "@/styles/FontLoader";
 
 const Project1 = lazy(() => import("@/pages/project1"));
 const Project2 = lazy(() => import("@/pages/Project2"));
@@ -45,6 +46,12 @@ function AppRoutes() {
   } = useLoader();
   const previousPathRef = useRef<string | null>(null);
   const [dark, setDark] = useState(true);
+  const navbarTheme =
+    location.pathname === "/project-2"
+      ? THEMES.dark
+      : dark
+        ? THEMES.dark
+        : THEMES.light;
 
   const withSiteChrome = (
     content: ReactNode,
@@ -113,6 +120,18 @@ function AppRoutes() {
 
   return (
     <>
+      <FontLoader />
+      <style>{`
+        :root {
+          --c-accent: ${navbarTheme.accent};
+          --c-ink: ${navbarTheme.ink};
+          --c-ink2: ${navbarTheme.ink2};
+          --c-ink3: ${navbarTheme.ink3};
+          --c-bg2: ${navbarTheme.bg2};
+          --c-btn: ${navbarTheme.btn};
+          --c-border: ${navbarTheme.border};
+        }
+      `}</style>
       <Routes>
         <Route
           path="/"

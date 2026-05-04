@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState, type KeyboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import {
   type LoaderMode,
@@ -47,15 +47,81 @@ export default function SiteLoader({
   className,
 }: SiteLoaderProps) {
   const palette = THEMES[theme];
+  const [enterScaleUp, setEnterScaleUp] = useState(false);
+  const canActivateEnter = mode === "intro" && visible && showEnter && Boolean(onEnter);
+
+  useEffect(() => {
+    if (mode !== "intro" || !showEnter || !visible) {
+      setEnterScaleUp(false);
+      return;
+    }
+
+    setEnterScaleUp(false);
+    const frame = window.requestAnimationFrame(() => {
+      setEnterScaleUp(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [mode, showEnter, visible]);
+
+  const handleActivateEnter = () => {
+    if (!canActivateEnter) {
+      return;
+    }
+
+    onEnter?.();
+  };
+
+  const handleLoaderKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!canActivateEnter) {
+      return;
+    }
+
+    const isEnterKey =
+      event.key === "Enter" || event.key === "Return" || event.code === "NumpadEnter";
+
+    if (isEnterKey) {
+      event.preventDefault();
+      onEnter?.();
+    }
+  };
+
+  useEffect(() => {
+    if (!canActivateEnter) {
+      return;
+    }
+
+    const handleWindowKeyDown = (event: globalThis.KeyboardEvent) => {
+      const isEnterKey =
+        event.key === "Enter" || event.key === "Return" || event.code === "NumpadEnter";
+
+      if (isEnterKey) {
+        event.preventDefault();
+        onEnter?.();
+      }
+    };
+
+    window.addEventListener("keydown", handleWindowKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleWindowKeyDown);
+    };
+  }, [canActivateEnter, onEnter]);
 
   return (
     <div
       aria-hidden={!visible}
+      aria-label={canActivateEnter ? "Enter site" : undefined}
       className={cn(
         "fixed inset-0 z-[1000001] transition-opacity duration-700",
         visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         className
       )}
+      onClick={handleActivateEnter}
+      onKeyDown={handleLoaderKeyDown}
+      role={canActivateEnter ? "button" : undefined}
+      tabIndex={canActivateEnter ? 0 : -1}
       style={{ background: palette.background }}
     >
       <div className="absolute inset-0">
@@ -83,12 +149,6 @@ export default function SiteLoader({
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6">
         <div className="mb-8 text-center">
-          <p
-            className="mb-3 text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: palette.muted }}
-          >
-            Bhavya Chaurasia
-          </p>
           <div
             className={cn(
               "transition-all duration-[1600ms] ease-out",
@@ -97,16 +157,14 @@ export default function SiteLoader({
           >
             {mode === "intro" ? (
               <button
-                onClick={onEnter}
                 className={cn(
-                  "rounded-full px-8 py-3 text-xl uppercase tracking-[0.34em] transition-all duration-700",
+                  "mt-10 rounded-full px-8 py-3 uppercase tracking-[0.34em] transition-all duration-700",
                   showEnter
                     ? "pointer-events-auto opacity-100"
                     : "pointer-events-none opacity-0"
                 )}
                 style={{
                   color: palette.text,
-                  border: `1px solid ${palette.border}`,
                   background:
                     theme === "dark"
                       ? "rgba(255,255,255,0.04)"
@@ -117,16 +175,22 @@ export default function SiteLoader({
                       : "0 20px 60px rgba(28,24,16,0.08)",
                 }}
               >
-                Enter
+                <span
+                  className={cn(
+                    "inline-block origin-center text-3xl font-thin transition-transform duration-[24000ms] ease-out",
+                    enterScaleUp ? "scale-150" : "scale-[0.2]"
+                  )}
+                  style={{
+                    fontWeight: 100,
+                    fontFamily:
+                      '"Helvetica Neue", "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif',
+                    color: palette.muted,
+                  }}
+                >
+                  Enter
+                </span>
               </button>
-            ) : (
-              <p
-                className="text-sm uppercase tracking-[0.3em]"
-                style={{ color: palette.text }}
-              >
-                Loading
-              </p>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

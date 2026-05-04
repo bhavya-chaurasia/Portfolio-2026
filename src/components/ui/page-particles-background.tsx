@@ -13,7 +13,7 @@ const PageBackgroundSphere: FC<{ dark: boolean }> = ({ dark }) => {
   const groupRef = useRef<THREE.Group>(null);
 
   const particles = useMemo<SphereParticle[]>(() => {
-    const particleCount = 1800;
+    const particleCount = 1100;
     const sphereRadius = 13.5;
     const positionRandomness = 5.5;
     const particleSizeMin = 0.005;
@@ -33,9 +33,9 @@ const PageBackgroundSphere: FC<{ dark: boolean }> = ({ dark }) => {
         position: [x, y, z],
         scale:
           Math.random() * (particleSizeMax - particleSizeMin) + particleSizeMin,
-        color: dark
-          ? new THREE.Color().setHSL(Math.random() * 0.1 + 0.05, 0.8, 0.6 + Math.random() * 0.3)
-          : new THREE.Color().setHSL(0, 0, 0.03 + Math.random() * 0.06),
+          color: dark
+            ? new THREE.Color(0xffffff)
+            : new THREE.Color(0x000000),
       };
     });
   }, [dark]);
@@ -51,11 +51,11 @@ const PageBackgroundSphere: FC<{ dark: boolean }> = ({ dark }) => {
     <group ref={groupRef} scale={[1.45, 1.45, 1.45]} position={[0, 0, -2]}>
       {particles.map((particle, index) => (
         <mesh key={index} position={particle.position} scale={particle.scale}>
-          <sphereGeometry args={[1, 8, 6]} />
+          <sphereGeometry args={[1, 6, 4]} />
           <meshBasicMaterial
             color={particle.color}
             transparent
-            opacity={dark ? 0.95 : 0.52}
+            opacity={dark ? 0.75 : 0.35}
           />
         </mesh>
       ))}
@@ -81,7 +81,7 @@ const PageParticlesBackground: FC<PageParticlesBackgroundProps> = ({
         className="absolute inset-0 h-full w-full"
         camera={{ position: [0, 0, 34], fov: 38 }}
         dpr={[1, 1.5]}
-        gl={{ alpha: true, antialias: true }}
+        gl={{ alpha: true, antialias: false }}
       >
         <Suspense fallback={null}>
           <PageBackgroundSphere dark={dark} />

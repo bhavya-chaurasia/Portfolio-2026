@@ -7,6 +7,7 @@ import { project1Video } from "../constants/project1Images";
 import { useLoaderNavigate } from "@/hooks/use-loader-navigate";
 import { usePageReady } from "@/hooks/use-page-ready";
 import { getRouteLoaderConfig } from "@/lib/route-loader-config";
+import PageParticlesBackground from "@/components/ui/page-particles-background";
 
 interface WorkPageProps {
   dark?: boolean;
@@ -123,6 +124,7 @@ transparency, cross-selling, and service adoption.`,
           }
         }
       `}</style>
+      <PageParticlesBackground dark={dark} />
 
       <section
         id="works"
