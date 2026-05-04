@@ -4,12 +4,12 @@ import marutiAnimation from "@/components/Mobile-app-showcase2.json";
 import msmeChatbotAnimation from "@/components/Mobile-app-showcase3.json";
 import GuidedCursor from "@/components/GuidedCursor";
 import Hero from "@/components/Hero";
-import FontLoader from "@/styles/FontLoader";
 import { THEMES } from "@/constants/themes";
 import { project1Video } from "@/constants/project1Images";
 import { useLoaderNavigate } from "@/hooks/use-loader-navigate";
 import { usePageReady } from "@/hooks/use-page-ready";
 import { getRouteLoaderConfig } from "@/lib/route-loader-config";
+import PageParticlesBackground from "@/components/ui/page-particles-background";
 
 interface HomeProps {
   dark: boolean;
@@ -46,8 +46,6 @@ const Home: FC<HomeProps> = ({ dark }) => {
         boxSizing: "border-box",
       }}
     >
-      <FontLoader />
-
       <style>{`
         :root {
           --c-accent: ${t.accent};
@@ -101,6 +99,7 @@ const Home: FC<HomeProps> = ({ dark }) => {
           }
         }
       `}</style>
+      <PageParticlesBackground dark={dark} />
 
       <GuidedCursor />
 

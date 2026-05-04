@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import "./Project3.css";
 import { usePageReady } from "@/hooks/use-page-ready";
+import PageParticlesBackground from "@/components/ui/page-particles-background";
 
 const typographyImage = "/Project3/typography.png?url";
 const graphLineImage = "/Project3/graph-line.png?url";
@@ -374,6 +375,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
         overflowX: "hidden",
       }}
     >
+      <PageParticlesBackground dark={dark} />
       <style>{`
         [style*="Courier New"] { font-size: 18px !important; }
 

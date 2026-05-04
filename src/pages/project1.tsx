@@ -18,6 +18,7 @@ import {
   arrow,
 } from "../constants/project1Images";
 import { usePageReady } from "@/hooks/use-page-ready";
+import PageParticlesBackground from "@/components/ui/page-particles-background";
 
 const Project1 = ({ dark = false }: { dark?: boolean }) => {
   usePageReady({ delayMs: 160 });
@@ -51,6 +52,7 @@ const Project1 = ({ dark = false }: { dark?: boolean }) => {
 
   return (
     <div style={{ ...styles.page, ...darkThemeVariables } as React.CSSProperties}>
+      <PageParticlesBackground dark={dark} />
       <div style={styles.container}>
         <HeroSection
           tags="UX Design · AI · Product Design"

@@ -3,6 +3,8 @@ import { ArrowIcon } from "./icons/icons";
 import HoverGallery from "./HoverGallery";
 import GridCanvas from "./GridCanvas";
 import { THEMES } from "../constants/themes";
+import { useLoaderNavigate } from "@/hooks/use-loader-navigate";
+import { getRouteLoaderConfig } from "@/lib/route-loader-config";
 
 interface HiProps {
   dataKey: string;
@@ -64,6 +66,7 @@ interface HeroProps {
 const Hero: FC<HeroProps> = ({ dark, t }) => {
   const [galleryKey, setGalleryKey] = useState<string | null>(null);
   const [galleryAnchor, setGalleryAnchor] = useState<HTMLElement | null>(null);
+  const navigate = useLoaderNavigate((to) => getRouteLoaderConfig(to, dark));
 
   const onHiEnter = (key: string, el: HTMLElement) => {
     setGalleryKey(key);
@@ -243,11 +246,11 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
           style={{ marginTop: 44, display: "flex", gap: 16, alignItems: "center", justifyContent: "center" }}
         >
           <a
-            href="#works"
+            href="/work"
             className="btn-primary hero-btn-primary"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById("works")?.scrollIntoView({ behavior: "smooth" });
+              navigate("/work");
             }}
             style={{
               background: t.ink,
@@ -268,8 +271,12 @@ const Hero: FC<HeroProps> = ({ dark, t }) => {
             View Work
           </a>
           <a
-            href="#"
+            href="/about"
             className="btn-secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/about");
+            }}
             style={{
               fontSize: 13,
               color: t.ink3,
