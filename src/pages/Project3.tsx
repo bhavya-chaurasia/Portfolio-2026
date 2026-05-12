@@ -1,11 +1,13 @@
 ﻿import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Project3.css";
 import { usePageReady } from "@/hooks/use-page-ready";
 import PageParticlesBackground from "@/components/ui/page-particles-background";
 
-const typographyImage = "/Project3/typography.png?url";
-const graphLineImage = "/Project3/graph-line.png?url";
-const colorPaletteImage = "/Project3/color-pallete.png?url";
+const typographyImage = "/Project3/typography.png";
+const graphLineImage = "/Project3/graph-line.png";
+const colorPaletteImage = "/Project3/color-pallete.png";
+const darkColorPaletteImage = "/Project3/color-palette-dark.png";
 import "./Project3.mobile.css";
 
 const contributions = [
@@ -280,12 +282,17 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
     };
   }, []);
 
+  const glassSurfaceStyle = {
+    background: dark ? "rgba(20, 22, 35, 0.74)" : "rgba(255,255,255,0.65)",
+    backdropFilter: "blur(14px)",
+    border: dark ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(255,255,255,0.85)",
+    boxShadow: dark ? "0 18px 42px rgba(0,0,0,0.34)" : "0 4px 24px rgba(43,49,143,0.07)",
+  };
+
   const glassCardBaseStyle = {
     position: "absolute" as const,
-    background: "rgba(255,255,255,0.65)",
+    ...glassSurfaceStyle,
     backdropFilter: "blur(2px)",
-    border: "1px solid rgba(255,255,255,0.85)",
-    boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
     borderRadius: "10px",
     padding: "16px 20px",
     maxWidth: "240px",
@@ -423,6 +430,12 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
         .project3-page--dark [style*="#E5E5E5"],
         .project3-page--dark [style*="#e5e5e5"] {
           border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .project3-page--dark .feature-annotation-parallax-card {
+          background: rgba(20, 22, 35, 0.74) !important;
+          border-color: rgba(255, 255, 255, 0.14) !important;
+          box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34) !important;
         }
       `}</style>
 
@@ -995,10 +1008,11 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
                   <div
                     key={source.title}
                     style={{
-                      background: "rgba(255,255,255,0.6)",
+                      ...glassSurfaceStyle,
+                      background: dark ? glassSurfaceStyle.background : "rgba(255,255,255,0.6)",
+                      border: dark ? glassSurfaceStyle.border : "1px solid rgba(255,255,255,0.8)",
+                      boxShadow: dark ? glassSurfaceStyle.boxShadow : "0 4px 24px rgba(43,49,143,0.06)",
                       backdropFilter: "blur(12px)",
-                      border: "1px solid rgba(255,255,255,0.8)",
-                      boxShadow: "0 4px 24px rgba(43,49,143,0.06)",
                       borderRadius: "12px",
                       padding: "24px",
                       display: "grid",
@@ -1099,10 +1113,11 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
               <div
                 key={persona.name}
                 style={{
-                  background: "rgba(255,255,255,0.6)",
+                  ...glassSurfaceStyle,
+                  background: dark ? glassSurfaceStyle.background : "rgba(255,255,255,0.6)",
+                  border: dark ? glassSurfaceStyle.border : "1px solid rgba(255,255,255,0.8)",
+                  boxShadow: dark ? glassSurfaceStyle.boxShadow : "0 4px 24px rgba(43,49,143,0.06)",
                   backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.8)",
-                  boxShadow: "0 4px 24px rgba(43,49,143,0.06)",
                   borderRadius: "12px",
                   padding: "20px",
                   display: "grid",
@@ -1663,15 +1678,14 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             >
               {timelineMilestones.map((milestone, index) => (
                 <div key={milestone.label} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  {/* Dot */}
                   <div
+                    aria-hidden="true"
                     style={{
                       width: "8px",
                       height: "8px",
-                      borderRadius: "50%",
-                      backgroundColor: "#2B318F",
                       marginBottom: index % 2 === 0 ? "40px" : "0",
                       marginTop: index % 2 === 0 ? "0" : "40px",
+                      visibility: "hidden",
                     }}
                   />
 
@@ -1807,10 +1821,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
               <div
                 key={decision.label}
                 style={{
-                  background: "rgba(255,255,255,0.65)",
-                  backdropFilter: "blur(14px)",
-                  border: "1px solid rgba(255,255,255,0.85)",
-                  boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                  ...glassSurfaceStyle,
                   borderRadius: "10px",
                   padding: "20px",
                 }}
@@ -1876,7 +1887,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             <div
               style={{
                 borderLeft: "2px solid #2B318F",
-                background: "#EEEFFA",
+                background: "#000000",
                 padding: "16px 20px",
                 fontSize: "13px",
                 lineHeight: 1.6,
@@ -1987,30 +1998,47 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           }}
           className="design-showcase"
         >
-          <img
-            src={typographyImage}
-            alt="Typography & Color Palette"
-            style={{
-              position: "absolute",
-              width: "100%",
-              maxWidth: "900px",
-              height: "auto",
-              display: "block",
-              zIndex: 1,
-            }}
-          />
-          <img
-            src={colorPaletteImage}
-            alt="Color Palette"
-            style={{
-              position: "absolute",
-              width: "100%",
-              maxWidth: "900px",
-              height: "auto",
-              display: "block",
-              zIndex: 2,
-            }}
-          />
+          {dark ? (
+            <img
+              src={darkColorPaletteImage}
+              alt="Typography & Color Palette"
+              style={{
+                position: "absolute",
+                width: "100%",
+                maxWidth: "900px",
+                height: "auto",
+                display: "block",
+                zIndex: 1,
+              }}
+            />
+          ) : (
+            <>
+              <img
+                src={typographyImage}
+                alt="Typography & Color Palette"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  maxWidth: "900px",
+                  height: "auto",
+                  display: "block",
+                  zIndex: 1,
+                }}
+              />
+              <img
+                src={colorPaletteImage}
+                alt="Color Palette"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  maxWidth: "900px",
+                  height: "auto",
+                  display: "block",
+                  zIndex: 2,
+                }}
+              />
+            </>
+          )}
         </section>
 
         {/* DECISIONS BLOCK 6 - Accessibility */}
@@ -3195,7 +3223,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           style={{
             borderTop: "1px solid #E5E5E5",
             borderBottom: "1px solid #E5E5E5",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#0E0E0E",
             padding: "60px",
             marginBottom: "100px",
             position: "relative",
@@ -3249,10 +3277,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 1 - Cannot Read or Write */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3318,10 +3343,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 2 - Visually Impaired */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3388,10 +3410,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 3 - Language Barrier */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3457,10 +3476,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 4 - Low Tech Literacy */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3672,7 +3688,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
         <div
           style={{
             borderLeft: "3px solid #2B318F",
-            background: "#EEEFFA",
+            background: "#000000",
             padding: "20px 24px",
             borderRadius: "0 8px 8px 0",
             marginBottom: "100px",
@@ -3812,7 +3828,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           style={{
             borderTop: "1px solid #E5E5E5",
             borderBottom: "1px solid #E5E5E5",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#0E0E0E",
             padding: "80px",
             marginBottom: "100px",
             position: "relative",
@@ -3851,10 +3867,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 1 - Top 20 */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3912,10 +3925,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 2 - $5K */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -3973,10 +3983,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {/* Card 3 - Featured by CM */}
             <div
               style={{
-                background: "rgba(255,255,255,0.65)",
-                backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 4px 24px rgba(43,49,143,0.07)",
+                ...glassSurfaceStyle,
                 borderRadius: "10px",
                 padding: "20px 24px",
               }}
@@ -4712,7 +4719,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           borderTop: "1px solid #E5E5E5",
           borderBottom: "1px solid #E5E5E5",
           padding: "100px 80px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#0E0E0E",
         }}
       >
         <div
@@ -4769,7 +4776,8 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             }}
             className="cta-buttons"
           >
-            <button
+            <Link
+              to="/"
               style={{
                 backgroundColor: "#2B318F",
                 color: "#FFFFFF",
@@ -4780,13 +4788,16 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
                 fontWeight: "600",
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 cursor: "pointer",
+                textAlign: "center",
+                textDecoration: "none",
                 transition: "all 0.3s ease",
               }}
             >
               ← Back to Portfolio
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to="/project-1"
               style={{
                 backgroundColor: "#FFFFFF",
                 color: "#2B318F",
@@ -4797,11 +4808,13 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
                 fontWeight: "600",
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 cursor: "pointer",
+                textAlign: "center",
+                textDecoration: "none",
                 transition: "all 0.3s ease",
               }}
             >
               View Next Case Study →
-            </button>
+            </Link>
           </div>
         </div>
       </div>
