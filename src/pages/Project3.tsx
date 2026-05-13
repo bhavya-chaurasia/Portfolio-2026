@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Project3.css";
 import { usePageReady } from "@/hooks/use-page-ready";
 import PageParticlesBackground from "@/components/ui/page-particles-background";
@@ -224,6 +224,14 @@ const accessibilityFeatures = [
 
 const Project3 = ({ dark = false }: { dark?: boolean }) => {
   usePageReady({ delayMs: 220 });
+  const navigate = useNavigate();
+
+  const navigateToTop = (path: string) => {
+    navigate(path);
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -4776,8 +4784,9 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             }}
             className="cta-buttons"
           >
-            <Link
-              to="/"
+            <button
+              type="button"
+              onClick={() => navigateToTop("/")}
               style={{
                 backgroundColor: "#2B318F",
                 color: "#FFFFFF",
@@ -4789,15 +4798,18 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 cursor: "pointer",
                 textAlign: "center",
-                textDecoration: "none",
+                position: "relative",
+                zIndex: 2,
+                pointerEvents: "auto",
                 transition: "all 0.3s ease",
               }}
             >
               ← Back to Portfolio
-            </Link>
+            </button>
 
-            <Link
-              to="/project-1"
+            <button
+              type="button"
+              onClick={() => navigateToTop("/project-1")}
               style={{
                 backgroundColor: "#FFFFFF",
                 color: "#2B318F",
@@ -4809,12 +4821,14 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
                 fontFamily: "'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 cursor: "pointer",
                 textAlign: "center",
-                textDecoration: "none",
+                position: "relative",
+                zIndex: 2,
+                pointerEvents: "auto",
                 transition: "all 0.3s ease",
               }}
             >
               View Next Case Study →
-            </Link>
+            </button>
           </div>
         </div>
       </div>
