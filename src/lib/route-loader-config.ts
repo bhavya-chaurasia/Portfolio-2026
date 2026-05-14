@@ -6,7 +6,7 @@ export function getRouteLoaderConfig(
 ): RouteLoaderConfig {
   const normalized = pathname.toLowerCase();
 
-  if (normalized === "/project-2") {
+  if (normalized === "/project-2" || normalized === "/project-2-lock") {
     return {
       loaderMode: "auto",
       loaderTheme: "dark",

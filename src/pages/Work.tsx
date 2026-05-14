@@ -50,7 +50,7 @@ const Work: FC<WorkPageProps> = ({ dark = false }) => {
       title: "Maruti –⁠ Service Experience",
       desc: `Reimagining servicing through improving
 transparency, cross-selling, and service adoption.`,
-      link: "/project-2",
+      link: "/project-2-lock",
       img: "/src/assets/Frame1-maruti.svg",
       isVideo: false,
     },
