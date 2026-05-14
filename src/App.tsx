@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Cursor from "@/components/Cursor";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar";
@@ -17,15 +17,29 @@ import {
 } from "@/components/ui/loader-provider";
 import SiteLoader from "@/components/ui/site-loader";
 import { THEMES } from "@/constants/themes";
+import { PROJECT_2_UNLOCK_KEY } from "@/constants/project2Access";
 import { getRouteLoaderConfig } from "@/lib/route-loader-config";
 import Home from "@/pages/Home";
 import FontLoader from "@/styles/FontLoader";
 
 const Project1 = lazy(() => import("@/pages/project1"));
 const Project2 = lazy(() => import("@/pages/Project2"));
+const Project2Lock = lazy(() => import("@/pages/Project2Lock"));
 const Project3 = lazy<FC<{ dark?: boolean }>>(() => import("@/pages/Project3"));
 const Work = lazy(() => import("@/pages/Work"));
 const About = lazy(() => import("@/pages/About"));
+
+const ProtectedProject2: FC = () => {
+  const isUnlocked =
+    typeof window !== "undefined" &&
+    sessionStorage.getItem(PROJECT_2_UNLOCK_KEY) === "true";
+
+  if (!isUnlocked) {
+    return <Navigate to="/project-2-lock" replace />;
+  }
+
+  return <Project2 />;
+};
 
 function AppRoutes() {
   const location = useLocation();
@@ -47,7 +61,7 @@ function AppRoutes() {
   const previousPathRef = useRef<string | null>(null);
   const [dark, setDark] = useState(true);
   const navbarTheme =
-    location.pathname === "/project-2"
+    location.pathname === "/project-2" || location.pathname === "/project-2-lock"
       ? THEMES.dark
       : dark
         ? THEMES.dark
@@ -149,7 +163,15 @@ function AppRoutes() {
           path="/project-2"
           element={
             <Suspense fallback={null}>
-              {withSiteChrome(<Project2 />, undefined, false, "dark")}
+              {withSiteChrome(<ProtectedProject2 />, undefined, false, "dark")}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/project-2-lock"
+          element={
+            <Suspense fallback={null}>
+              {withSiteChrome(<Project2Lock />, undefined, false, "dark", 60, false)}
             </Suspense>
           }
         />
