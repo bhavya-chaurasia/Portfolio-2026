@@ -128,8 +128,8 @@ const Home: FC<HomeProps> = ({ dark }) => {
           {
             num: "01",
             tags: "UX DESIGN, AI, PRODUCT DESIGN",
-            title: "Workflow Studio",
-            desc: "Designing AI experiences that enable anyone to automate workflows",
+            title: "Waveflow Studio",
+            desc: "Designing AI experiences that enable anyone to automate their workflows",
             link: "/project-1",
             img: project1Video,
           },
