@@ -1789,7 +1789,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           <div
             style={{
               position: "absolute",
-              fontSize: "800px",
+              fontSize: "400px",
               fontWeight: "bold",
               color: "#2B318F",
               opacity: 0.03,
@@ -3241,7 +3241,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           <div
             style={{
               position: "absolute",
-              fontSize: "800px",
+              fontSize: "400px",
               fontWeight: "bold",
               color: "#2B318F",
               opacity: 0.03,
@@ -3846,7 +3846,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           <div
             style={{
               position: "absolute",
-              fontSize: "800px",
+              fontSize: "400px",
               fontWeight: "bold",
               color: "#2B318F",
               opacity: 0.03,
@@ -4436,7 +4436,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
           <div
             style={{
               position: "absolute",
-              fontSize: "800px",
+              fontSize: "400px",
               fontWeight: "bold",
               color: "#2B318F",
               opacity: 0.03,

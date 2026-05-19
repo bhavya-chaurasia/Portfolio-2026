@@ -56,7 +56,7 @@ const Project1 = ({ dark = false }: { dark?: boolean }) => {
       <div style={styles.container}>
         <HeroSection
           tags="UX Design · AI · Product Design"
-          title="Workflow Studio"
+          title="Waveflow Studio"
           subtitle={"Designing AI experiences that enable anyone to automate workflows. Building an intuitive AI-powered platform that allows people, even without coding knowledge to create powerful workflows and automate repetitive tasks with ease."}
         />
 
