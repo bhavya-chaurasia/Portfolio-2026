@@ -133,8 +133,6 @@ const Carousel = ({ slots, cycleDurations = [] }: CarouselProps) => {
   return (
     <>
       <div style={styles.carouselWrapper}>
-        <div style={styles.carouselFadeLeft} />
-        <div style={styles.carouselFadeRight} />
         <div
           ref={carouselRef}
           className="project1-carousel-container"
