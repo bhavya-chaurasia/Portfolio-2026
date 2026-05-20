@@ -64,26 +64,6 @@ export const project1Styles = {
     marginRight: "-24px",
     width: "calc(100% + 48px)",
   } as React.CSSProperties,
-  carouselFadeLeft: {
-    position: "absolute" as const,
-    left: 0,
-    top: 0,
-    bottom: 0,
-    width: "80px",
-    background: "var(--p1-fade-left, linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%))",
-    pointerEvents: "none" as const,
-    zIndex: 5,
-  } as React.CSSProperties,
-  carouselFadeRight: {
-    position: "absolute" as const,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: "80px",
-    background: "var(--p1-fade-right, linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%))",
-    pointerEvents: "none" as const,
-    zIndex: 5,
-  } as React.CSSProperties,
   carouselContainer: {
     display: "flex",
     gap: "40px",
@@ -95,6 +75,10 @@ export const project1Styles = {
     paddingRight: "max(24px, calc(50% - 240px))",
     scrollbarWidth: "none" as const,
     msOverflowStyle: "none" as const,
+    WebkitMaskImage:
+      "linear-gradient(to right, transparent 0, rgba(0,0,0,0.08) 48px, rgba(0,0,0,0.42) 112px, #000 190px, #000 calc(100% - 190px), rgba(0,0,0,0.42) calc(100% - 112px), rgba(0,0,0,0.08) calc(100% - 48px), transparent 100%)",
+    maskImage:
+      "linear-gradient(to right, transparent 0, rgba(0,0,0,0.08) 48px, rgba(0,0,0,0.42) 112px, #000 190px, #000 calc(100% - 190px), rgba(0,0,0,0.42) calc(100% - 112px), rgba(0,0,0,0.08) calc(100% - 48px), transparent 100%)",
   } as React.CSSProperties,
   carouselImage: (isHovered: boolean): React.CSSProperties => ({
     minWidth: "480px",
@@ -238,4 +222,3 @@ export const project1Styles = {
     margin: "80px 0",
   } as React.CSSProperties,
 };
-

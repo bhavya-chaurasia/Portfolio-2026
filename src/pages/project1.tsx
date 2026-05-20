@@ -27,31 +27,29 @@ const Project1 = ({ dark = false }: { dark?: boolean }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  const darkThemeVariables = dark ? {
-    "--p1-bg": "#0E0E0E",
-    "--p1-text-primary": "#ffffff",
+  const themeVariables = {
+    "--p1-bg": dark ? "#0E0E0E" : "#ffffff",
+    "--p1-text-primary": dark ? "#ffffff" : "#1a1a1a",
     "--p1-text-secondary": "#888888",
-    "--p1-text-tertiary": "#a0a0a0",
-    "--p1-text-quaternary": "#cccccc",
-    "--p1-text-quinary": "#aaaaaa",
-    "--p1-border": "#333333",
-    "--p1-surface": "#1a1a1a",
-    "--p1-border-light": "#333333",
-    "--p1-surface-alt": "#222222",
-    "--p1-text-muted": "#777777",
-    "--p1-text-muted-alt": "#888888",
-    "--p1-bullet": "#555555",
-    "--p1-fade-left": "linear-gradient(to right, rgba(14,14,14,1) 0%, rgba(14,14,14,0) 100%)",
-    "--p1-fade-right": "linear-gradient(to left, rgba(14,14,14,1) 0%, rgba(14,14,14,0) 100%)",
-    "--p1-shadow-hover": "0 20px 40px rgba(0,0,0,0.4)",
-    "--p1-shadow-base": "0 4px 20px rgba(0,0,0,0.2)",
-    "--p1-shadow-button": "0 4px 12px rgba(0,0,0,0.4)",
-    "--p1-shadow-img-hover": "0 20px 40px rgba(0,0,0,0.4)",
-    "--p1-shadow-img-base": "0 2px 8px rgba(0,0,0,0.2)",
-  } : {};
+    "--p1-text-tertiary": dark ? "#a0a0a0" : "#444444",
+    "--p1-text-quaternary": dark ? "#cccccc" : "#333333",
+    "--p1-text-quinary": dark ? "#aaaaaa" : "#555555",
+    "--p1-border": dark ? "#333333" : "#f0f0f0",
+    "--p1-surface": dark ? "#1a1a1a" : "#f5f5f5",
+    "--p1-border-light": dark ? "#333333" : "#eeeeee",
+    "--p1-surface-alt": dark ? "#222222" : "#f8f8f8",
+    "--p1-text-muted": dark ? "#777777" : "#666666",
+    "--p1-text-muted-alt": dark ? "#888888" : "#999999",
+    "--p1-bullet": dark ? "#555555" : "#dddddd",
+    "--p1-shadow-hover": dark ? "0 20px 40px rgba(0,0,0,0.4)" : "0 20px 40px rgba(0,0,0,0.12)",
+    "--p1-shadow-base": dark ? "0 4px 20px rgba(0,0,0,0.2)" : "0 4px 20px rgba(0,0,0,0.06)",
+    "--p1-shadow-button": dark ? "0 4px 12px rgba(0,0,0,0.4)" : "0 4px 12px rgba(0,0,0,0.08)",
+    "--p1-shadow-img-hover": dark ? "0 20px 40px rgba(0,0,0,0.4)" : "0 20px 40px rgba(0,0,0,0.15)",
+    "--p1-shadow-img-base": dark ? "0 2px 8px rgba(0,0,0,0.2)" : "0 2px 8px rgba(0,0,0,0.04)",
+  };
 
   return (
-    <div style={{ ...styles.page, ...darkThemeVariables } as React.CSSProperties}>
+    <div style={{ ...styles.page, ...themeVariables } as React.CSSProperties}>
       <PageParticlesBackground dark={dark} />
       <div style={styles.container}>
         <HeroSection
