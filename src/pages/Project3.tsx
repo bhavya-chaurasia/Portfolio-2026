@@ -4456,7 +4456,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
             {[
               {
                 number: "01",
-                heading: "Design for your hardest user first.",
+                heading: "Design for your user first.",
                 body: "When you solve for someone who is rural, low-literacy, and possibly disabled - you automatically solve for everyone else. The easiest user is never the right starting point.",
               },
               {
