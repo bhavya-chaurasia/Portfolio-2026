@@ -4477,7 +4477,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
               {
                 number: "05",
                 heading: "The name and the mascot are part of the UX.",
-                body: "Marga was not a branding decision. It was a trust decision. Rural users needed to feel guided by a person - not processed by a machine.",
+                body: "We didnt name it Marga for marketing. It was a trust decision. Rural users needed to feel guided by a person - not processed by a machine.",
               },
             ].map((item, index) => (
               <div
