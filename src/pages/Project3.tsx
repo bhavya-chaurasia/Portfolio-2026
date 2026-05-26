@@ -4476,7 +4476,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
               },
               {
                 number: "05",
-                heading: "The name and the mascot are part of the UX.",
+                heading: "The Name, The Mascot are part of the UX.",
                 body: "We didnt name it Marga for marketing. It was a trust decision with a purpose. Rural users needed to feel guided by a person - not processed by a machine.",
               },
             ].map((item, index) => (
