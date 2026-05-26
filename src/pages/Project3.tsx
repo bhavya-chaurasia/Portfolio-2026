@@ -4448,7 +4448,7 @@ const Project3 = ({ dark = false }: { dark?: boolean }) => {
               lineHeight: 0.8,
             }}
           >
-            LEARNED
+            LEARNINGS
           </div>
 
           {/* Learning items */}
